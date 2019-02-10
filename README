@@ -1,0 +1,6 @@
+An Open Location Code library for Common Lisp.
+
+Open Location Code is a location encoding system for addresses,
+independent of street names and building numbers.
+
+See <https://plus.codes>.
