@@ -106,7 +106,7 @@ for inline expansion by the compiler."
      (defun ,name ,arg-list
        ,@body)))
 
-(defconst +float-type+ (type-of pi)
+(defconst +float-type+ 'double-float
   "Data type for floating-point numbers.")
 
 (deftype float-type (&rest spec)
