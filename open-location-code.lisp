@@ -131,11 +131,15 @@ for inline expansion by the compiler."
 
 (export 'code-error)
 (define-condition code-error (type-error)
-  ())
+  ()
+  (:documentation
+   "Base class for all Open Location Code errors."))
 
 (export 'code-length-error)
 (define-condition code-length-error (code-error)
   ()
+  (:documentation
+   "Condition for an invalid Open Location Code length.")
   (:report
    (lambda (condition stream)
      (format stream
@@ -145,6 +149,8 @@ for inline expansion by the compiler."
 (export 'full-code-error)
 (define-condition full-code-error (code-error)
   ()
+  (:documentation
+   "Condition for an invalid full Open Location Code.")
   (:report
    (lambda (condition stream)
      (format stream
@@ -154,6 +160,8 @@ for inline expansion by the compiler."
 (export 'short-code-error)
 (define-condition short-code-error (code-error)
   ()
+  (:documentation
+   "Condition for an invalid short Open Location Code.")
   (:report
    (lambda (condition stream)
      (format stream
@@ -267,19 +275,19 @@ Argument PRECISION is the number of discretization steps."
   ((south
     :initform 0.0
     :type float-type
-    :documentation "Lower latitude of the code area.")
+    :documentation "Lower latitude of the code area in degree angle.")
    (west
     :initform 0.0
     :type float-type
-    :documentation "Lower longitude of the code area.")
+    :documentation "Lower longitude of the code area in degree angle.")
    (height
     :initform 0.0
     :type float-type
-    :documentation "Height of the code area.")
+    :documentation "Height of the code area in degree angle.")
    (width
     :initform 0.0
     :type float-type
-    :documentation "Width of the code area.")
+    :documentation "Width of the code area in degree angle.")
    (precision
     :initform 0
     :type fixnum
