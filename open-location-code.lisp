@@ -311,7 +311,7 @@ Argument PRECISION is the number of discretization steps."
   (:documentation
    "Return the lower latitude and longitude as multiple values."))
 
-(defmethod south-west-corner (object)
+(defmethod south-west-corner ((object code-area))
   (with-slots (south west) object
     (values south west)))
 
@@ -653,6 +653,7 @@ Primary value is a ‘code-area’ object.  Secondary value is ‘:full’ or
 
 Signal an ‘invalid-code-error’ if CODE is not a valid Open Location
 Code."
+  (check-type code string)
   (multiple-value-bind (valid area)
       (analyse code t)
     (when (not valid)
@@ -673,6 +674,7 @@ location is too far.
 
 Signal a ‘full-code-error’ if CODE is not a full Open Location
 Code."
+  (check-type code string)
   (check-type latitude real)
   (check-type longitude real)
   (multiple-value-bind (valid area)
@@ -705,13 +707,14 @@ Code."
 and a reference location.
 
 First argument CODE is a short Open Location Code (a string).
-Second argument LATITUDE and third argument LONGITUDE denote the
- reference location in degree angle.
+Second argument LATITUDE and third argument LONGITUDE denote
+ the reference location in degree angle.
 
-Value is the full code.
+Value is the recovered full code.
 
 Signal a ‘short-code-error’ if CODE is not a short Open Location
 Code."
+  (check-type code string)
   (check-type latitude real)
   (check-type longitude real)
   (multiple-value-bind (valid area)
