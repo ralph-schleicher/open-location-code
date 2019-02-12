@@ -238,22 +238,6 @@ Value is the digit, i.e. encoding character."
 	(setf width (/ width (if (< prec 5) +block-divisor+ +grid-columns+))))
   "Vector of code area widths in descending order.")
 
-;; With a mean earth radius of 6356766 m, code areas have the
-;; following dimensions at the equator.
-;;
-;;  Precision |   Width / m   |  Height / m
-;; -----------+---------------+---------------
-;;      1     | 2218929.9     | 2218929.9
-;;      2     |  110946.5     |  110946.5
-;;      3     |    5547.3     |    5547.3
-;;      4     |     277.4     |     277.4
-;;      5     |      13.9     |      13.9
-;;      6     |       3.47    |       2.77
-;;      7     |       0.867   |       0.555
-;;      8     |       0.217   |       0.111
-;;      9     |       0.0542  |       0.0222
-;;     10     |       0.0135  |       0.00444
-;;
 (defsubst area-size (precision)
   "Return the height and width of a code area as multiple values.
 Argument PRECISION is the number of discretization steps."
@@ -538,28 +522,65 @@ Open Location Code respectively.  Otherwise, all values are null."
 
 (export 'validp)
 (defun validp (code)
-  "True if CODE is a valid Open Location Code character sequence."
+  "True if an object is a valid sequence of Open Location Code characters.
+
+Argument CODE is an object of any type.
+
+Value is ‘:full’ or ‘:short’ if CODE is a valid full or short Open
+Location Code respectively.  Otherwise, value is null."
   (nth-value 0 (analyse code)))
 
 (export 'fullp)
 (defun fullp (code)
-  "True if CODE is a valid full Open Location Code character sequence."
+  "True if an object is a valid full Open Location Code.
+
+Argument CODE is an object of any type.
+
+Value is true if CODE is a valid full Open Location Code.
+Otherwise, value is null."
   (eq (analyse code) :full))
 
 (export 'shortp)
 (defun shortp (code)
-  "True if CODE is a valid short Open Location Code character sequence."
+  "True if an object is a valid short Open Location Code.
+
+Argument CODE is an object of any type.
+
+Value is true if CODE is a valid full Open Location Code.
+Otherwise, value is null."
   (eq (analyse code) :short))
 
 (export 'encode)
 (defun encode (latitude longitude &optional (precision 5))
   "Encode a location into an Open Location Code.
 
-Arguments LATITUDE and LONGITUDE denote the location in degree angle.
-Optional third argument PRECISION is the code area precision.  Default
- is five, i.e. a code length of ten digits.
+First argument LATITUDE and second argument LONGITUDE denote the
+ location in degree angle.
+Optional third argument PRECISION is the precision of the code.
+ Default is five, i.e. a code length of ten digits.
 
-Value is a string."
+Value is a string.
+
+The relation between precision, code length, and code area size
+is depicted in the following table.
+
+   Precision  | Code Length |   Width / m   |  Height / m
+ -------------+-------------+---------------+---------------
+       1      |      2      | 2218929.9     | 2218929.9
+       2      |      4      |  110946.5     |  110946.5
+       3      |      6      |    5547.3     |    5547.3
+       4      |      8      |     277.4     |     277.4
+       5      |     10      |      13.9     |      13.9
+       6      |     11      |       3.47    |       2.77
+       7      |     12      |       0.867   |       0.555
+       8      |     13      |       0.217   |       0.111
+       9      |     14      |       0.0542  |       0.0222
+      10      |     15      |       0.0135  |       0.00444
+
+The code length is equal to the number of Open Location Code
+digits.  The separator character ‘+’ is not part of the code
+length.  The code area dimensions are calculated with a mean
+earth radius of 6356766 m for a code area at the equator."
   (check-type latitude real)
   (check-type longitude real)
   (check-type precision (integer 1))
@@ -612,7 +633,13 @@ Value is a string."
 
 (export 'decode)
 (defun decode (code)
-  "Decode an Open Location Code."
+  "Decode an Open Location Code.
+
+Argument CODE is an Open Location Code (a string).
+
+Primary value is a ‘code-area’ object.  Secondary value is ‘:full’ or
+‘:short’ if CODE is a full or short Open Location Code respectively.
+Otherwise, all values are null."
   (multiple-value-bind (valid area)
       (analyse code t)
     (values area valid)))
