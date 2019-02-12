@@ -146,6 +146,17 @@ for inline expansion by the compiler."
 	     "The value ‘~S’ is not a valid Open Location Code length."
 	     (type-error-datum condition)))))
 
+(export 'invalid-code-error)
+(define-condition invalid-code-error (code-error)
+  ()
+  (:documentation
+   "Condition for an invalid Open Location Code.")
+  (:report
+   (lambda (condition stream)
+     (format stream
+	     "The value ‘~S’ is not a valid Open Location Code."
+	     (type-error-datum condition)))))
+
 (export 'full-code-error)
 (define-condition full-code-error (code-error)
   ()
@@ -639,15 +650,31 @@ Argument CODE is an Open Location Code (a string).
 
 Primary value is a ‘code-area’ object.  Secondary value is ‘:full’ or
 ‘:short’ if CODE is a full or short Open Location Code respectively.
-Otherwise, all values are null."
+
+Signal an ‘invalid-code-error’ if CODE is not a valid Open Location
+Code."
   (multiple-value-bind (valid area)
       (analyse code t)
+    (when (not valid)
+      (error 'invalid-code-error :datum code))
     (values area valid)))
 
 (export 'shorten)
 (defun shorten (code latitude longitude)
-  "Remove digits from the front of a full Open Location Code
-given a reference location."
+  "Remove four, six, or eight digits from the front of a full Open
+Location Code given a reference location.
+
+First argument CODE is a full Open Location Code (a string).
+Second argument LATITUDE and third argument LONGITUDE denote the
+ reference location in degree angle.
+
+Value is the short code, or the original full code if the reference
+location is too far.
+
+Signal a ‘full-code-error’ if CODE is not a full Open Location
+Code."
+  (check-type latitude real)
+  (check-type longitude real)
   (multiple-value-bind (valid area)
       (analyse code t)
     (unless (eq valid :full)
@@ -675,7 +702,18 @@ given a reference location."
 (export 'recover)
 (defun recover (code latitude longitude)
   "Recover a full Open Location Code from a short code
-and a reference location."
+and a reference location.
+
+First argument CODE is a short Open Location Code (a string).
+Second argument LATITUDE and third argument LONGITUDE denote the
+ reference location in degree angle.
+
+Value is the full code.
+
+Signal a ‘short-code-error’ if CODE is not a short Open Location
+Code."
+  (check-type latitude real)
+  (check-type longitude real)
   (multiple-value-bind (valid area)
       (analyse code t)
     (unless (eq valid :short)
