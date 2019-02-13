@@ -39,7 +39,7 @@
   :description "Open Location Code library."
   :author "Ralph Schleicher <rs@ralph-schleicher.de>"
   :license "Modified BSD License"
-  :version "20190210.2036"
+  :version "20190213.1747"
   :depends-on (:alexandria :iterate)
   :components ((:file "open-location-code")))
 
