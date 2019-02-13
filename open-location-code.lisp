@@ -257,12 +257,6 @@ Argument PRECISION is the number of discretization steps."
   (values (svref +area-height+ precision)
 	  (svref +area-width+ precision)))
 
-(defconst +smallest-height+ (svref +area-height+ (1- (length +area-height+)))
-  "Smallest height of a code area.")
-
-(defconst +smallest-width+ (svref +area-width+ (1- (length +area-width+)))
-  "Smallest width of a code area.")
-
 (defsubst fix (number divisor)
   "Round NUMBER to the nearest multiple of DIVISOR."
   (* (round number divisor) divisor))
