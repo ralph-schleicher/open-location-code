@@ -1,0 +1,146 @@
+body {
+  color: black;
+  background-color: #EEEEEC; /* light grey */
+  font-family: sans-serif;
+  margin: 0px;
+  border: 0px;
+  padding: 0px 2em;
+}
+
+table {
+  margin-left: 0px;
+  margin-right: auto;
+  border: 0px;
+  border-collapse: collapse;
+  padding: 0px;
+}
+
+td {
+  margin: 0px;
+  border: 0px;
+  padding: 0px;
+}
+
+a {
+  color: #4E9A06; /* dark green */
+  background-color: transparent;
+  text-decoration: none;
+}
+
+div.cludg-index-body {
+  background-color: white;
+  margin: 0px;
+  border: 1px solid #BABDB6; /* dark grey */
+  padding: 0px 2em 2em 2em;
+}
+
+div.cludg-doc-body {
+  background-color: white;
+  margin: 0px;
+  border: 1px solid #BABDB6; /* dark grey */
+  padding: 0px 2em 0px 2em;
+}
+
+/*
+ * Navigation
+ */
+
+table.navbar {
+  margin: 2em 0px;
+}
+
+td.prev {
+  text-align: left;
+}
+
+td.home {
+  text-align: center;
+  width: 100%;
+}
+
+td.next {
+  text-align: right;
+}
+
+div.cludg-footer {
+  border-top: 1px solid #BABDB6; /* dark grey */
+  padding: 2em 0px;
+  font-size: smaller;
+}
+
+/*
+ * Symbol Summary
+ */
+
+table.summary-table {
+  margin-bottom: 2em;
+  width: 100%;
+}
+
+th.summary {
+  padding: 3px;
+  text-align: left;
+  font-size: larger;
+  font-weight: bold;
+}
+
+td.summary-name {
+  border: 1px solid #BABDB6; /* dark grey */
+  padding: 3px;
+  text-align: right;
+  vertical-align: baseline;
+  white-space: nowrap;
+  width: 25%;
+}
+
+td.summary {
+  border: 1px solid #BABDB6; /* dark grey */
+  padding: 3px;
+  text-align: left;
+  vertical-align: baseline;
+  font-style: italic;
+}
+
+td.summary em {
+  font-style: normal;
+}
+
+/*
+ * Symbol Documentation
+ */
+
+td.symbol-name {
+  text-align: left;
+  white-space: nowrap;
+  vertical-align: baseline;
+  color: #4e9a06; /* dark green */
+}
+
+td.symbol-name em.args {
+  font-style: italic;
+}
+
+td.symbol-name em.args em {
+  font-style: normal;
+}
+
+td.lambda-list {
+  text-align: left;
+  vertical-align: baseline;
+  font-style: italic;
+  width: 100%;
+}
+
+td.lambda-list em {
+  font-style: normal;
+}
+
+td.symbol-type {
+  text-align: right;
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
+.doc-body {
+  margin: 0px 2em 2em 2em;
+}
