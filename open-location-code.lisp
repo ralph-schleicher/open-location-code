@@ -204,9 +204,8 @@ for inline expansion by the compiler."
 
 (defconst +alphabet+ "23456789CFGHJMPQRVWX"
   "Set of valid digits, i.e. encoding characters.
-
 The character position is equal to the decimal
-value of the digit.")
+value, i.e. weight, of the digit.")
 
 (defsubst digitp (char)
   "True if CHAR is a valid digit.
@@ -240,17 +239,20 @@ Value is the digit, i.e. encoding character."
 	(for prec :from 0 :to +maximum-precision+)
 	(collect (coerce height +float-type+) :result-type 'vector)
 	(setf height (/ height (if (< prec 5) +block-divisor+ +grid-rows+))))
-  "Vector of code area heights in descending order.")
+  "Vector of code area heights in descending order.
+Element position is the precision of the code area.")
 
 (defconst +area-width+
   (iter (with width = 400)
 	(for prec :from 0 :to +maximum-precision+)
 	(collect (coerce width +float-type+) :result-type 'vector)
 	(setf width (/ width (if (< prec 5) +block-divisor+ +grid-columns+))))
-  "Vector of code area widths in descending order.")
+  "Vector of code area widths in descending order.
+Element position is the precision of the code area.")
 
 (defsubst area-size (precision)
   "Return the height and width of a code area as multiple values.
+
 Argument PRECISION is the number of discretization steps."
   (values (svref +area-height+ precision)
 	  (svref +area-width+ precision)))
