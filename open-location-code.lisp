@@ -158,7 +158,7 @@ for inline expansion by the compiler."
 	     (type-error-datum condition)))))
 
 (export 'full-code-error)
-(define-condition full-code-error (code-error)
+(define-condition full-code-error (invalid-code-error)
   ()
   (:documentation
    "Condition for an invalid full Open Location Code.")
@@ -169,7 +169,7 @@ for inline expansion by the compiler."
 	     (type-error-datum condition)))))
 
 (export 'short-code-error)
-(define-condition short-code-error (code-error)
+(define-condition short-code-error (invalid-code-error)
   ()
   (:documentation
    "Condition for an invalid short Open Location Code.")
