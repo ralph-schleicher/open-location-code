@@ -113,22 +113,6 @@ for inline expansion by the compiler."
   "Type specifier for floating-point numbers."
   `(,+float-type+ ,@spec))
 
-;; Save values of special variables and bind them to file local
-;; values.  Variable ‘file-local-variables’ is a property list.
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (defparameter file-local-variables
-    (funcall (lambda (bindings)
-	       (iter (for binding :in bindings)
-		     (for symbol = (first binding))
-		     ;; Save symbol and it's value.
-		     (collect symbol)
-		     (collect (symbol-value symbol))
-		     ;; Set new value.
-		     (set symbol (second binding))))
-	     ;; File local variables.
-	     `((*read-default-float-format* ,+float-type+)
-	       ))))
-
 (export 'code-error)
 (define-condition code-error (type-error)
   ()
@@ -264,19 +248,19 @@ Argument PRECISION is the number of discretization steps."
 (export 'code-area)
 (defclass code-area ()
   ((south
-    :initform 0.0
+    :initform 0D0
     :type float-type
     :documentation "Lower latitude of the code area in degree angle.")
    (west
-    :initform 0.0
+    :initform 0D0
     :type float-type
     :documentation "Lower longitude of the code area in degree angle.")
    (height
-    :initform 0.0
+    :initform 0D0
     :type float-type
     :documentation "Height of the code area in degree angle.")
    (width
-    :initform 0.0
+    :initform 0D0
     :type float-type
     :documentation "Width of the code area in degree angle.")
    (precision
@@ -390,18 +374,18 @@ Values are latitude, longitude, and the actual precision."
 	(lon (coerce longitude +float-type+))
 	(prec (min precision +maximum-precision+)))
     ;; Clip the latitude to the closed interval [-90, 90].
-    (setf lat (alexandria:clamp lat -90.0 90.0))
+    (setf lat (alexandria:clamp lat -90 90))
     ;; Ensure that the represented area does not exceed 90° latitude.
-    (when (= lat 90.0)
+    (when (= lat 90)
       (multiple-value-bind (height width)
 	  (area-size precision)
 	(decf lat (/ height 2))))
     ;; Normalise the longitude to the half-closed interval [-180, 180).
-    (setf lon (rem lon 360.0))
-    (cond ((< lon -180.0)
-	   (incf lon 360.0))
-	  ((>= lon 180.0)
-	   (decf lon 360.0)))
+    (setf lon (rem lon 360))
+    (cond ((< lon -180)
+	   (incf lon 360))
+	  ((>= lon 180)
+	   (decf lon 360)))
     ;; Return values.
     (values lat lon prec)))
 
@@ -411,9 +395,9 @@ as non-negative numbers."
   (multiple-value-bind (lat lon prec)
       (normalize-location latitude longitude precision)
     ;; Add 90° to the latitude.
-    (incf lat 90.0)
+    (incf lat 90)
     ;; Add 180° to the longitude.
-    (incf lon 180.0)
+    (incf lon 180)
     ;; Return values.
     (values lat lon prec)))
 
@@ -428,10 +412,10 @@ Primary value is ‘:full’ or ‘:short’ if CODE is a valid full or short
 Open Location Code respectively.  Otherwise, all values are null."
   (let (valid object)
     (when (stringp code)
-      (iter (with south = 0.0)
-	    (with west = 0.0)
-	    (with height = 0.0)
-	    (with width = 0.0)
+      (iter (with south = 0D0)
+	    (with west = 0D0)
+	    (with height = 0D0)
+	    (with width = 0D0)
 	    (with length = 0)
 	    (with plus)
 	    (with pad = 0)
@@ -514,8 +498,8 @@ Open Location Code respectively.  Otherwise, all values are null."
 	       (when (not (null area))
 		 (setf object (make-instance 'code-area))
 		 (if (= plus 8)
-		     (setf (slot-value object 'south) (fix (- south 90.0) height)
-			   (slot-value object 'west) (fix (- west 180.0) width))
+		     (setf (slot-value object 'south) (fix (- south 90) height)
+			   (slot-value object 'west) (fix (- west 180) width))
 		   (setf (slot-value object 'south) (fix south height)
 			 (slot-value object 'west) (fix west width)))
 		 (setf (slot-value object 'height) height
@@ -692,7 +676,7 @@ Code."
 	    (for block-size = (area-size (/ pos 2)))
 	    ;; Factor 0.3 adds just an extra margin of safety;
 	    ;; theoretically half the block size is sufficient.
-	    (when (< distance (* block-size 0.3))
+	    (when (< distance (* block-size 0.3D0))
 	      (return-from shorten (subseq code pos)))))
     ;; Return original full Open Location Code.
     code))
@@ -737,28 +721,20 @@ Code."
       (let ((distance (- lat ref-lat))
 	    (half-height (/ height 2)))
 	(cond ((and (> distance half-height)
-		    (> (- lat height) 0.0))
+		    (> (- lat height) 0))
 	       (decf lat height))
 	      ((and (< distance (- half-height))
-		    (< (+ lat height) 180.0))
+		    (< (+ lat height) 180))
 	       (incf lat height))))
       (let ((distance (- lon ref-lon))
 	    (half-width (/ width 2)))
 	(cond ((and (> distance half-width)
-		    (> (- lon width) 0.0))
+		    (> (- lon width) 0))
 	       (decf lon width))
 	      ((and (< distance (- half-width))
-		    (< (+ lon width) 360.0))
+		    (< (+ lon width) 360))
 	       (incf lon width))))
       ;; Encode the recovered location.
-      (encode (- lat 90.0) (- lon 180.0) (precision area)))))
-
-;; Restore special variables saved in ‘file-local-variables’.
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (when (boundp 'file-local-variables)
-    (iter (while file-local-variables)
-	  (for symbol = (pop file-local-variables))
-	  (for value = (pop file-local-variables))
-	  (set symbol value))))
+      (encode (- lat 90) (- lon 180) (precision area)))))
 
 ;;; open-location-code.lisp ends here
