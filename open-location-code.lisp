@@ -31,47 +31,6 @@
 ;; ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;; POSSIBILITY OF SUCH DAMAGE.
 
-;;; Commentary:
-
-;; The methods requested by the Open Location Code specification
-;; are implemented as follows:
-;;
-;; encode (LATITUDE LONGITUDE)  ==>  FULL-CODE
-;;      Convert a latitude and longitude into a 10 digit Open
-;;      Location Code.
-;;
-;; encode (LATITUDE LONGITUDE PRECISION)  ==>  FULL-CODE
-;;      Convert a latitude and longitude into an arbitrary
-;;      length Open Location Code.
-;;
-;; decode (CODE)  ==>  CODE-AREA
-;;      Decode an Open Location Code into, at a minimum, the
-;;      latitude and longitude of the south-west corner and
-;;      the area's height and width.
-;;
-;; validp (CODE)  ==>  boolean
-;;      Determine if a string is a valid sequence of Open
-;;      Location Code characters.
-;;
-;; fullp (CODE)  ==>  boolean
-;;      Determine if a string is a valid full Open Location
-;;      Code.
-;;
-;; shortp (CODE)  ==>  boolean
-;;      Determine if a string is a valid short Open Location
-;;      Code.
-;;
-;; shorten (FULL-CODE LATITUDE LONGITUDE)  ==>  SHORT-CODE
-;;      Remove four or six digits from the front of an Open
-;;      Location Code given a reference location.
-;;
-;; recover (SHORT-CODE LATITUDE LONGITUDE)  ==>  FULL-CODE
-;;      Recover a full Open Location Code from a short code
-;;      and a reference location.
-;;
-;; See <https://github.com/google/open-location-code/> for more
-;; documentation and sample implementations.
-
 ;;; Code:
 
 (in-package :common-lisp-user)
