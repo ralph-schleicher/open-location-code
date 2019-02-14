@@ -541,7 +541,9 @@ earth radius of 6356766 m for a code area at the equator."
     ;; Do the encoding.
     (let ((code (make-string (+ 9 (if (> prec 4) 2 0) (max 0 (- prec 5))) :initial-element #\0)))
       (setf (aref code 8) #\+)
-      (let ((index 1)
+      (let ((height 0D0)
+	    (width 0D0)
+	    (index 1)
 	    (pos 0))
 	(labels ((pair ()
 		   ;; Query area size.
