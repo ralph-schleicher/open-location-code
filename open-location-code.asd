@@ -39,15 +39,8 @@
   :description "Open Location Code library."
   :author "Ralph Schleicher <rs@ralph-schleicher.de>"
   :license "Modified BSD License"
-  :version "20190213.1747"
+  :version "1.0"
   :depends-on (:alexandria :iterate)
   :components ((:file "open-location-code")))
-
-;; local variables:
-;; time-stamp-time-zone: "UTC"
-;; time-stamp-format: "%:y%02m%02d.%02H%02M"
-;; time-stamp-start: ":version\\s-+\""
-;; time-stamp-end: "\""
-;; end:
 
 ;;; open-location-code.asd ends here
