@@ -505,11 +505,13 @@ Otherwise, value is null."
   "Encode a location into an Open Location Code.
 
 First argument LATITUDE and second argument LONGITUDE denote the
- location in degree angle.
+ location in degree angle.  The latitude is clipped to the closed
+ interval [-90, 90] and the longitude is normalized to the
+ half-closed interval [-180, 180).
 Optional third argument PRECISION is the precision of the code.
  Default is five, i.e. a code length of ten digits.
 
-Value is a string.
+Value is a full Open Location Code (a string).
 
 The relation between precision, code length, and code area size
 is depicted in the following table.
@@ -527,9 +529,9 @@ is depicted in the following table.
        9      |     14      |       0.0542  |       0.0222
       10      |     15      |       0.0135  |       0.00444
 
-The code length is equal to the number of Open Location Code
-digits.  The separator character ‘+’ is not part of the code
-length.  The code area dimensions are calculated with a mean
+The code length is equal to the number of Open Location Code digits.
+Pad characters and the separator character ‘+’ are not part of the
+code length.  The code area dimensions are calculated with a mean
 earth radius of 6356766 m for a code area at the equator."
   (check-type latitude real)
   (check-type longitude real)
