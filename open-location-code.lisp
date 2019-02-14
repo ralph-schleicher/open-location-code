@@ -593,6 +593,9 @@ Argument CODE is an Open Location Code (a string).
 
 Primary value is a ‘code-area’ object.  Secondary value is ‘:full’ or
 ‘:short’ if CODE is a full or short Open Location Code respectively.
+If CODE is a full Open Location Code the code area denotes absolute
+coordinates.  Otherwise, the code area denotes relative coordinates,
+i.e. offset values in the enclosing block.
 
 Signal an ‘invalid-code-error’ if CODE is not a valid Open Location
 Code."
