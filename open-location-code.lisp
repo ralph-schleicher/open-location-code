@@ -654,8 +654,10 @@ Signal a ‘full-code-error’ if CODE is not a full Open Location Code."
 and a reference location.
 
 First argument CODE is a short Open Location Code (a string).
-Second argument LATITUDE and third argument LONGITUDE denote
- the reference location in degree angle.
+Second argument LATITUDE and third argument LONGITUDE denote the
+ reference location in degree angle.  The latitude is clipped to
+ the closed interval [-90, 90] and the longitude is normalized to
+ the half-closed interval [-180, 180).
 
 Value is the recovered full code.
 
