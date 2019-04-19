@@ -656,57 +656,60 @@ Signal a ‘full-code-error’ if CODE is not a full Open Location Code."
   "Recover a full Open Location Code from a short code
 and a reference location.
 
-First argument CODE is a short Open Location Code (a string).
+First argument CODE is an Open Location Code (a string).
 Second argument LATITUDE and third argument LONGITUDE denote the
  reference location in degree angle.  The latitude is clipped to
  the closed interval [-90, 90] and the longitude is normalized to
  the half-closed interval [-180, 180).
 
-Value is the recovered full code.
+Value is the recovered full code.  If CODE is already a full code,
+return CODE as is.
 
-Signal a ‘short-code-error’ if CODE is not a short Open Location
+Signal an ‘invalid-code-error’ if CODE is not an Open Location
 Code."
   (check-type code string)
   (check-type latitude real)
   (check-type longitude real)
   (multiple-value-bind (valid area)
       (analyse code t)
-    (unless (eq valid :short)
-      (error 'short-code-error :datum code))
-    (let (pad prec lat lon ref-lat ref-lon height width)
-      ;; Number of digits to recover and the corresponding precision.
-      (setf pad (- 8 (separator-position area))
-	    prec (/ pad 2))
-      ;; Relative location of the code area.
-      (multiple-value-setq (lat lon)
-	(center area))
-      ;; Generate the prefix from the reference location and combine
-      ;; it with the short code.
-      (multiple-value-setq (ref-lat ref-lon)
-	(normalize-location* latitude longitude prec))
-      (multiple-value-setq (height width)
-	(area-size prec))
-      (incf lat (* (ffloor ref-lat height) height))
-      (incf lon (* (ffloor ref-lon width) width))
-      ;; Check if the recovered code area is too far from the
-      ;; reference location.  If so, move it.
-      (let ((distance (- lat ref-lat))
-	    (half-height (/ height 2)))
-	(cond ((and (> distance half-height)
-		    (> (- lat height) 0))
-	       (decf lat height))
-	      ((and (< distance (- half-height))
-		    (< (+ lat height) 180))
-	       (incf lat height))))
-      (let ((distance (- lon ref-lon))
-	    (half-width (/ width 2)))
-	(cond ((and (> distance half-width)
-		    (> (- lon width) 0))
-	       (decf lon width))
-	      ((and (< distance (- half-width))
-		    (< (+ lon width) 360))
-	       (incf lon width))))
-      ;; Encode the recovered location.
-      (encode (- lat 90) (- lon 180) (precision area)))))
+    (unless valid
+      (error 'invalid-code-error :datum code))
+    (if (eq valid :full)
+	code
+      (let (pad prec lat lon ref-lat ref-lon height width)
+	;; Number of digits to recover and the corresponding precision.
+	(setf pad (- 8 (separator-position area))
+	      prec (/ pad 2))
+	;; Relative location of the code area.
+	(multiple-value-setq (lat lon)
+	  (center area))
+	;; Generate the prefix from the reference location and combine
+	;; it with the short code.
+	(multiple-value-setq (ref-lat ref-lon)
+	  (normalize-location* latitude longitude prec))
+	(multiple-value-setq (height width)
+	  (area-size prec))
+	(incf lat (* (ffloor ref-lat height) height))
+	(incf lon (* (ffloor ref-lon width) width))
+	;; Check if the recovered code area is too far from the
+	;; reference location.  If so, move it.
+	(let ((distance (- lat ref-lat))
+	      (half-height (/ height 2)))
+	  (cond ((and (> distance half-height)
+		      (> (- lat height) 0))
+		 (decf lat height))
+		((and (< distance (- half-height))
+		      (< (+ lat height) 180))
+		 (incf lat height))))
+	(let ((distance (- lon ref-lon))
+	      (half-width (/ width 2)))
+	  (cond ((and (> distance half-width)
+		      (> (- lon width) 0))
+		 (decf lon width))
+		((and (< distance (- half-width))
+		      (< (+ lon width) 360))
+		 (incf lon width))))
+	;; Encode the recovered location.
+	(encode (- lat 90) (- lon 180) (precision area))))))
 
 ;;; open-location-code.lisp ends here
