@@ -72,6 +72,9 @@ for inline expansion by the compiler."
   "Type specifier for floating-point numbers."
   `(,+float-type+ ,@spec))
 
+(defconst f0 (coerce 0 +float-type+)
+  "Floating-point zero.")
+
 (export 'code-error)
 (define-condition code-error (type-error)
   ()
@@ -207,19 +210,19 @@ Argument PRECISION is the number of discretization steps."
 (export 'code-area)
 (defclass code-area ()
   ((south
-    :initform 0D0
+    :initform f0
     :type float-type
     :documentation "Lower latitude of the code area in degree angle.")
    (west
-    :initform 0D0
+    :initform f0
     :type float-type
     :documentation "Lower longitude of the code area in degree angle.")
    (height
-    :initform 0D0
+    :initform f0
     :type float-type
     :documentation "Height of the code area in degree angle.")
    (width
-    :initform 0D0
+    :initform f0
     :type float-type
     :documentation "Width of the code area in degree angle.")
    (precision
@@ -371,10 +374,10 @@ Primary value is ‘:full’ or ‘:short’ if CODE is a valid full or short
 Open Location Code respectively.  Otherwise, all values are null."
   (let (valid object)
     (when (stringp code)
-      (iter (with south = 0D0)
-	    (with west = 0D0)
-	    (with height = 0D0)
-	    (with width = 0D0)
+      (iter (with south = f0)
+	    (with west = f0)
+	    (with height = f0)
+	    (with width = f0)
 	    (with length = 0)
 	    (with plus)
 	    (with pad = 0)
@@ -541,8 +544,8 @@ earth radius of 6356766 m for a code area at the equator."
     ;; Do the encoding.
     (let ((code (make-string (+ 9 (if (> prec 4) 2 0) (max 0 (- prec 5))) :initial-element #\0)))
       (setf (aref code 8) #\+)
-      (let ((height 0D0)
-	    (width 0D0)
+      (let ((height f0)
+	    (width f0)
 	    (index 1)
 	    (pos 0))
 	(labels ((pair ()
@@ -643,7 +646,7 @@ Signal a ‘full-code-error’ if CODE is not a full Open Location Code."
 	    (for block-size = (area-size (/ pos 2)))
 	    ;; Factor 0.3 adds just an extra margin of safety;
 	    ;; theoretically half the block size is sufficient.
-	    (when (< distance (* block-size 0.3D0))
+	    (when (< distance (* block-size #.(coerce 3/10 +float-type+)))
 	      (return-from shorten (subseq code pos)))))
     ;; Return original full Open Location Code.
     code))
