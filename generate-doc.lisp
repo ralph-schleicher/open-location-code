@@ -36,25 +36,33 @@
 (in-package :common-lisp-user)
 
 (ql:quickload :open-location-code)
-(ql:quickload :cldoc)
+(ql:quickload :rs-doc) ;private
 
-(in-package :cludg)
-
-(defun rs-format-doc (symbol-descriptor driver strings)
-  (with-tag (:pre ())
-    (html-write "~{~A~^~%~}" strings)))
-
-(ensure-directories-exist
- (make-pathname :directory '(:relative "doc")))
-
-(cldoc:extract-documentation
- 'cldoc:html "doc"
- (asdf:find-system :open-location-code)
- :table-of-contents-title "Open Location Code"
- :copy-css-into-output-dir t
- :charset "UTF-8"
- :doc-formater #'rs-format-doc
- :filter #'default-filter
- :sort-predicate (constantly nil))
+(rs-doc:generate-doc
+ :package :open-location-code
+ :symbols '(olc:validp
+	    olc:fullp
+	    olc:shortp
+	    olc:encode
+	    olc:decode
+	    olc:shorten
+	    olc:recover
+	    olc:code-error
+	    olc:code-length-error
+	    olc:invalid-code-error
+	    olc:full-code-error
+	    olc:short-code-error
+	    olc:code-area
+	    olc:south-west-corner
+	    olc:north-east-corner
+	    olc:center
+	    olc:precision
+	    olc:code-length
+	    olc:separator-position
+	    olc:pad-characters)
+ :output-format :html
+ :output (make-pathname :directory '(:relative "doc")
+			:name "open-location-code"
+			:type "html"))
 
 ;;; generate-doc.lisp ends here
