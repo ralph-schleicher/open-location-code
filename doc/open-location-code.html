@@ -535,15 +535,16 @@ Signal a &#x2018;full-code-error&#x2019; if CODE is not a full Open Location Cod
      <pre>Recover a full Open Location Code from a short code
 and a reference location.
 
-First argument CODE is a short Open Location Code (a string).
+First argument CODE is an Open Location Code (a string).
 Second argument LATITUDE and third argument LONGITUDE denote the
  reference location in degree angle.  The latitude is clipped to
  the closed interval [-90, 90] and the longitude is normalized to
  the half-closed interval [-180, 180).
 
-Value is the recovered full code.
+Value is the recovered full code.  If CODE is already a full code,
+return CODE as is.
 
-Signal a &#x2018;short-code-error&#x2019; if CODE is not a short Open Location
+Signal an &#x2018;invalid-code-error&#x2019; if CODE is not an Open Location
 Code.</pre>
     </div>
    </div>
