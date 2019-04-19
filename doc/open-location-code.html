@@ -1,727 +1,419 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>OPEN-LOCATION-CODE</title>
+  <style type="text/css">
+   *{margin:0;border:0;padding:0}
+   body{color:#000;background-color:#fff;font-family:sans-serif;padding:1em;min-width:46em}
+   a{color:inherit;background-color:transparent;text-decoration:none}
+   table{border-collapse:collapse}
+   div.title{padding:1em}
+   div.subtitle{padding:1em}
+   div.prologue{padding:1em}
+   div.epilogue{padding:1em}
+   span.category{color:#212121;font-style:italic}
+   span.symbol{color:#212121;font-weight:700}
+   span.lambda-list{color:#616161}
+   span.lambda-list-keyword{color:#388E3C}
+   span.parameter{color:#212121;font-style:italic}
+   span.method-specializers{color:#616161}
+   span.method-specializer{color:#212121}
+   div.contents{padding:1em}
+   div.contents-listing{padding:1em}
+   div.contents-listing ul{list-style-type:none}
+   @media all and (min-width:68em){div.contents-listing{column-count:2;column-gap:2em}}
+   div.definition{padding:1em}
+   div.signature{background-color:#F5F5F5;padding:1ex 1em}
+   table.signature td.symbol{text-align:left;vertical-align:baseline;white-space:nowrap;padding-right:.5em}
+   table.signature td.lambda-list{text-align:left;vertical-align:baseline;width:100%}
+   table.signature td.category{text-align:right;vertical-align:baseline;white-space:nowrap;padding-left:1.5em}
+   div.documentation{padding:1em}
+  </style>
+ </head>
+ <body>
+  
+  <div class="title">
+   <h1>OPEN-LOCATION-CODE</h1>
+  </div>
+  
 
-<html>
-<head>
-<link rel="Stylesheet" type="text/css" href="cludg.css"/>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<title>
-open-location-code</title>
-</head>
-<body>
-<div id="navbar">
-<table class="navbar">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tr>
-<td class="prev">
-&nbsp;</td>
-<td class="home">
-<a href="index.html">
-index</a>
-</td>
-<td class="next">
-&nbsp;</td>
-</tr>
-</table>
-</div>
-<div class="cludg-doc-body">
-<h2>
-open-location-code
-</h2>
-<table class="summary-table">
-<tr class="table-heading-color">
-<th class="summary" colspan="2">
-Conditions</th>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1124">
-code-error</a>
-</td>
-<td class="summary">
-inherits from <em class="cl">type-error</em></td>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1125">
-code-length-error</a>
-</td>
-<td class="summary">
-inherits from <a href="open-location-code.html#_g1124"><em class="cl">code-error</em></a></td>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1127">
-full-code-error</a>
-</td>
-<td class="summary">
-inherits from <a href="open-location-code.html#_g1126"><em class="cl">invalid-code-error</em></a></td>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1126">
-invalid-code-error</a>
-</td>
-<td class="summary">
-inherits from <a href="open-location-code.html#_g1124"><em class="cl">code-error</em></a></td>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1128">
-short-code-error</a>
-</td>
-<td class="summary">
-inherits from <a href="open-location-code.html#_g1126"><em class="cl">invalid-code-error</em></a></td>
-</tr>
-</table>
-<table class="summary-table">
-<tr class="table-heading-color">
-<th class="summary" colspan="2">
-Classes</th>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1131">
-code-area</a>
-</td>
-<td class="summary">
-</td>
-</tr>
-</table>
-<table class="summary-table">
-<tr class="table-heading-color">
-<th class="summary" colspan="2">
-Methods</th>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1136">
-center</a>
-</td>
-<td class="summary">
-object</td>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1141">
-code-length</a>
-</td>
-<td class="summary">
-object</td>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1134">
-north-east-corner</a>
-</td>
-<td class="summary">
-object</td>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1146">
-pad-characters</a>
-</td>
-<td class="summary">
-object</td>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1138">
-precision</a>
-</td>
-<td class="summary">
-object</td>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1144">
-separator-position</a>
-</td>
-<td class="summary">
-object</td>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1132">
-south-west-corner</a>
-</td>
-<td class="summary">
-object</td>
-</tr>
-</table>
-<table class="summary-table">
-<tr class="table-heading-color">
-<th class="summary" colspan="2">
-Functions</th>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1155">
-decode</a>
-</td>
-<td class="summary">
-code</td>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1154">
-encode</a>
-</td>
-<td class="summary">
-latitude longitude <em>&amp;optional</em> (precision 5)</td>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1152">
-fullp</a>
-</td>
-<td class="summary">
-code</td>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1157">
-recover</a>
-</td>
-<td class="summary">
-code latitude longitude</td>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1156">
-shorten</a>
-</td>
-<td class="summary">
-code latitude longitude</td>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1153">
-shortp</a>
-</td>
-<td class="summary">
-code</td>
-</tr>
-<tr class="table-row-color">
-<td class="summary-name">
-<a href="open-location-code.html#_g1151">
-validp</a>
-</td>
-<td class="summary">
-code</td>
-</tr>
-</table>
-<div class="defpackage">
-<div class="defunsignatures">
-<a id="_g1120">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-OPEN-LOCATION-CODE&nbsp;</td>
-<td class="lambda-list">
-</td>
-<td class="symbol-type">
-&nbsp;[Package]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-Open Location Code is a location encoding system for addresses,
+  
+
+  
+  <div class="prologue">
+   <pre>Open Location Code is a location encoding system for addresses,
 independent of street names and building numbers.
 
 See &lt;https://plus.codes&gt;.</pre>
-</div>
-</div>
-<div class="defclass">
-<div class="defunsignatures">
-<a id="_g1124">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-code-error&nbsp;</td>
-<td class="lambda-list">
-inherits from <em class="cl">type-error</em></td>
-<td class="symbol-type">
-&nbsp;[Condition]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-Base class for all Open Location Code errors.</pre>
-</div>
-</div>
-<div class="defclass">
-<div class="defunsignatures">
-<a id="_g1125">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-code-length-error&nbsp;</td>
-<td class="lambda-list">
-inherits from <a href="open-location-code.html#_g1124"><em class="cl">code-error</em></a></td>
-<td class="symbol-type">
-&nbsp;[Condition]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-Condition for an invalid Open Location Code length.</pre>
-</div>
-</div>
-<div class="defclass">
-<div class="defunsignatures">
-<a id="_g1126">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-invalid-code-error&nbsp;</td>
-<td class="lambda-list">
-inherits from <a href="open-location-code.html#_g1124"><em class="cl">code-error</em></a></td>
-<td class="symbol-type">
-&nbsp;[Condition]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-Condition for an invalid Open Location Code.</pre>
-</div>
-</div>
-<div class="defclass">
-<div class="defunsignatures">
-<a id="_g1127">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-full-code-error&nbsp;</td>
-<td class="lambda-list">
-inherits from <a href="open-location-code.html#_g1126"><em class="cl">invalid-code-error</em></a></td>
-<td class="symbol-type">
-&nbsp;[Condition]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-Condition for an invalid full Open Location Code.</pre>
-</div>
-</div>
-<div class="defclass">
-<div class="defunsignatures">
-<a id="_g1128">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-short-code-error&nbsp;</td>
-<td class="lambda-list">
-inherits from <a href="open-location-code.html#_g1126"><em class="cl">invalid-code-error</em></a></td>
-<td class="symbol-type">
-&nbsp;[Condition]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-Condition for an invalid short Open Location Code.</pre>
-</div>
-</div>
-<div class="defclass">
-<div class="defunsignatures">
-<a id="_g1131">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-code-area&nbsp;</td>
-<td class="lambda-list">
-</td>
-<td class="symbol-type">
-&nbsp;[Class]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-Area covered by an Open Location Code.</pre>
-</div>
-<div class="defclass-generics">
-</div>
-</div>
-<div class="defun">
-<div class="defunsignatures">
-<a id="_g1132">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-south-west-corner&nbsp;</td>
-<td class="lambda-list">
-object</td>
-<td class="symbol-type">
-&nbsp;[Generic&nbsp;Function]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-Return the lower latitude and longitude as multiple values.</pre>
-</div>
-</div>
-<div class="defun">
-<div class="defunsignatures">
-<a id="_g1134">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-north-east-corner&nbsp;</td>
-<td class="lambda-list">
-object</td>
-<td class="symbol-type">
-&nbsp;[Generic&nbsp;Function]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-Return the upper latitude and longitude as multiple values.
-The upper bounds are not included in the code area except for
-the north pole.</pre>
-</div>
-</div>
-<div class="defun">
-<div class="defunsignatures">
-<a id="_g1136">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-center&nbsp;</td>
-<td class="lambda-list">
-object</td>
-<td class="symbol-type">
-&nbsp;[Generic&nbsp;Function]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-Return the center latitude and longitude as multiple values.</pre>
-</div>
-</div>
-<div class="defun">
-<div class="defunsignatures">
-<a id="_g1138">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-precision&nbsp;</td>
-<td class="lambda-list">
-object</td>
-<td class="symbol-type">
-&nbsp;[Generic&nbsp;Function]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-Return the Open Location Code precision.</pre>
-</div>
-</div>
-<div class="defun">
-<div class="defunsignatures">
-<a id="_g1141">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-code-length&nbsp;</td>
-<td class="lambda-list">
-object</td>
-<td class="symbol-type">
-&nbsp;[Generic&nbsp;Function]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-Return the Open Location Code length.</pre>
-</div>
-</div>
-<div class="defun">
-<div class="defunsignatures">
-<a id="_g1144">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-separator-position&nbsp;</td>
-<td class="lambda-list">
-object</td>
-<td class="symbol-type">
-&nbsp;[Generic&nbsp;Function]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-Return the position of the separator character.</pre>
-</div>
-</div>
-<div class="defun">
-<div class="defunsignatures">
-<a id="_g1146">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-pad-characters&nbsp;</td>
-<td class="lambda-list">
-object</td>
-<td class="symbol-type">
-&nbsp;[Generic&nbsp;Function]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-Return the number of pad characters.</pre>
-</div>
-</div>
-<div class="defun">
-<div class="defunsignatures">
-<a id="_g1151">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-validp&nbsp;</td>
-<td class="lambda-list">
-code</td>
-<td class="symbol-type">
-&nbsp;[Function]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-True if an object is a valid sequence of Open Location Code characters.
+  </div>
+  
+
+  
+  <div class="contents" id="contents">
+   <h2>Contents</h2>
+   <div class="contents-listing">
+    <ul>
+     
+     <li>
+      <a href="#_CB04F6CC-C97A-5A5E-9983-89B2B0FD7CFE">
+       <span class="category">Function</span>
+       <span class="symbol">validp</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_3E6D2C07-FE03-57D9-88E7-4327773AAFB6">
+       <span class="category">Function</span>
+       <span class="symbol">fullp</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_48512CB6-B889-5999-8E19-4689D33D12A1">
+       <span class="category">Function</span>
+       <span class="symbol">shortp</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_1C1D5C66-F8F7-5C6B-BD97-B6886F4B09C2">
+       <span class="category">Function</span>
+       <span class="symbol">encode</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_91BFAF69-2746-5E83-B8EF-80E48EA8BADA">
+       <span class="category">Function</span>
+       <span class="symbol">decode</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_B86BC056-2EB9-568C-B513-C44A5C4622A6">
+       <span class="category">Function</span>
+       <span class="symbol">shorten</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_87458B04-A68B-5FD6-9165-54638C5500F6">
+       <span class="category">Function</span>
+       <span class="symbol">recover</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_81481A12-D642-585A-9ED7-742D24102CBF">
+       <span class="category">Condition</span>
+       <span class="symbol">code-error</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_149AF73C-9214-5686-BFA7-40DC49D490A2">
+       <span class="category">Condition</span>
+       <span class="symbol">code-length-error</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_363C3F90-F820-553C-B00F-368E1F6D2D95">
+       <span class="category">Condition</span>
+       <span class="symbol">invalid-code-error</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_CA261943-402C-5026-8B62-A889885A6625">
+       <span class="category">Condition</span>
+       <span class="symbol">full-code-error</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_052552D2-FD2A-5F45-B6B7-A9A23CD0B2ED">
+       <span class="category">Condition</span>
+       <span class="symbol">short-code-error</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_6D920CB6-0C15-57BA-87FB-DAFDC63D2E7E">
+       <span class="category">Class</span>
+       <span class="symbol">code-area</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_5AFD409B-C1CD-505C-82AE-03DC3246C0DA">
+       <span class="category">Generic Function</span>
+       <span class="symbol">south-west-corner</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_C15238E7-E941-536E-84D1-480BA6302773">
+       <span class="category">Method</span>
+       <span class="symbol">south-west-corner</span>
+       
+       <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_74F95BA0-3A23-5BEC-B784-BCEE711BF50A">
+       <span class="category">Generic Function</span>
+       <span class="symbol">north-east-corner</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_29C912C5-D6F8-5776-B0B2-EA06DFB8255E">
+       <span class="category">Method</span>
+       <span class="symbol">north-east-corner</span>
+       
+       <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_660EB027-DEB6-5110-817B-B83FEBA27D54">
+       <span class="category">Generic Function</span>
+       <span class="symbol">center</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_C3A2627A-8AD1-5979-A819-9390913E6F90">
+       <span class="category">Method</span>
+       <span class="symbol">center</span>
+       
+       <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_AA238196-22F4-50A2-B8BD-1D61CEA56A50">
+       <span class="category">Generic Function</span>
+       <span class="symbol">precision</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_7A89EFF4-7D67-5F15-AA48-FD3B38648EE5">
+       <span class="category">Method</span>
+       <span class="symbol">precision</span>
+       
+       <span class="method-specializers">(<span class='method-specializer'>integer</span>)</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_53C1FE0E-4207-51E5-933F-A411AD475E7A">
+       <span class="category">Method</span>
+       <span class="symbol">precision</span>
+       
+       <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_40DDA98B-B79A-5456-AEA6-0668E381CBA2">
+       <span class="category">Generic Function</span>
+       <span class="symbol">code-length</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_24B2C625-5729-5D35-9E11-940FDEFB66C3">
+       <span class="category">Method</span>
+       <span class="symbol">code-length</span>
+       
+       <span class="method-specializers">(<span class='method-specializer'>integer</span>)</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_73056A88-A5E1-5297-B6BA-A90F0A5BB1CB">
+       <span class="category">Method</span>
+       <span class="symbol">code-length</span>
+       
+       <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_4CA468C5-38DB-5A52-B17B-C23F3B8D8DC1">
+       <span class="category">Generic Function</span>
+       <span class="symbol">separator-position</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_E8568D70-BFEE-5A13-8490-8C84775DC6CD">
+       <span class="category">Method</span>
+       <span class="symbol">separator-position</span>
+       
+       <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_9EB7A90A-E701-55BB-AA88-48EDD34A77D4">
+       <span class="category">Generic Function</span>
+       <span class="symbol">pad-characters</span>
+       
+      </a>
+     </li>
+     
+     <li>
+      <a href="#_406DD666-4F12-5E5B-895C-84FD52D80914">
+       <span class="category">Method</span>
+       <span class="symbol">pad-characters</span>
+       
+       <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
+       
+      </a>
+     </li>
+     
+    </ul>
+   </div>
+  </div>
+  
+
+  
+  <div class="dictionary">
+   
+   <div class="definition" id="_CB04F6CC-C97A-5A5E-9983-89B2B0FD7CFE">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">validp</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>code</span>)</span></td>
+	<td class="category"><span class="category">Function</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>True if an object is a valid sequence of Open Location Code characters.
 
 Argument CODE is an object of any type.
 
-Value is ‘:full’ or ‘:short’ if CODE is a valid full or short Open
+Value is &#x2018;:full&#x2019; or &#x2018;:short&#x2019; if CODE is a valid full or short Open
 Location Code respectively.  Otherwise, value is null.</pre>
-</div>
-</div>
-<div class="defun">
-<div class="defunsignatures">
-<a id="_g1152">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-fullp&nbsp;</td>
-<td class="lambda-list">
-code</td>
-<td class="symbol-type">
-&nbsp;[Function]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-True if an object is a valid full Open Location Code.
+    </div>
+   </div>
+   
+   <div class="definition" id="_3E6D2C07-FE03-57D9-88E7-4327773AAFB6">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">fullp</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>code</span>)</span></td>
+	<td class="category"><span class="category">Function</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>True if an object is a valid full Open Location Code.
 
 Argument CODE is an object of any type.
 
 Value is true if CODE is a valid full Open Location Code.
 Otherwise, value is null.</pre>
-</div>
-</div>
-<div class="defun">
-<div class="defunsignatures">
-<a id="_g1153">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-shortp&nbsp;</td>
-<td class="lambda-list">
-code</td>
-<td class="symbol-type">
-&nbsp;[Function]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-True if an object is a valid short Open Location Code.
+    </div>
+   </div>
+   
+   <div class="definition" id="_48512CB6-B889-5999-8E19-4689D33D12A1">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">shortp</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>code</span>)</span></td>
+	<td class="category"><span class="category">Function</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>True if an object is a valid short Open Location Code.
 
 Argument CODE is an object of any type.
 
 Value is true if CODE is a valid full Open Location Code.
 Otherwise, value is null.</pre>
-</div>
-</div>
-<div class="defun">
-<div class="defunsignatures">
-<a id="_g1154">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-encode&nbsp;</td>
-<td class="lambda-list">
-latitude longitude <em>&amp;optional</em> (precision 5)</td>
-<td class="symbol-type">
-&nbsp;[Function]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-Encode a location into an Open Location Code.
+    </div>
+   </div>
+   
+   <div class="definition" id="_1C1D5C66-F8F7-5C6B-BD97-B6886F4B09C2">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">encode</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>latitude</span> <span class='parameter'>longitude</span> <span class='lambda-list-keyword'>&amp;optional</span> (<span class='parameter'>precision</span> 5))</span></td>
+	<td class="category"><span class="category">Function</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Encode a location into an Open Location Code.
 
 First argument LATITUDE and second argument LONGITUDE denote the
  location in degree angle.  The latitude is clipped to the closed
@@ -749,74 +441,64 @@ is depicted in the following table.
       10      |     15      |       0.0135  |       0.00444
 
 The code length is equal to the number of Open Location Code digits.
-Pad characters and the separator character ‘+’ are not part of the
+Pad characters and the separator character &#x2018;+&#x2019; are not part of the
 code length.  The code area dimensions are calculated with a mean
 earth radius of 6356766 m for a code area at the equator.</pre>
-</div>
-</div>
-<div class="defun">
-<div class="defunsignatures">
-<a id="_g1155">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-decode&nbsp;</td>
-<td class="lambda-list">
-code</td>
-<td class="symbol-type">
-&nbsp;[Function]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-Decode an Open Location Code.
+    </div>
+   </div>
+   
+   <div class="definition" id="_91BFAF69-2746-5E83-B8EF-80E48EA8BADA">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">decode</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>code</span>)</span></td>
+	<td class="category"><span class="category">Function</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Decode an Open Location Code.
 
 Argument CODE is an Open Location Code (a string).
 
-Primary value is a ‘code-area’ object.  Secondary value is ‘:full’ or
-‘:short’ if CODE is a full or short Open Location Code respectively.
+Primary value is a &#x2018;code-area&#x2019; object.  Secondary value is &#x2018;:full&#x2019; or
+&#x2018;:short&#x2019; if CODE is a full or short Open Location Code respectively.
 If CODE is a full Open Location Code the code area denotes absolute
 coordinates.  Otherwise, the code area denotes relative coordinates,
 i.e. offset values in the enclosing block.
 
-Signal an ‘invalid-code-error’ if CODE is not a valid Open Location
+Signal an &#x2018;invalid-code-error&#x2019; if CODE is not a valid Open Location
 Code.</pre>
-</div>
-</div>
-<div class="defun">
-<div class="defunsignatures">
-<a id="_g1156">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-shorten&nbsp;</td>
-<td class="lambda-list">
-code latitude longitude</td>
-<td class="symbol-type">
-&nbsp;[Function]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-Remove four, six, or eight digits from the front of a full Open
+    </div>
+   </div>
+   
+   <div class="definition" id="_B86BC056-2EB9-568C-B513-C44A5C4622A6">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">shorten</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>code</span> <span class='parameter'>latitude</span> <span class='parameter'>longitude</span>)</span></td>
+	<td class="category"><span class="category">Function</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Remove four, six, or eight digits from the front of a full Open
 Location Code given a reference location.
 
 First argument CODE is a full Open Location Code (a string).
@@ -828,34 +510,29 @@ Second argument LATITUDE and third argument LONGITUDE denote the
 Value is the short code, or the original full code if the reference
 location is too far.
 
-Signal a ‘full-code-error’ if CODE is not a full Open Location Code.</pre>
-</div>
-</div>
-<div class="defun">
-<div class="defunsignatures">
-<a id="_g1157">
-</a>
-<table cellpadding="0" cellspacing="0" width="100%">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tbody>
-<tr>
-<td class="symbol-name">
-recover&nbsp;</td>
-<td class="lambda-list">
-code latitude longitude</td>
-<td class="symbol-type">
-&nbsp;[Function]</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="doc-body">
-<pre>
-Recover a full Open Location Code from a short code
+Signal a &#x2018;full-code-error&#x2019; if CODE is not a full Open Location Code.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_87458B04-A68B-5FD6-9165-54638C5500F6">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">recover</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>code</span> <span class='parameter'>latitude</span> <span class='parameter'>longitude</span>)</span></td>
+	<td class="category"><span class="category">Function</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Recover a full Open Location Code from a short code
 and a reference location.
 
 First argument CODE is a short Open Location Code (a string).
@@ -866,33 +543,502 @@ Second argument LATITUDE and third argument LONGITUDE denote the
 
 Value is the recovered full code.
 
-Signal a ‘short-code-error’ if CODE is not a short Open Location
+Signal a &#x2018;short-code-error&#x2019; if CODE is not a short Open Location
 Code.</pre>
-</div>
-</div>
-</div>
-<div id="navbar">
-<table class="navbar">
-<colgroup span="3">
-<col width="0*"/>
-<col width="1*"/>
-<col width="0*"/>
-</colgroup>
-<tr>
-<td class="prev">
-&nbsp;</td>
-<td class="home">
-<a href="index.html">
-index</a>
-</td>
-<td class="next">
-&nbsp;</td>
-</tr>
-</table>
-</div>
-<div class="cludg-footer">
-Generated by&nbsp;<a href="http://common-lisp.net/project/cldoc/index.html">
-CLDOC</a>
-</div>
-</body>
+    </div>
+   </div>
+   
+   <div class="definition" id="_81481A12-D642-585A-9ED7-742D24102CBF">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">code-error</span></a></td>
+	<td class="lambda-list"><span class="lambda-list"></span></td>
+	<td class="category"><span class="category">Condition</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Base class for all Open Location Code errors.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_149AF73C-9214-5686-BFA7-40DC49D490A2">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">code-length-error</span></a></td>
+	<td class="lambda-list"><span class="lambda-list"></span></td>
+	<td class="category"><span class="category">Condition</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Condition for an invalid Open Location Code length.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_363C3F90-F820-553C-B00F-368E1F6D2D95">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">invalid-code-error</span></a></td>
+	<td class="lambda-list"><span class="lambda-list"></span></td>
+	<td class="category"><span class="category">Condition</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Condition for an invalid Open Location Code.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_CA261943-402C-5026-8B62-A889885A6625">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">full-code-error</span></a></td>
+	<td class="lambda-list"><span class="lambda-list"></span></td>
+	<td class="category"><span class="category">Condition</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Condition for an invalid full Open Location Code.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_052552D2-FD2A-5F45-B6B7-A9A23CD0B2ED">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">short-code-error</span></a></td>
+	<td class="lambda-list"><span class="lambda-list"></span></td>
+	<td class="category"><span class="category">Condition</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Condition for an invalid short Open Location Code.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_6D920CB6-0C15-57BA-87FB-DAFDC63D2E7E">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">code-area</span></a></td>
+	<td class="lambda-list"><span class="lambda-list"></span></td>
+	<td class="category"><span class="category">Class</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Area covered by an Open Location Code.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_5AFD409B-C1CD-505C-82AE-03DC3246C0DA">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">south-west-corner</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>object</span>)</span></td>
+	<td class="category"><span class="category">Generic Function</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Return the lower latitude and longitude as multiple values.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_C15238E7-E941-536E-84D1-480BA6302773">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">south-west-corner</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">((<span class='parameter'>object</span> code-area))</span></td>
+	<td class="category"><span class="category">Method</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Return the lower latitude and longitude as multiple values.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_74F95BA0-3A23-5BEC-B784-BCEE711BF50A">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">north-east-corner</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>object</span>)</span></td>
+	<td class="category"><span class="category">Generic Function</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Return the upper latitude and longitude as multiple values.
+The upper bounds are not included in the code area except for
+the north pole.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_29C912C5-D6F8-5776-B0B2-EA06DFB8255E">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">north-east-corner</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">((<span class='parameter'>object</span> code-area))</span></td>
+	<td class="category"><span class="category">Method</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Return the upper latitude and longitude as multiple values.
+The upper bounds are not included in the code area except for
+the north pole.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_660EB027-DEB6-5110-817B-B83FEBA27D54">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">center</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>object</span>)</span></td>
+	<td class="category"><span class="category">Generic Function</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Return the center latitude and longitude as multiple values.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_C3A2627A-8AD1-5979-A819-9390913E6F90">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">center</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">((<span class='parameter'>object</span> code-area))</span></td>
+	<td class="category"><span class="category">Method</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Return the center latitude and longitude as multiple values.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_AA238196-22F4-50A2-B8BD-1D61CEA56A50">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">precision</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>object</span>)</span></td>
+	<td class="category"><span class="category">Generic Function</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Return the Open Location Code precision.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_7A89EFF4-7D67-5F15-AA48-FD3B38648EE5">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">precision</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">((<span class='parameter'>length</span> integer))</span></td>
+	<td class="category"><span class="category">Method</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Return the precision as a function of the code length.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_53C1FE0E-4207-51E5-933F-A411AD475E7A">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">precision</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">((<span class='parameter'>object</span> code-area))</span></td>
+	<td class="category"><span class="category">Method</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Return the precision of the original code.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_40DDA98B-B79A-5456-AEA6-0668E381CBA2">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">code-length</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>object</span>)</span></td>
+	<td class="category"><span class="category">Generic Function</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Return the Open Location Code length.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_24B2C625-5729-5D35-9E11-940FDEFB66C3">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">code-length</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">((<span class='parameter'>precision</span> integer))</span></td>
+	<td class="category"><span class="category">Method</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Return the code length as a function of the precision.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_73056A88-A5E1-5297-B6BA-A90F0A5BB1CB">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">code-length</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">((<span class='parameter'>object</span> code-area))</span></td>
+	<td class="category"><span class="category">Method</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Return the code length of the original code.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_4CA468C5-38DB-5A52-B17B-C23F3B8D8DC1">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">separator-position</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>object</span>)</span></td>
+	<td class="category"><span class="category">Generic Function</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Return the position of the separator character.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_E8568D70-BFEE-5A13-8490-8C84775DC6CD">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">separator-position</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">((<span class='parameter'>object</span> code-area))</span></td>
+	<td class="category"><span class="category">Method</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Return the position of the separator character in the original code.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_9EB7A90A-E701-55BB-AA88-48EDD34A77D4">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">pad-characters</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>object</span>)</span></td>
+	<td class="category"><span class="category">Generic Function</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Return the number of pad characters.</pre>
+    </div>
+   </div>
+   
+   <div class="definition" id="_406DD666-4F12-5E5B-895C-84FD52D80914">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">pad-characters</span></a></td>
+	<td class="lambda-list"><span class="lambda-list">((<span class='parameter'>object</span> code-area))</span></td>
+	<td class="category"><span class="category">Method</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Return the number of pad characters in the original code.</pre>
+    </div>
+   </div>
+   
+  </div>
+  
+
+  
+ </body>
 </html>
