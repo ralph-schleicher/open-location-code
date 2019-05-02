@@ -675,7 +675,10 @@ Code."
     (unless valid
       (error 'invalid-code-error :datum code))
     (if (eq valid :full)
-	code
+	;; A recovered code contains only uppercase letters.
+	(if (some #'lower-case-p code)
+	    (string-upcase code)
+	  code)
       (let (pad prec lat lon ref-lat ref-lon height width)
 	;; Number of digits to recover and the corresponding precision.
 	(setf pad (- 8 (separator-position area))
