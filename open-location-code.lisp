@@ -440,7 +440,9 @@ Open Location Code respectively.  Otherwise, all values are null."
 	    (finally
 	     (when (and plus
 			;; There must be an even number of pad characters.
-			(evenp pad)
+			(or (zerop pad)
+			    (and (evenp pad)
+				 (= plus 8)))
 			;; Code length has to be at least two.
 			(>= length 2)
 			;; Code length is either less than or equal
