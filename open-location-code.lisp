@@ -412,7 +412,11 @@ Open Location Code respectively.  Otherwise, all values are null."
 		     (leave))
 		   ;; Update code area.
 		   (when (not (null area))
-		     (cond ((> prec 5)
+		     (cond ((> prec +maximum-precision+)
+			    ;; No further refinement but continue
+			    ;; parsing CODE.
+			    t)
+			   ((> prec 5)
 			    (multiple-value-setq (height width)
 			      (area-size prec))
 			    ;; Map VALUE to row and column.
