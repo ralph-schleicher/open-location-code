@@ -33,287 +33,206 @@
   </style>
  </head>
  <body>
-  
   <div class="title">
    <h1>OPEN-LOCATION-CODE</h1>
   </div>
-  
-
-  
-
-  
   <div class="prologue">
    <pre>Open Location Code is a location encoding system for addresses,
 independent of street names and building numbers.
 
 See &lt;https://plus.codes&gt;.</pre>
   </div>
-  
-
-  
   <div class="contents" id="contents">
    <h2>Contents</h2>
    <div class="contents-listing">
     <ul>
-     
      <li>
       <a href="#_CB04F6CC-C97A-5A5E-9983-89B2B0FD7CFE">
        <span class="category">Function</span>
        <span class="symbol">validp</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_3E6D2C07-FE03-57D9-88E7-4327773AAFB6">
        <span class="category">Function</span>
        <span class="symbol">fullp</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_48512CB6-B889-5999-8E19-4689D33D12A1">
        <span class="category">Function</span>
        <span class="symbol">shortp</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_1C1D5C66-F8F7-5C6B-BD97-B6886F4B09C2">
        <span class="category">Function</span>
        <span class="symbol">encode</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_91BFAF69-2746-5E83-B8EF-80E48EA8BADA">
        <span class="category">Function</span>
        <span class="symbol">decode</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_B86BC056-2EB9-568C-B513-C44A5C4622A6">
        <span class="category">Function</span>
        <span class="symbol">shorten</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_87458B04-A68B-5FD6-9165-54638C5500F6">
        <span class="category">Function</span>
        <span class="symbol">recover</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_81481A12-D642-585A-9ED7-742D24102CBF">
        <span class="category">Condition</span>
        <span class="symbol">code-error</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_149AF73C-9214-5686-BFA7-40DC49D490A2">
        <span class="category">Condition</span>
        <span class="symbol">code-length-error</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_363C3F90-F820-553C-B00F-368E1F6D2D95">
        <span class="category">Condition</span>
        <span class="symbol">invalid-code-error</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_CA261943-402C-5026-8B62-A889885A6625">
        <span class="category">Condition</span>
        <span class="symbol">full-code-error</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_052552D2-FD2A-5F45-B6B7-A9A23CD0B2ED">
        <span class="category">Condition</span>
        <span class="symbol">short-code-error</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_6D920CB6-0C15-57BA-87FB-DAFDC63D2E7E">
        <span class="category">Class</span>
        <span class="symbol">code-area</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_5AFD409B-C1CD-505C-82AE-03DC3246C0DA">
        <span class="category">Generic Function</span>
        <span class="symbol">south-west-corner</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_C15238E7-E941-536E-84D1-480BA6302773">
        <span class="category">Method</span>
        <span class="symbol">south-west-corner</span>
-       
        <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_74F95BA0-3A23-5BEC-B784-BCEE711BF50A">
        <span class="category">Generic Function</span>
        <span class="symbol">north-east-corner</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_29C912C5-D6F8-5776-B0B2-EA06DFB8255E">
        <span class="category">Method</span>
        <span class="symbol">north-east-corner</span>
-       
        <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_660EB027-DEB6-5110-817B-B83FEBA27D54">
        <span class="category">Generic Function</span>
        <span class="symbol">center</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_C3A2627A-8AD1-5979-A819-9390913E6F90">
        <span class="category">Method</span>
        <span class="symbol">center</span>
-       
        <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_AA238196-22F4-50A2-B8BD-1D61CEA56A50">
        <span class="category">Generic Function</span>
        <span class="symbol">precision</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_7A89EFF4-7D67-5F15-AA48-FD3B38648EE5">
        <span class="category">Method</span>
        <span class="symbol">precision</span>
-       
        <span class="method-specializers">(<span class='method-specializer'>integer</span>)</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_53C1FE0E-4207-51E5-933F-A411AD475E7A">
        <span class="category">Method</span>
        <span class="symbol">precision</span>
-       
        <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_40DDA98B-B79A-5456-AEA6-0668E381CBA2">
        <span class="category">Generic Function</span>
        <span class="symbol">code-length</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_24B2C625-5729-5D35-9E11-940FDEFB66C3">
        <span class="category">Method</span>
        <span class="symbol">code-length</span>
-       
        <span class="method-specializers">(<span class='method-specializer'>integer</span>)</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_73056A88-A5E1-5297-B6BA-A90F0A5BB1CB">
        <span class="category">Method</span>
        <span class="symbol">code-length</span>
-       
        <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_4CA468C5-38DB-5A52-B17B-C23F3B8D8DC1">
        <span class="category">Generic Function</span>
        <span class="symbol">separator-position</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_E8568D70-BFEE-5A13-8490-8C84775DC6CD">
        <span class="category">Method</span>
        <span class="symbol">separator-position</span>
-       
        <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_9EB7A90A-E701-55BB-AA88-48EDD34A77D4">
        <span class="category">Generic Function</span>
        <span class="symbol">pad-characters</span>
-       
       </a>
      </li>
-     
      <li>
       <a href="#_406DD666-4F12-5E5B-895C-84FD52D80914">
        <span class="category">Method</span>
        <span class="symbol">pad-characters</span>
-       
        <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
-       
       </a>
      </li>
-     
     </ul>
    </div>
   </div>
-  
-
-  
   <div class="dictionary">
-   
    <div class="definition" id="_CB04F6CC-C97A-5A5E-9983-89B2B0FD7CFE">
     <div class="signature">
      <table class="signature">
@@ -340,7 +259,6 @@ Value is &#x2018;:full&#x2019; or &#x2018;:short&#x2019; if CODE is a valid full
 Location Code respectively.  Otherwise, value is null.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_3E6D2C07-FE03-57D9-88E7-4327773AAFB6">
     <div class="signature">
      <table class="signature">
@@ -367,7 +285,6 @@ Value is true if CODE is a valid full Open Location Code.
 Otherwise, value is null.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_48512CB6-B889-5999-8E19-4689D33D12A1">
     <div class="signature">
      <table class="signature">
@@ -394,7 +311,6 @@ Value is true if CODE is a valid full Open Location Code.
 Otherwise, value is null.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_1C1D5C66-F8F7-5C6B-BD97-B6886F4B09C2">
     <div class="signature">
      <table class="signature">
@@ -446,7 +362,6 @@ code length.  The code area dimensions are calculated with a mean
 earth radius of 6356766 m for a code area at the equator.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_91BFAF69-2746-5E83-B8EF-80E48EA8BADA">
     <div class="signature">
      <table class="signature">
@@ -479,7 +394,6 @@ Signal an &#x2018;invalid-code-error&#x2019; if CODE is not a valid Open Locatio
 Code.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_B86BC056-2EB9-568C-B513-C44A5C4622A6">
     <div class="signature">
      <table class="signature">
@@ -513,7 +427,6 @@ location is too far.
 Signal a &#x2018;full-code-error&#x2019; if CODE is not a full Open Location Code.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_87458B04-A68B-5FD6-9165-54638C5500F6">
     <div class="signature">
      <table class="signature">
@@ -548,7 +461,6 @@ Signal an &#x2018;invalid-code-error&#x2019; if CODE is not an Open Location
 Code.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_81481A12-D642-585A-9ED7-742D24102CBF">
     <div class="signature">
      <table class="signature">
@@ -570,7 +482,6 @@ Code.</pre>
      <pre>Base class for all Open Location Code errors.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_149AF73C-9214-5686-BFA7-40DC49D490A2">
     <div class="signature">
      <table class="signature">
@@ -592,7 +503,6 @@ Code.</pre>
      <pre>Condition for an invalid Open Location Code length.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_363C3F90-F820-553C-B00F-368E1F6D2D95">
     <div class="signature">
      <table class="signature">
@@ -614,7 +524,6 @@ Code.</pre>
      <pre>Condition for an invalid Open Location Code.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_CA261943-402C-5026-8B62-A889885A6625">
     <div class="signature">
      <table class="signature">
@@ -636,7 +545,6 @@ Code.</pre>
      <pre>Condition for an invalid full Open Location Code.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_052552D2-FD2A-5F45-B6B7-A9A23CD0B2ED">
     <div class="signature">
      <table class="signature">
@@ -658,7 +566,6 @@ Code.</pre>
      <pre>Condition for an invalid short Open Location Code.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_6D920CB6-0C15-57BA-87FB-DAFDC63D2E7E">
     <div class="signature">
      <table class="signature">
@@ -680,7 +587,6 @@ Code.</pre>
      <pre>Area covered by an Open Location Code.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_5AFD409B-C1CD-505C-82AE-03DC3246C0DA">
     <div class="signature">
      <table class="signature">
@@ -702,7 +608,6 @@ Code.</pre>
      <pre>Return the lower latitude and longitude as multiple values.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_C15238E7-E941-536E-84D1-480BA6302773">
     <div class="signature">
      <table class="signature">
@@ -724,7 +629,6 @@ Code.</pre>
      <pre>Return the lower latitude and longitude as multiple values.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_74F95BA0-3A23-5BEC-B784-BCEE711BF50A">
     <div class="signature">
      <table class="signature">
@@ -748,7 +652,6 @@ The upper bounds are not included in the code area except for
 the north pole.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_29C912C5-D6F8-5776-B0B2-EA06DFB8255E">
     <div class="signature">
      <table class="signature">
@@ -772,7 +675,6 @@ The upper bounds are not included in the code area except for
 the north pole.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_660EB027-DEB6-5110-817B-B83FEBA27D54">
     <div class="signature">
      <table class="signature">
@@ -794,7 +696,6 @@ the north pole.</pre>
      <pre>Return the center latitude and longitude as multiple values.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_C3A2627A-8AD1-5979-A819-9390913E6F90">
     <div class="signature">
      <table class="signature">
@@ -816,7 +717,6 @@ the north pole.</pre>
      <pre>Return the center latitude and longitude as multiple values.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_AA238196-22F4-50A2-B8BD-1D61CEA56A50">
     <div class="signature">
      <table class="signature">
@@ -838,7 +738,6 @@ the north pole.</pre>
      <pre>Return the Open Location Code precision.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_7A89EFF4-7D67-5F15-AA48-FD3B38648EE5">
     <div class="signature">
      <table class="signature">
@@ -860,7 +759,6 @@ the north pole.</pre>
      <pre>Return the precision as a function of the code length.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_53C1FE0E-4207-51E5-933F-A411AD475E7A">
     <div class="signature">
      <table class="signature">
@@ -882,7 +780,6 @@ the north pole.</pre>
      <pre>Return the precision of the original code.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_40DDA98B-B79A-5456-AEA6-0668E381CBA2">
     <div class="signature">
      <table class="signature">
@@ -904,7 +801,6 @@ the north pole.</pre>
      <pre>Return the Open Location Code length.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_24B2C625-5729-5D35-9E11-940FDEFB66C3">
     <div class="signature">
      <table class="signature">
@@ -926,7 +822,6 @@ the north pole.</pre>
      <pre>Return the code length as a function of the precision.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_73056A88-A5E1-5297-B6BA-A90F0A5BB1CB">
     <div class="signature">
      <table class="signature">
@@ -948,7 +843,6 @@ the north pole.</pre>
      <pre>Return the code length of the original code.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_4CA468C5-38DB-5A52-B17B-C23F3B8D8DC1">
     <div class="signature">
      <table class="signature">
@@ -970,7 +864,6 @@ the north pole.</pre>
      <pre>Return the position of the separator character.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_E8568D70-BFEE-5A13-8490-8C84775DC6CD">
     <div class="signature">
      <table class="signature">
@@ -992,7 +885,6 @@ the north pole.</pre>
      <pre>Return the position of the separator character in the original code.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_9EB7A90A-E701-55BB-AA88-48EDD34A77D4">
     <div class="signature">
      <table class="signature">
@@ -1014,7 +906,6 @@ the north pole.</pre>
      <pre>Return the number of pad characters.</pre>
     </div>
    </div>
-   
    <div class="definition" id="_406DD666-4F12-5E5B-895C-84FD52D80914">
     <div class="signature">
      <table class="signature">
@@ -1036,10 +927,6 @@ the north pole.</pre>
      <pre>Return the number of pad characters in the original code.</pre>
     </div>
    </div>
-   
   </div>
-  
-
-  
  </body>
 </html>
