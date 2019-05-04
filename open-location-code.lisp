@@ -450,6 +450,9 @@ Open Location Code respectively.  Otherwise, all values are null."
 			;; Code is valid.
 			(setf valid (if (= plus 8) :full :short)))
 	       (when (not (null area))
+		 ;; Fix precision and corresponding code length.
+		 (setf prec (1- prec)
+		       length (length-from-precision prec))
 		 (setf object (make-instance 'code-area))
 		 (if (= plus 8)
 		     (setf (slot-value object 'south) (- south 90)
@@ -458,7 +461,7 @@ Open Location Code respectively.  Otherwise, all values are null."
 			 (slot-value object 'west) west))
 		 (setf (slot-value object 'height) height
 		       (slot-value object 'width) width
-		       (slot-value object 'precision) (1- prec)
+		       (slot-value object 'precision) prec
 		       (slot-value object 'length) length
 		       (slot-value object 'plus) plus
 		       (slot-value object 'pad) pad))
