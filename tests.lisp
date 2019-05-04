@@ -47,6 +47,11 @@
 
 (in-package :open-location-code-tests)
 
+(defun float-equal* (a b)
+  (if (or (floatp a) (floatp b))
+      (float-equal a b)
+    (= a b)))
+
 (defun fixme ()
   (error "Should not happen."))
 
@@ -64,7 +69,7 @@
 
 (defun number-from-string (string)
   (with-input-from-string (stream string)
-    (read-number:read-float stream t nil nil :float-format olc::+float-type+)))
+    (read-number:read-float stream t nil nil :float-format 'double-float)))
 
 (define-test length-from-precision
   (assert-true (olc:code-length  1)  2)
@@ -117,22 +122,25 @@
 		(t (fixme))))))
 
 ;; Test encoding and decoding codes.
-(defun encoding-test (code lat lon lat-low lon-low lat-high lon-high)
-  (let (area prec)
+(defun encoding-test (code len lat lon)
+  (let ((prec (olc:precision (or len (olc:decode code)))))
     (assert-true
-     (and (setf area (olc:decode code))
-	  (setf prec (olc:precision area))
-	  (string= code (olc:encode lat lon prec))
+     (string= (olc:encode lat lon prec) code))))
+
+(defun decoding-test (code len lat-low lon-low lat-high lon-high)
+  (let ((area (olc:decode code)))
+    (assert-true
+     (and (if len (= (olc:code-length area) len) t)
 	  (multiple-value-bind (south west)
 	      (olc:south-west-corner area)
-	    (and (float-equal lat-low south)
-		 (float-equal lon-low west)))
+	    (and (float-equal* lat-low south)
+		 (float-equal* lon-low west)))
 	  (multiple-value-bind (north east)
 	      (olc:north-east-corner area)
-	    (and (float-equal lat-high north)
-		 (float-equal lon-high east)))))))
+	    (and (float-equal* lat-high north)
+		 (float-equal* lon-high east)))))))
 
-(define-test encoding-tests
+(define-test legacy-encoding-tests
   (with-open-file (stream "t/encodingTests.csv")
     (iter (for row :in (cl-csv:read-csv stream))
 	  (for columns = (length row))
@@ -143,12 +151,50 @@
 		((= columns 7)
 		 (encoding-test
 		  (first row)
+		  nil
 		  (number-from-string (second row))
-		  (number-from-string (third row))
+		  (number-from-string (third row)))
+		 (decoding-test
+		  (first row)
+		  nil
 		  (number-from-string (fourth row))
 		  (number-from-string (fifth row))
 		  (number-from-string (sixth row))
 		  (number-from-string (seventh row))))
+		(t (fixme))))))
+
+(define-test encoding-tests
+  (with-open-file (stream "t/encoding.csv")
+    (iter (for row :in (cl-csv:read-csv stream))
+	  (for columns = (length row))
+	  (cond ((zerop columns)
+		 (next-iteration))
+		((char= (aref (first row) 0) #\#)
+		 (next-iteration))
+		((= columns 4)
+		 (encoding-test
+		  (fourth row)
+		  (number-from-string (third row))
+		  (number-from-string (first row))
+		  (number-from-string (second row))))
+		(t (fixme))))))
+
+(define-test decoding-tests
+  (with-open-file (stream "t/decoding.csv")
+    (iter (for row :in (cl-csv:read-csv stream))
+	  (for columns = (length row))
+	  (cond ((zerop columns)
+		 (next-iteration))
+		((char= (aref (first row) 0) #\#)
+		 (next-iteration))
+		((= columns 6)
+		 (decoding-test
+		  (first row)
+		  (number-from-string (second row))
+		  (number-from-string (third row))
+		  (number-from-string (fourth row))
+		  (number-from-string (fifth row))
+		  (number-from-string (sixth row))))
 		(t (fixme))))))
 
 ;; Test shortening and extending codes.
