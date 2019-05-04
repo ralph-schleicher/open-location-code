@@ -140,29 +140,6 @@
 	    (and (float-equal* lat-high north)
 		 (float-equal* lon-high east)))))))
 
-(define-test legacy-encoding-tests
-  (with-open-file (stream "t/encodingTests.csv")
-    (iter (for row :in (cl-csv:read-csv stream))
-	  (for columns = (length row))
-	  (cond ((zerop columns)
-		 (next-iteration))
-		((char= (aref (first row) 0) #\#)
-		 (next-iteration))
-		((= columns 7)
-		 (encoding-test
-		  (first row)
-		  nil
-		  (number-from-string (second row))
-		  (number-from-string (third row)))
-		 (decoding-test
-		  (first row)
-		  nil
-		  (number-from-string (fourth row))
-		  (number-from-string (fifth row))
-		  (number-from-string (sixth row))
-		  (number-from-string (seventh row))))
-		(t (fixme))))))
-
 (define-test encoding-tests
   (with-open-file (stream "t/encoding.csv")
     (iter (for row :in (cl-csv:read-csv stream))
