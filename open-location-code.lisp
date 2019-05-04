@@ -193,10 +193,6 @@ Argument PRECISION is the number of discretization steps."
   (values (svref +area-height+ precision)
 	  (svref +area-width+ precision)))
 
-(defsubst fix (number divisor)
-  "Round NUMBER to the nearest multiple of DIVISOR."
-  (* (round number divisor) divisor))
-
 (export 'code-area)
 (defclass code-area ()
   ((south
@@ -456,10 +452,10 @@ Open Location Code respectively.  Otherwise, all values are null."
 	       (when (not (null area))
 		 (setf object (make-instance 'code-area))
 		 (if (= plus 8)
-		     (setf (slot-value object 'south) (fix (- south 90) height)
-			   (slot-value object 'west) (fix (- west 180) width))
-		   (setf (slot-value object 'south) (fix south height)
-			 (slot-value object 'west) (fix west width)))
+		     (setf (slot-value object 'south) (- south 90)
+			   (slot-value object 'west) (- west 180))
+		   (setf (slot-value object 'south) south
+			 (slot-value object 'west) west))
 		 (setf (slot-value object 'height) height
 		       (slot-value object 'width) width
 		       (slot-value object 'precision) (1- prec)
