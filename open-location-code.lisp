@@ -65,16 +65,6 @@ for inline expansion by the compiler."
      (defun ,name ,arg-list
        ,@body)))
 
-(defconst +float-type+ 'double-float
-  "Data type for floating-point numbers.")
-
-(deftype float-type (&rest spec)
-  "Type specifier for floating-point numbers."
-  `(,+float-type+ ,@spec))
-
-(defconst f0 (coerce 0 +float-type+)
-  "Floating-point zero.")
-
 (export 'code-error)
 (define-condition code-error (type-error)
   ()
@@ -183,7 +173,7 @@ Value is the digit, i.e. encoding character."
 (defconst +area-height+
   (iter (with height = 400)
 	(for prec :from 0 :to +maximum-precision+)
-	(collect (coerce height +float-type+) :result-type 'vector)
+	(collect height :result-type 'vector)
 	(setf height (/ height (if (< prec 5) +block-divisor+ +grid-rows+))))
   "Vector of code area heights in descending order.
 Element position is the precision of the code area.")
@@ -191,7 +181,7 @@ Element position is the precision of the code area.")
 (defconst +area-width+
   (iter (with width = 400)
 	(for prec :from 0 :to +maximum-precision+)
-	(collect (coerce width +float-type+) :result-type 'vector)
+	(collect width :result-type 'vector)
 	(setf width (/ width (if (< prec 5) +block-divisor+ +grid-columns+))))
   "Vector of code area widths in descending order.
 Element position is the precision of the code area.")
@@ -210,20 +200,20 @@ Argument PRECISION is the number of discretization steps."
 (export 'code-area)
 (defclass code-area ()
   ((south
-    :initform f0
-    :type float-type
+    :initform 0
+    :type real
     :documentation "Lower latitude of the code area in degree angle.")
    (west
-    :initform f0
-    :type float-type
+    :initform 0
+    :type real
     :documentation "Lower longitude of the code area in degree angle.")
    (height
-    :initform f0
-    :type float-type
+    :initform 0
+    :type real
     :documentation "Height of the code area in degree angle.")
    (width
-    :initform f0
-    :type float-type
+    :initform 0
+    :type real
     :documentation "Width of the code area in degree angle.")
    (precision
     :initform 0
@@ -332,8 +322,8 @@ Third argument PRECISION is used to determine the height of
 Values are latitude, longitude, and the actual precision."
   (declare (type real latitude longitude)
 	   (type (integer 1) precision))
-  (let ((lat (coerce latitude +float-type+))
-	(lon (coerce longitude +float-type+))
+  (let ((lat (rationalize latitude))
+	(lon (rationalize longitude))
 	(prec (min precision +maximum-precision+)))
     ;; Clip the latitude to the closed interval [-90, 90].
     (setf lat (alexandria:clamp lat -90 90))
@@ -374,10 +364,10 @@ Primary value is ‘:full’ or ‘:short’ if CODE is a valid full or short
 Open Location Code respectively.  Otherwise, all values are null."
   (let (valid object)
     (when (stringp code)
-      (iter (with south = f0)
-	    (with west = f0)
-	    (with height = f0)
-	    (with width = f0)
+      (iter (with south = 0)
+	    (with west = 0)
+	    (with height = 0)
+	    (with width = 0)
 	    (with length = 0)
 	    (with plus)
 	    (with pad = 0)
@@ -550,8 +540,8 @@ earth radius of 6356766 m for a code area at the equator."
     ;; Do the encoding.
     (let ((code (make-string (+ 9 (if (> prec 4) 2 0) (max 0 (- prec 5))) :initial-element #\0)))
       (setf (aref code 8) #\+)
-      (let ((height f0)
-	    (width f0)
+      (let ((height 0)
+	    (width 0)
 	    (index 1)
 	    (pos 0))
 	(labels ((pair ()
@@ -652,7 +642,7 @@ Signal a ‘full-code-error’ if CODE is not a full Open Location Code."
 	    (for block-size = (area-size (/ pos 2)))
 	    ;; Factor 0.3 adds just an extra margin of safety;
 	    ;; theoretically half the block size is sufficient.
-	    (when (< distance (* block-size #.(coerce 3/10 +float-type+)))
+	    (when (< distance (* block-size 3/10))
 	      (return-from shorten (subseq code pos)))))
     ;; Return original full Open Location Code.
     code))
@@ -698,8 +688,8 @@ Code."
 	  (normalize-location* latitude longitude prec))
 	(multiple-value-setq (height width)
 	  (area-size prec))
-	(incf lat (* (ffloor ref-lat height) height))
-	(incf lon (* (ffloor ref-lon width) width))
+	(incf lat (* (floor ref-lat height) height))
+	(incf lon (* (floor ref-lon width) width))
 	;; Check if the recovered code area is too far from the
 	;; reference location.  If so, move it.
 	(let ((distance (- lat ref-lat))
