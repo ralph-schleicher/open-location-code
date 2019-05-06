@@ -130,7 +130,7 @@
 (defun decoding-test (code len lat-low lon-low lat-high lon-high)
   (let ((area (olc:decode code)))
     (assert-true
-     (and (if len (= (olc:code-length area) len) t)
+     (and (if len (= (olc:code-length (olc:precision area)) len) t)
 	  (multiple-value-bind (south west)
 	      (olc:south-west-corner area)
 	    (and (float-equal* lat-low south)
