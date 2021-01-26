@@ -39,6 +39,26 @@
   (:nicknames :olc)
   (:use :common-lisp
 	:iterate)
+  (:export #:validp
+	   #:fullp
+	   #:shortp
+	   #:encode
+	   #:decode
+	   #:shorten
+	   #:recover
+	   #:code-error
+	   #:code-length-error
+	   #:invalid-code-error
+	   #:full-code-error
+	   #:short-code-error
+	   #:code-area
+	   #:south-west-corner
+	   #:north-east-corner
+	   #:center
+	   #:precision
+	   #:code-length
+	   #:separator-position
+	   #:pad-characters)
   (:documentation
    "Open Location Code is a location encoding system for addresses,
 independent of street names and building numbers.
@@ -65,13 +85,11 @@ for inline expansion by the compiler."
      (defun ,name ,arg-list
        ,@body)))
 
-(export 'code-error)
 (define-condition code-error (type-error)
   ()
   (:documentation
    "Base class for all Open Location Code errors."))
 
-(export 'code-length-error)
 (define-condition code-length-error (code-error)
   ()
   (:documentation
@@ -82,7 +100,6 @@ for inline expansion by the compiler."
 	     "The value ‘~S’ is not a valid Open Location Code length."
 	     (type-error-datum condition)))))
 
-(export 'invalid-code-error)
 (define-condition invalid-code-error (code-error)
   ()
   (:documentation
@@ -93,7 +110,6 @@ for inline expansion by the compiler."
 	     "The value ‘~S’ is not a valid Open Location Code."
 	     (type-error-datum condition)))))
 
-(export 'full-code-error)
 (define-condition full-code-error (invalid-code-error)
   ()
   (:documentation
@@ -104,7 +120,6 @@ for inline expansion by the compiler."
 	     "The value ‘~S’ is not a full Open Location Code."
 	     (type-error-datum condition)))))
 
-(export 'short-code-error)
 (define-condition short-code-error (invalid-code-error)
   ()
   (:documentation
@@ -193,7 +208,6 @@ Argument PRECISION is the number of discretization steps."
   (values (svref +area-height+ precision)
 	  (svref +area-width+ precision)))
 
-(export 'code-area)
 (defclass code-area ()
   ((south
     :initform 0
@@ -234,7 +248,6 @@ Argument PRECISION is the number of discretization steps."
     :documentation "Number of pad characters in the original code."))
   (:documentation "Area covered by an Open Location Code."))
 
-(export 'south-west-corner)
 (defgeneric south-west-corner (object)
   (:documentation
    "Return the lower latitude and longitude as multiple values."))
@@ -243,7 +256,6 @@ Argument PRECISION is the number of discretization steps."
   (with-slots (south west) object
     (values south west)))
 
-(export 'north-east-corner)
 (defgeneric north-east-corner (object)
   (:documentation
    "Return the upper latitude and longitude as multiple values.
@@ -254,7 +266,6 @@ the north pole."))
   (with-slots (south west height width) object
     (values (+ south height) (+ west width))))
 
-(export 'center)
 (defgeneric center (object)
   (:documentation
    "Return the center latitude and longitude as multiple values."))
@@ -263,7 +274,6 @@ the north pole."))
   (with-slots (south west height width) object
     (values (+ south (/ height 2)) (+ west (/ width 2)))))
 
-(export 'precision)
 (defgeneric precision (object)
   (:documentation
    "Return the Open Location Code precision."))
@@ -277,7 +287,6 @@ the north pole."))
   (check-type length (integer 2))
   (precision-from-length length))
 
-(export 'code-length)
 (defgeneric code-length (object)
   (:documentation
    "Return the Open Location Code length."))
@@ -291,7 +300,6 @@ the north pole."))
   (check-type precision (integer 1))
   (length-from-precision precision))
 
-(export 'separator-position)
 (defgeneric separator-position (object)
   (:documentation
    "Return the position of the separator character."))
@@ -300,7 +308,6 @@ the north pole."))
   "Return the position of the separator character in the original code."
   (slot-value object 'plus))
 
-(export 'pad-characters)
 (defgeneric pad-characters (object)
   (:documentation
    "Return the number of pad characters."))
@@ -465,7 +472,6 @@ Open Location Code respectively.  Otherwise, all values are null."
 	       ))))
     (values valid object)))
 
-(export 'validp)
 (defun validp (code)
   "True if an object is a valid sequence of Open Location Code characters.
 
@@ -475,7 +481,6 @@ Value is ‘:full’ or ‘:short’ if CODE is a valid full or short Open
 Location Code respectively.  Otherwise, value is null."
   (nth-value 0 (analyse code)))
 
-(export 'fullp)
 (defun fullp (code)
   "True if an object is a valid full Open Location Code.
 
@@ -485,7 +490,6 @@ Value is true if CODE is a valid full Open Location Code.
 Otherwise, value is null."
   (eq (analyse code) :full))
 
-(export 'shortp)
 (defun shortp (code)
   "True if an object is a valid short Open Location Code.
 
@@ -495,7 +499,6 @@ Value is true if CODE is a valid full Open Location Code.
 Otherwise, value is null."
   (eq (analyse code) :short))
 
-(export 'encode)
 (defun encode (latitude longitude &optional (precision 5))
   "Encode a location into an Open Location Code.
 
@@ -580,7 +583,6 @@ earth radius of 6356766 m for a code area at the equator."
 		       (incf pos))))))))
       code)))
 
-(export 'decode)
 (defun decode (code)
   "Decode an Open Location Code.
 
@@ -601,7 +603,6 @@ Code."
       (error 'invalid-code-error :datum code))
     (values area valid)))
 
-(export 'shorten)
 (defun shorten (code latitude longitude)
   "Remove four, six, or eight digits from the front of a full Open
 Location Code given a reference location.
@@ -643,7 +644,6 @@ Signal a ‘full-code-error’ if CODE is not a full Open Location Code."
     ;; Return original full Open Location Code.
     code))
 
-(export 'recover)
 (defun recover (code latitude longitude)
   "Recover a full Open Location Code from a short code
 and a reference location.
