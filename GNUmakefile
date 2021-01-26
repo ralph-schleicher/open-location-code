@@ -34,7 +34,7 @@
 ## Code:
 
 PACKAGE = open-location-code
-VERSION = 2.1
+VERSION = 2.2
 
 ### Rules
 
