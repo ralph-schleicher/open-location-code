@@ -1,0 +1,207 @@
+OPEN-LOCATION-CODE
+
+Open Location Code is a location encoding system for addresses,
+independent of street names and building numbers.
+
+See <https://plus.codes>.
+
+                                                                      [Function]
+validp (code)
+   True if an object is a valid sequence of Open Location Code characters.
+   
+   Argument CODE is an object of any type.
+   
+   Value is ‘:full’ or ‘:short’ if CODE is a valid full or short Open
+   Location Code respectively.  Otherwise, value is null.
+
+                                                                      [Function]
+fullp (code)
+   True if an object is a valid full Open Location Code.
+   
+   Argument CODE is an object of any type.
+   
+   Value is true if CODE is a valid full Open Location Code.
+   Otherwise, value is null.
+
+                                                                      [Function]
+shortp (code)
+   True if an object is a valid short Open Location Code.
+   
+   Argument CODE is an object of any type.
+   
+   Value is true if CODE is a valid full Open Location Code.
+   Otherwise, value is null.
+
+                                                                      [Function]
+encode (latitude longitude &optional (precision 5))
+   Encode a location into an Open Location Code.
+   
+   First argument LATITUDE and second argument LONGITUDE denote the
+    location in degree angle.  The latitude is clipped to the closed
+    interval [-90, 90] and the longitude is normalized to the
+    half-closed interval [-180, 180).
+   Optional third argument PRECISION is the precision of the code.
+    Default is five, i.e. a code length of ten digits.
+   
+   Value is a full Open Location Code (a string).
+   
+   The relation between precision, code length, and code area size
+   is depicted in the following table.
+   
+      Precision  | Code Length |   Width / m   |  Height / m
+    -------------+-------------+---------------+---------------
+          1      |      2      | 2218929.9     | 2218929.9
+          2      |      4      |  110946.5     |  110946.5
+          3      |      6      |    5547.3     |    5547.3
+          4      |      8      |     277.4     |     277.4
+          5      |     10      |      13.9     |      13.9
+          6      |     11      |       3.47    |       2.77
+          7      |     12      |       0.867   |       0.555
+          8      |     13      |       0.217   |       0.111
+          9      |     14      |       0.0542  |       0.0222
+         10      |     15      |       0.0135  |       0.00444
+   
+   The code length is equal to the number of Open Location Code digits.
+   Pad characters and the separator character ‘+’ are not part of the
+   code length.  The code area dimensions are calculated with a mean
+   earth radius of 6356766 m for a code area at the equator.
+
+                                                                      [Function]
+decode (code)
+   Decode an Open Location Code.
+   
+   Argument CODE is an Open Location Code (a string).
+   
+   Primary value is a ‘code-area’ object.  Secondary value is ‘:full’ or
+   ‘:short’ if CODE is a full or short Open Location Code respectively.
+   If CODE is a full Open Location Code the code area denotes absolute
+   coordinates.  Otherwise, the code area denotes relative coordinates,
+   i.e. offset values in the enclosing block.
+   
+   Signal an ‘invalid-code-error’ if CODE is not a valid Open Location
+   Code.
+
+                                                                      [Function]
+shorten (code latitude longitude)
+   Remove four, six, or eight digits from the front of a full Open
+   Location Code given a reference location.
+   
+   First argument CODE is a full Open Location Code (a string).
+   Second argument LATITUDE and third argument LONGITUDE denote the
+    reference location in degree angle.  The latitude is clipped to
+    the closed interval [-90, 90] and the longitude is normalized to
+    the half-closed interval [-180, 180).
+   
+   Value is the short code, or the original full code if the reference
+   location is too far.
+   
+   Signal a ‘full-code-error’ if CODE is not a full Open Location Code.
+
+                                                                      [Function]
+recover (code latitude longitude)
+   Recover a full Open Location Code from a short code
+   and a reference location.
+   
+   First argument CODE is an Open Location Code (a string).
+   Second argument LATITUDE and third argument LONGITUDE denote the
+    reference location in degree angle.  The latitude is clipped to
+    the closed interval [-90, 90] and the longitude is normalized to
+    the half-closed interval [-180, 180).
+   
+   Value is the recovered full code.  If CODE is already a full code,
+   return CODE as is.
+   
+   Signal an ‘invalid-code-error’ if CODE is not an Open Location
+   Code.
+
+                                                                     [Condition]
+code-error
+   Base class for all Open Location Code errors.
+
+                                                                     [Condition]
+code-length-error
+   Condition for an invalid Open Location Code length.
+
+                                                                     [Condition]
+invalid-code-error
+   Condition for an invalid Open Location Code.
+
+                                                                     [Condition]
+full-code-error
+   Condition for an invalid full Open Location Code.
+
+                                                                     [Condition]
+short-code-error
+   Condition for an invalid short Open Location Code.
+
+                                                                         [Class]
+code-area
+   Area covered by an Open Location Code.
+
+                                                              [Generic Function]
+south-west-corner (object)
+   Return the lower latitude and longitude as multiple values.
+
+                                                                        [Method]
+south-west-corner ((object code-area))
+   Return the lower latitude and longitude as multiple values.
+
+                                                              [Generic Function]
+north-east-corner (object)
+   Return the upper latitude and longitude as multiple values.
+   The upper bounds are not included in the code area except for
+   the north pole.
+
+                                                                        [Method]
+north-east-corner ((object code-area))
+   Return the upper latitude and longitude as multiple values.
+   The upper bounds are not included in the code area except for
+   the north pole.
+
+                                                              [Generic Function]
+center (object)
+   Return the center latitude and longitude as multiple values.
+
+                                                                        [Method]
+center ((object code-area))
+   Return the center latitude and longitude as multiple values.
+
+                                                              [Generic Function]
+precision (object)
+   Return the Open Location Code precision.
+
+                                                                        [Method]
+precision ((length integer))
+   Return the precision as a function of the code length.
+
+                                                                        [Method]
+precision ((object code-area))
+   Return the precision of the original code.
+
+                                                              [Generic Function]
+code-length (object)
+   Return the Open Location Code length.
+
+                                                                        [Method]
+code-length ((precision integer))
+   Return the code length as a function of the precision.
+
+                                                                        [Method]
+code-length ((object code-area))
+   Return the code length of the original code.
+
+                                                              [Generic Function]
+separator-position (object)
+   Return the position of the separator character.
+
+                                                                        [Method]
+separator-position ((object code-area))
+   Return the position of the separator character in the original code.
+
+                                                              [Generic Function]
+pad-characters (object)
+   Return the number of pad characters.
+
+                                                                        [Method]
+pad-characters ((object code-area))
+   Return the number of pad characters in the original code.
