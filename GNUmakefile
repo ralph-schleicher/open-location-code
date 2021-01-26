@@ -48,6 +48,10 @@ VERSION = 2.1
 .PHONY: all
 all: $(PACKAGE).asd
 
+.PHONY: clean
+clean:
+	rm -f $(PACKAGE).asd
+
 .PHONY: check
 check: all
 	quicklisp-check-build -sbcl -ccl $(PACKAGE)
