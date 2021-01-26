@@ -334,6 +334,7 @@ Values are latitude, longitude, and the actual precision."
     (when (= lat 90)
       (multiple-value-bind (height width)
 	  (area-size precision)
+	(declare (ignore width))
 	(decf lat (/ height 2))))
     ;; Normalise the longitude to the half-closed interval [-180, 180).
     (setf lon (rem lon 360))
