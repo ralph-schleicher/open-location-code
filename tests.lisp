@@ -98,6 +98,7 @@
   (assert-true (olc:precision 16) 10))
 
 (defun validity-test (code valid short full)
+  (declare (ignore valid))
   (assert-true
    (eq (olc:validp code)
        (cond (short
