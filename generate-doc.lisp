@@ -38,31 +38,40 @@
 (ql:quickload :open-location-code)
 (ql:quickload :rs-doc) ;private
 
-(rs-doc:generate-doc
- :package :open-location-code
- :symbols '(olc:validp
-	    olc:fullp
-	    olc:shortp
-	    olc:encode
-	    olc:decode
-	    olc:shorten
-	    olc:recover
-	    olc:code-error
-	    olc:code-length-error
-	    olc:invalid-code-error
-	    olc:full-code-error
-	    olc:short-code-error
-	    olc:code-area
-	    olc:south-west-corner
-	    olc:north-east-corner
-	    olc:center
-	    olc:precision
-	    olc:code-length
-	    olc:separator-position
-	    olc:pad-characters)
- :output-format :html
- :output (make-pathname :directory '(:relative "doc")
-			:name "open-location-code"
-			:type "html"))
+(let ((symbols '(olc:validp
+		 olc:fullp
+		 olc:shortp
+		 olc:encode
+		 olc:decode
+		 olc:shorten
+		 olc:recover
+		 olc:code-error
+		 olc:code-length-error
+		 olc:invalid-code-error
+		 olc:full-code-error
+		 olc:short-code-error
+		 olc:code-area
+		 olc:south-west-corner
+		 olc:north-east-corner
+		 olc:center
+		 olc:precision
+		 olc:code-length
+		 olc:separator-position
+		 olc:pad-characters)))
+  (rs-doc:generate-doc
+   :package :open-location-code
+   :symbols symbols
+   :output-format :html
+   :output (make-pathname :directory '(:relative "doc")
+			  :name "open-location-code"
+			  :type "html"))
+  (rs-doc:generate-doc
+   :package :open-location-code
+   :symbols symbols
+   :output-format :text
+   :output (make-pathname :directory '(:relative "doc")
+			  :name "open-location-code"
+			  :type "txt"))
+  ())
 
 ;;; generate-doc.lisp ends here
