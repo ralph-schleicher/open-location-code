@@ -14,12 +14,15 @@
    div.prologue{padding:1em}
    div.epilogue{padding:1em}
    span.category{color:#212121;font-style:italic}
-   span.symbol{color:#212121;font-weight:700}
+   span.package,span.symbol{color:#212121;font-weight:700;white-space:nowrap}
    span.lambda-list{color:#616161}
-   span.lambda-list-keyword{color:#388E3C}
-   span.parameter{color:#212121;font-style:italic}
+   span.lambda-list-keyword{color:#388E3C;white-space:nowrap}
+   span.keyword{color:#212121;white-space:nowrap}
+   span.variable{color:#212121;font-style:italic;white-space:nowrap}
+   span.init-form{white-space:nowrap}
    span.method-specializers{color:#616161}
-   span.method-specializer{color:#212121}
+   span.method-specializer{color:#212121;white-space:nowrap}
+   span.method-qualifier{color:#212121;white-space:nowrap}
    div.contents{padding:1em}
    div.contents-listing{padding:1em}
    div.contents-listing ul{list-style-type:none}
@@ -47,193 +50,193 @@ See &lt;https://plus.codes&gt;.</pre>
    <div class="contents-listing">
     <ul>
      <li>
-      <a href="#_CB04F6CC-C97A-5A5E-9983-89B2B0FD7CFE">
+      <a href="#_cb04f6cc-c97a-5a5e-9983-89b2b0fd7cfe">
        <span class="category">Function</span>
        <span class="symbol">validp</span>
       </a>
      </li>
      <li>
-      <a href="#_3E6D2C07-FE03-57D9-88E7-4327773AAFB6">
+      <a href="#_3e6d2c07-fe03-57d9-88e7-4327773aafb6">
        <span class="category">Function</span>
        <span class="symbol">fullp</span>
       </a>
      </li>
      <li>
-      <a href="#_48512CB6-B889-5999-8E19-4689D33D12A1">
+      <a href="#_48512cb6-b889-5999-8e19-4689d33d12a1">
        <span class="category">Function</span>
        <span class="symbol">shortp</span>
       </a>
      </li>
      <li>
-      <a href="#_1C1D5C66-F8F7-5C6B-BD97-B6886F4B09C2">
+      <a href="#_1c1d5c66-f8f7-5c6b-bd97-b6886f4b09c2">
        <span class="category">Function</span>
        <span class="symbol">encode</span>
       </a>
      </li>
      <li>
-      <a href="#_91BFAF69-2746-5E83-B8EF-80E48EA8BADA">
+      <a href="#_91bfaf69-2746-5e83-b8ef-80e48ea8bada">
        <span class="category">Function</span>
        <span class="symbol">decode</span>
       </a>
      </li>
      <li>
-      <a href="#_B86BC056-2EB9-568C-B513-C44A5C4622A6">
+      <a href="#_b86bc056-2eb9-568c-b513-c44a5c4622a6">
        <span class="category">Function</span>
        <span class="symbol">shorten</span>
       </a>
      </li>
      <li>
-      <a href="#_87458B04-A68B-5FD6-9165-54638C5500F6">
+      <a href="#_87458b04-a68b-5fd6-9165-54638c5500f6">
        <span class="category">Function</span>
        <span class="symbol">recover</span>
       </a>
      </li>
      <li>
-      <a href="#_81481A12-D642-585A-9ED7-742D24102CBF">
+      <a href="#_81481a12-d642-585a-9ed7-742d24102cbf">
        <span class="category">Condition</span>
        <span class="symbol">code-error</span>
       </a>
      </li>
      <li>
-      <a href="#_149AF73C-9214-5686-BFA7-40DC49D490A2">
+      <a href="#_149af73c-9214-5686-bfa7-40dc49d490a2">
        <span class="category">Condition</span>
        <span class="symbol">code-length-error</span>
       </a>
      </li>
      <li>
-      <a href="#_363C3F90-F820-553C-B00F-368E1F6D2D95">
+      <a href="#_363c3f90-f820-553c-b00f-368e1f6d2d95">
        <span class="category">Condition</span>
        <span class="symbol">invalid-code-error</span>
       </a>
      </li>
      <li>
-      <a href="#_CA261943-402C-5026-8B62-A889885A6625">
+      <a href="#_ca261943-402c-5026-8b62-a889885a6625">
        <span class="category">Condition</span>
        <span class="symbol">full-code-error</span>
       </a>
      </li>
      <li>
-      <a href="#_052552D2-FD2A-5F45-B6B7-A9A23CD0B2ED">
+      <a href="#_052552d2-fd2a-5f45-b6b7-a9a23cd0b2ed">
        <span class="category">Condition</span>
        <span class="symbol">short-code-error</span>
       </a>
      </li>
      <li>
-      <a href="#_6D920CB6-0C15-57BA-87FB-DAFDC63D2E7E">
+      <a href="#_6d920cb6-0c15-57ba-87fb-dafdc63d2e7e">
        <span class="category">Class</span>
        <span class="symbol">code-area</span>
       </a>
      </li>
      <li>
-      <a href="#_5AFD409B-C1CD-505C-82AE-03DC3246C0DA">
+      <a href="#_5afd409b-c1cd-505c-82ae-03dc3246c0da">
        <span class="category">Generic Function</span>
        <span class="symbol">south-west-corner</span>
       </a>
      </li>
      <li>
-      <a href="#_C15238E7-E941-536E-84D1-480BA6302773">
+      <a href="#_edd1f67f-6fde-5380-bede-7030888fdd4f">
        <span class="category">Method</span>
        <span class="symbol">south-west-corner</span>
-       <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
+       <span class="method-specializers">(<span class="method-specializer">code-area</span>)</span>
       </a>
      </li>
      <li>
-      <a href="#_74F95BA0-3A23-5BEC-B784-BCEE711BF50A">
+      <a href="#_74f95ba0-3a23-5bec-b784-bcee711bf50a">
        <span class="category">Generic Function</span>
        <span class="symbol">north-east-corner</span>
       </a>
      </li>
      <li>
-      <a href="#_29C912C5-D6F8-5776-B0B2-EA06DFB8255E">
+      <a href="#_148a1f8e-8897-54bf-8887-a51b5b4ca946">
        <span class="category">Method</span>
        <span class="symbol">north-east-corner</span>
-       <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
+       <span class="method-specializers">(<span class="method-specializer">code-area</span>)</span>
       </a>
      </li>
      <li>
-      <a href="#_660EB027-DEB6-5110-817B-B83FEBA27D54">
+      <a href="#_660eb027-deb6-5110-817b-b83feba27d54">
        <span class="category">Generic Function</span>
        <span class="symbol">center</span>
       </a>
      </li>
      <li>
-      <a href="#_C3A2627A-8AD1-5979-A819-9390913E6F90">
+      <a href="#_2309c5e2-e3e8-565a-bfa2-80ee4dad28ef">
        <span class="category">Method</span>
        <span class="symbol">center</span>
-       <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
+       <span class="method-specializers">(<span class="method-specializer">code-area</span>)</span>
       </a>
      </li>
      <li>
-      <a href="#_AA238196-22F4-50A2-B8BD-1D61CEA56A50">
+      <a href="#_aa238196-22f4-50a2-b8bd-1d61cea56a50">
        <span class="category">Generic Function</span>
        <span class="symbol">precision</span>
       </a>
      </li>
      <li>
-      <a href="#_7A89EFF4-7D67-5F15-AA48-FD3B38648EE5">
+      <a href="#_52a50a69-f75c-5215-ba15-3d2359c64cbc">
        <span class="category">Method</span>
        <span class="symbol">precision</span>
-       <span class="method-specializers">(<span class='method-specializer'>integer</span>)</span>
+       <span class="method-specializers">(<span class="method-specializer">integer</span>)</span>
       </a>
      </li>
      <li>
-      <a href="#_53C1FE0E-4207-51E5-933F-A411AD475E7A">
+      <a href="#_10e2ceb7-2d51-5a8b-ac8d-71e6f2067a1e">
        <span class="category">Method</span>
        <span class="symbol">precision</span>
-       <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
+       <span class="method-specializers">(<span class="method-specializer">code-area</span>)</span>
       </a>
      </li>
      <li>
-      <a href="#_40DDA98B-B79A-5456-AEA6-0668E381CBA2">
+      <a href="#_40dda98b-b79a-5456-aea6-0668e381cba2">
        <span class="category">Generic Function</span>
        <span class="symbol">code-length</span>
       </a>
      </li>
      <li>
-      <a href="#_24B2C625-5729-5D35-9E11-940FDEFB66C3">
+      <a href="#_91ab51b9-ff10-5a28-a8cd-6ffae840adc1">
        <span class="category">Method</span>
        <span class="symbol">code-length</span>
-       <span class="method-specializers">(<span class='method-specializer'>integer</span>)</span>
+       <span class="method-specializers">(<span class="method-specializer">integer</span>)</span>
       </a>
      </li>
      <li>
-      <a href="#_73056A88-A5E1-5297-B6BA-A90F0A5BB1CB">
+      <a href="#_65f7b62b-946b-5981-b609-569f835e54d3">
        <span class="category">Method</span>
        <span class="symbol">code-length</span>
-       <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
+       <span class="method-specializers">(<span class="method-specializer">code-area</span>)</span>
       </a>
      </li>
      <li>
-      <a href="#_4CA468C5-38DB-5A52-B17B-C23F3B8D8DC1">
+      <a href="#_4ca468c5-38db-5a52-b17b-c23f3b8d8dc1">
        <span class="category">Generic Function</span>
        <span class="symbol">separator-position</span>
       </a>
      </li>
      <li>
-      <a href="#_E8568D70-BFEE-5A13-8490-8C84775DC6CD">
+      <a href="#_d439ffe6-3cd1-5e85-8cec-9da35f911926">
        <span class="category">Method</span>
        <span class="symbol">separator-position</span>
-       <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
+       <span class="method-specializers">(<span class="method-specializer">code-area</span>)</span>
       </a>
      </li>
      <li>
-      <a href="#_9EB7A90A-E701-55BB-AA88-48EDD34A77D4">
+      <a href="#_9eb7a90a-e701-55bb-aa88-48edd34a77d4">
        <span class="category">Generic Function</span>
        <span class="symbol">pad-characters</span>
       </a>
      </li>
      <li>
-      <a href="#_406DD666-4F12-5E5B-895C-84FD52D80914">
+      <a href="#_6278c191-1024-57cd-a27c-fad75b522dec">
        <span class="category">Method</span>
        <span class="symbol">pad-characters</span>
-       <span class="method-specializers">(<span class='method-specializer'>code-area</span>)</span>
+       <span class="method-specializers">(<span class="method-specializer">code-area</span>)</span>
       </a>
      </li>
     </ul>
    </div>
   </div>
   <div class="dictionary">
-   <div class="definition" id="_CB04F6CC-C97A-5A5E-9983-89B2B0FD7CFE">
+   <div class="definition" id="_cb04f6cc-c97a-5a5e-9983-89b2b0fd7cfe">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -244,7 +247,7 @@ See &lt;https://plus.codes&gt;.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">validp</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>code</span>)</span></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class="variable">code</span>)</span></td>
 	<td class="category"><span class="category">Function</span></td>
        </tr>
       </tbody>
@@ -255,11 +258,11 @@ See &lt;https://plus.codes&gt;.</pre>
 
 Argument CODE is an object of any type.
 
-Value is &#x2018;:full&#x2019; or &#x2018;:short&#x2019; if CODE is a valid full or short Open
+Value is ‘:full’ or ‘:short’ if CODE is a valid full or short Open
 Location Code respectively.  Otherwise, value is null.</pre>
     </div>
    </div>
-   <div class="definition" id="_3E6D2C07-FE03-57D9-88E7-4327773AAFB6">
+   <div class="definition" id="_3e6d2c07-fe03-57d9-88e7-4327773aafb6">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -270,7 +273,7 @@ Location Code respectively.  Otherwise, value is null.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">fullp</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>code</span>)</span></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class="variable">code</span>)</span></td>
 	<td class="category"><span class="category">Function</span></td>
        </tr>
       </tbody>
@@ -285,7 +288,7 @@ Value is true if CODE is a valid full Open Location Code.
 Otherwise, value is null.</pre>
     </div>
    </div>
-   <div class="definition" id="_48512CB6-B889-5999-8E19-4689D33D12A1">
+   <div class="definition" id="_48512cb6-b889-5999-8e19-4689d33d12a1">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -296,7 +299,7 @@ Otherwise, value is null.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">shortp</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>code</span>)</span></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class="variable">code</span>)</span></td>
 	<td class="category"><span class="category">Function</span></td>
        </tr>
       </tbody>
@@ -311,7 +314,7 @@ Value is true if CODE is a valid full Open Location Code.
 Otherwise, value is null.</pre>
     </div>
    </div>
-   <div class="definition" id="_1C1D5C66-F8F7-5C6B-BD97-B6886F4B09C2">
+   <div class="definition" id="_1c1d5c66-f8f7-5c6b-bd97-b6886f4b09c2">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -322,7 +325,7 @@ Otherwise, value is null.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">encode</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>latitude</span> <span class='parameter'>longitude</span> <span class='lambda-list-keyword'>&amp;optional</span> (<span class='parameter'>precision</span> 5))</span></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class="variable">latitude</span> <span class="variable">longitude</span> <span class="lambda-list-keyword">&amp;optional</span> (<span class="variable">precision</span>&nbsp;<span class="init-form">5</span>))</span></td>
 	<td class="category"><span class="category">Function</span></td>
        </tr>
       </tbody>
@@ -357,12 +360,12 @@ is depicted in the following table.
       10      |     15      |       0.0135  |       0.00444
 
 The code length is equal to the number of Open Location Code digits.
-Pad characters and the separator character &#x2018;+&#x2019; are not part of the
+Pad characters and the separator character ‘+’ are not part of the
 code length.  The code area dimensions are calculated with a mean
 earth radius of 6356766 m for a code area at the equator.</pre>
     </div>
    </div>
-   <div class="definition" id="_91BFAF69-2746-5E83-B8EF-80E48EA8BADA">
+   <div class="definition" id="_91bfaf69-2746-5e83-b8ef-80e48ea8bada">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -373,7 +376,7 @@ earth radius of 6356766 m for a code area at the equator.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">decode</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>code</span>)</span></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class="variable">code</span>)</span></td>
 	<td class="category"><span class="category">Function</span></td>
        </tr>
       </tbody>
@@ -384,17 +387,17 @@ earth radius of 6356766 m for a code area at the equator.</pre>
 
 Argument CODE is an Open Location Code (a string).
 
-Primary value is a &#x2018;code-area&#x2019; object.  Secondary value is &#x2018;:full&#x2019; or
-&#x2018;:short&#x2019; if CODE is a full or short Open Location Code respectively.
+Primary value is a ‘code-area’ object.  Secondary value is ‘:full’ or
+‘:short’ if CODE is a full or short Open Location Code respectively.
 If CODE is a full Open Location Code the code area denotes absolute
 coordinates.  Otherwise, the code area denotes relative coordinates,
 i.e. offset values in the enclosing block.
 
-Signal an &#x2018;invalid-code-error&#x2019; if CODE is not a valid Open Location
+Signal an ‘invalid-code-error’ if CODE is not a valid Open Location
 Code.</pre>
     </div>
    </div>
-   <div class="definition" id="_B86BC056-2EB9-568C-B513-C44A5C4622A6">
+   <div class="definition" id="_b86bc056-2eb9-568c-b513-c44a5c4622a6">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -405,7 +408,7 @@ Code.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">shorten</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>code</span> <span class='parameter'>latitude</span> <span class='parameter'>longitude</span>)</span></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class="variable">code</span> <span class="variable">latitude</span> <span class="variable">longitude</span>)</span></td>
 	<td class="category"><span class="category">Function</span></td>
        </tr>
       </tbody>
@@ -424,10 +427,10 @@ Second argument LATITUDE and third argument LONGITUDE denote the
 Value is the short code, or the original full code if the reference
 location is too far.
 
-Signal a &#x2018;full-code-error&#x2019; if CODE is not a full Open Location Code.</pre>
+Signal a ‘full-code-error’ if CODE is not a full Open Location Code.</pre>
     </div>
    </div>
-   <div class="definition" id="_87458B04-A68B-5FD6-9165-54638C5500F6">
+   <div class="definition" id="_87458b04-a68b-5fd6-9165-54638c5500f6">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -438,7 +441,7 @@ Signal a &#x2018;full-code-error&#x2019; if CODE is not a full Open Location Cod
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">recover</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>code</span> <span class='parameter'>latitude</span> <span class='parameter'>longitude</span>)</span></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class="variable">code</span> <span class="variable">latitude</span> <span class="variable">longitude</span>)</span></td>
 	<td class="category"><span class="category">Function</span></td>
        </tr>
       </tbody>
@@ -457,11 +460,11 @@ Second argument LATITUDE and third argument LONGITUDE denote the
 Value is the recovered full code.  If CODE is already a full code,
 return CODE as is.
 
-Signal an &#x2018;invalid-code-error&#x2019; if CODE is not an Open Location
+Signal an ‘invalid-code-error’ if CODE is not an Open Location
 Code.</pre>
     </div>
    </div>
-   <div class="definition" id="_81481A12-D642-585A-9ED7-742D24102CBF">
+   <div class="definition" id="_81481a12-d642-585a-9ed7-742d24102cbf">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -472,7 +475,7 @@ Code.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">code-error</span></a></td>
-	<td class="lambda-list"><span class="lambda-list"></span></td>
+	<td class="lambda-list"></td>
 	<td class="category"><span class="category">Condition</span></td>
        </tr>
       </tbody>
@@ -482,7 +485,7 @@ Code.</pre>
      <pre>Base class for all Open Location Code errors.</pre>
     </div>
    </div>
-   <div class="definition" id="_149AF73C-9214-5686-BFA7-40DC49D490A2">
+   <div class="definition" id="_149af73c-9214-5686-bfa7-40dc49d490a2">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -493,7 +496,7 @@ Code.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">code-length-error</span></a></td>
-	<td class="lambda-list"><span class="lambda-list"></span></td>
+	<td class="lambda-list"></td>
 	<td class="category"><span class="category">Condition</span></td>
        </tr>
       </tbody>
@@ -503,7 +506,7 @@ Code.</pre>
      <pre>Condition for an invalid Open Location Code length.</pre>
     </div>
    </div>
-   <div class="definition" id="_363C3F90-F820-553C-B00F-368E1F6D2D95">
+   <div class="definition" id="_363c3f90-f820-553c-b00f-368e1f6d2d95">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -514,7 +517,7 @@ Code.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">invalid-code-error</span></a></td>
-	<td class="lambda-list"><span class="lambda-list"></span></td>
+	<td class="lambda-list"></td>
 	<td class="category"><span class="category">Condition</span></td>
        </tr>
       </tbody>
@@ -524,7 +527,7 @@ Code.</pre>
      <pre>Condition for an invalid Open Location Code.</pre>
     </div>
    </div>
-   <div class="definition" id="_CA261943-402C-5026-8B62-A889885A6625">
+   <div class="definition" id="_ca261943-402c-5026-8b62-a889885a6625">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -535,7 +538,7 @@ Code.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">full-code-error</span></a></td>
-	<td class="lambda-list"><span class="lambda-list"></span></td>
+	<td class="lambda-list"></td>
 	<td class="category"><span class="category">Condition</span></td>
        </tr>
       </tbody>
@@ -545,7 +548,7 @@ Code.</pre>
      <pre>Condition for an invalid full Open Location Code.</pre>
     </div>
    </div>
-   <div class="definition" id="_052552D2-FD2A-5F45-B6B7-A9A23CD0B2ED">
+   <div class="definition" id="_052552d2-fd2a-5f45-b6b7-a9a23cd0b2ed">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -556,7 +559,7 @@ Code.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">short-code-error</span></a></td>
-	<td class="lambda-list"><span class="lambda-list"></span></td>
+	<td class="lambda-list"></td>
 	<td class="category"><span class="category">Condition</span></td>
        </tr>
       </tbody>
@@ -566,7 +569,7 @@ Code.</pre>
      <pre>Condition for an invalid short Open Location Code.</pre>
     </div>
    </div>
-   <div class="definition" id="_6D920CB6-0C15-57BA-87FB-DAFDC63D2E7E">
+   <div class="definition" id="_6d920cb6-0c15-57ba-87fb-dafdc63d2e7e">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -577,7 +580,7 @@ Code.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">code-area</span></a></td>
-	<td class="lambda-list"><span class="lambda-list"></span></td>
+	<td class="lambda-list"></td>
 	<td class="category"><span class="category">Class</span></td>
        </tr>
       </tbody>
@@ -587,7 +590,7 @@ Code.</pre>
      <pre>Area covered by an Open Location Code.</pre>
     </div>
    </div>
-   <div class="definition" id="_5AFD409B-C1CD-505C-82AE-03DC3246C0DA">
+   <div class="definition" id="_5afd409b-c1cd-505c-82ae-03dc3246c0da">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -598,7 +601,7 @@ Code.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">south-west-corner</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>object</span>)</span></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class="variable">object</span>)</span></td>
 	<td class="category"><span class="category">Generic Function</span></td>
        </tr>
       </tbody>
@@ -608,7 +611,7 @@ Code.</pre>
      <pre>Return the lower latitude and longitude as multiple values.</pre>
     </div>
    </div>
-   <div class="definition" id="_C15238E7-E941-536E-84D1-480BA6302773">
+   <div class="definition" id="_edd1f67f-6fde-5380-bede-7030888fdd4f">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -619,7 +622,7 @@ Code.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">south-west-corner</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">((<span class='parameter'>object</span> code-area))</span></td>
+	<td class="lambda-list"><span class="lambda-list">((<span class="variable">object</span>&nbsp;<span class="method-specializer">code-area</span>))</span></td>
 	<td class="category"><span class="category">Method</span></td>
        </tr>
       </tbody>
@@ -629,7 +632,7 @@ Code.</pre>
      <pre>Return the lower latitude and longitude as multiple values.</pre>
     </div>
    </div>
-   <div class="definition" id="_74F95BA0-3A23-5BEC-B784-BCEE711BF50A">
+   <div class="definition" id="_74f95ba0-3a23-5bec-b784-bcee711bf50a">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -640,7 +643,7 @@ Code.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">north-east-corner</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>object</span>)</span></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class="variable">object</span>)</span></td>
 	<td class="category"><span class="category">Generic Function</span></td>
        </tr>
       </tbody>
@@ -652,7 +655,7 @@ The upper bounds are not included in the code area except for
 the north pole.</pre>
     </div>
    </div>
-   <div class="definition" id="_29C912C5-D6F8-5776-B0B2-EA06DFB8255E">
+   <div class="definition" id="_148a1f8e-8897-54bf-8887-a51b5b4ca946">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -663,7 +666,7 @@ the north pole.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">north-east-corner</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">((<span class='parameter'>object</span> code-area))</span></td>
+	<td class="lambda-list"><span class="lambda-list">((<span class="variable">object</span>&nbsp;<span class="method-specializer">code-area</span>))</span></td>
 	<td class="category"><span class="category">Method</span></td>
        </tr>
       </tbody>
@@ -675,7 +678,7 @@ The upper bounds are not included in the code area except for
 the north pole.</pre>
     </div>
    </div>
-   <div class="definition" id="_660EB027-DEB6-5110-817B-B83FEBA27D54">
+   <div class="definition" id="_660eb027-deb6-5110-817b-b83feba27d54">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -686,7 +689,7 @@ the north pole.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">center</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>object</span>)</span></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class="variable">object</span>)</span></td>
 	<td class="category"><span class="category">Generic Function</span></td>
        </tr>
       </tbody>
@@ -696,7 +699,7 @@ the north pole.</pre>
      <pre>Return the center latitude and longitude as multiple values.</pre>
     </div>
    </div>
-   <div class="definition" id="_C3A2627A-8AD1-5979-A819-9390913E6F90">
+   <div class="definition" id="_2309c5e2-e3e8-565a-bfa2-80ee4dad28ef">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -707,7 +710,7 @@ the north pole.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">center</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">((<span class='parameter'>object</span> code-area))</span></td>
+	<td class="lambda-list"><span class="lambda-list">((<span class="variable">object</span>&nbsp;<span class="method-specializer">code-area</span>))</span></td>
 	<td class="category"><span class="category">Method</span></td>
        </tr>
       </tbody>
@@ -717,7 +720,7 @@ the north pole.</pre>
      <pre>Return the center latitude and longitude as multiple values.</pre>
     </div>
    </div>
-   <div class="definition" id="_AA238196-22F4-50A2-B8BD-1D61CEA56A50">
+   <div class="definition" id="_aa238196-22f4-50a2-b8bd-1d61cea56a50">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -728,7 +731,7 @@ the north pole.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">precision</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>object</span>)</span></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class="variable">object</span>)</span></td>
 	<td class="category"><span class="category">Generic Function</span></td>
        </tr>
       </tbody>
@@ -738,7 +741,7 @@ the north pole.</pre>
      <pre>Return the Open Location Code precision.</pre>
     </div>
    </div>
-   <div class="definition" id="_7A89EFF4-7D67-5F15-AA48-FD3B38648EE5">
+   <div class="definition" id="_52a50a69-f75c-5215-ba15-3d2359c64cbc">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -749,7 +752,7 @@ the north pole.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">precision</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">((<span class='parameter'>length</span> integer))</span></td>
+	<td class="lambda-list"><span class="lambda-list">((<span class="variable">length</span>&nbsp;<span class="method-specializer">integer</span>))</span></td>
 	<td class="category"><span class="category">Method</span></td>
        </tr>
       </tbody>
@@ -759,7 +762,7 @@ the north pole.</pre>
      <pre>Return the precision as a function of the code length.</pre>
     </div>
    </div>
-   <div class="definition" id="_53C1FE0E-4207-51E5-933F-A411AD475E7A">
+   <div class="definition" id="_10e2ceb7-2d51-5a8b-ac8d-71e6f2067a1e">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -770,7 +773,7 @@ the north pole.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">precision</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">((<span class='parameter'>object</span> code-area))</span></td>
+	<td class="lambda-list"><span class="lambda-list">((<span class="variable">object</span>&nbsp;<span class="method-specializer">code-area</span>))</span></td>
 	<td class="category"><span class="category">Method</span></td>
        </tr>
       </tbody>
@@ -780,7 +783,7 @@ the north pole.</pre>
      <pre>Return the precision of the original code.</pre>
     </div>
    </div>
-   <div class="definition" id="_40DDA98B-B79A-5456-AEA6-0668E381CBA2">
+   <div class="definition" id="_40dda98b-b79a-5456-aea6-0668e381cba2">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -791,7 +794,7 @@ the north pole.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">code-length</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>object</span>)</span></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class="variable">object</span>)</span></td>
 	<td class="category"><span class="category">Generic Function</span></td>
        </tr>
       </tbody>
@@ -801,7 +804,7 @@ the north pole.</pre>
      <pre>Return the Open Location Code length.</pre>
     </div>
    </div>
-   <div class="definition" id="_24B2C625-5729-5D35-9E11-940FDEFB66C3">
+   <div class="definition" id="_91ab51b9-ff10-5a28-a8cd-6ffae840adc1">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -812,7 +815,7 @@ the north pole.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">code-length</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">((<span class='parameter'>precision</span> integer))</span></td>
+	<td class="lambda-list"><span class="lambda-list">((<span class="variable">precision</span>&nbsp;<span class="method-specializer">integer</span>))</span></td>
 	<td class="category"><span class="category">Method</span></td>
        </tr>
       </tbody>
@@ -822,7 +825,7 @@ the north pole.</pre>
      <pre>Return the code length as a function of the precision.</pre>
     </div>
    </div>
-   <div class="definition" id="_73056A88-A5E1-5297-B6BA-A90F0A5BB1CB">
+   <div class="definition" id="_65f7b62b-946b-5981-b609-569f835e54d3">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -833,7 +836,7 @@ the north pole.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">code-length</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">((<span class='parameter'>object</span> code-area))</span></td>
+	<td class="lambda-list"><span class="lambda-list">((<span class="variable">object</span>&nbsp;<span class="method-specializer">code-area</span>))</span></td>
 	<td class="category"><span class="category">Method</span></td>
        </tr>
       </tbody>
@@ -843,7 +846,7 @@ the north pole.</pre>
      <pre>Return the code length of the original code.</pre>
     </div>
    </div>
-   <div class="definition" id="_4CA468C5-38DB-5A52-B17B-C23F3B8D8DC1">
+   <div class="definition" id="_4ca468c5-38db-5a52-b17b-c23f3b8d8dc1">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -854,7 +857,7 @@ the north pole.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">separator-position</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>object</span>)</span></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class="variable">object</span>)</span></td>
 	<td class="category"><span class="category">Generic Function</span></td>
        </tr>
       </tbody>
@@ -864,7 +867,7 @@ the north pole.</pre>
      <pre>Return the position of the separator character.</pre>
     </div>
    </div>
-   <div class="definition" id="_E8568D70-BFEE-5A13-8490-8C84775DC6CD">
+   <div class="definition" id="_d439ffe6-3cd1-5e85-8cec-9da35f911926">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -875,7 +878,7 @@ the north pole.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">separator-position</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">((<span class='parameter'>object</span> code-area))</span></td>
+	<td class="lambda-list"><span class="lambda-list">((<span class="variable">object</span>&nbsp;<span class="method-specializer">code-area</span>))</span></td>
 	<td class="category"><span class="category">Method</span></td>
        </tr>
       </tbody>
@@ -885,7 +888,7 @@ the north pole.</pre>
      <pre>Return the position of the separator character in the original code.</pre>
     </div>
    </div>
-   <div class="definition" id="_9EB7A90A-E701-55BB-AA88-48EDD34A77D4">
+   <div class="definition" id="_9eb7a90a-e701-55bb-aa88-48edd34a77d4">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -896,7 +899,7 @@ the north pole.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">pad-characters</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">(<span class='parameter'>object</span>)</span></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class="variable">object</span>)</span></td>
 	<td class="category"><span class="category">Generic Function</span></td>
        </tr>
       </tbody>
@@ -906,7 +909,7 @@ the north pole.</pre>
      <pre>Return the number of pad characters.</pre>
     </div>
    </div>
-   <div class="definition" id="_406DD666-4F12-5E5B-895C-84FD52D80914">
+   <div class="definition" id="_6278c191-1024-57cd-a27c-fad75b522dec">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -917,7 +920,7 @@ the north pole.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">pad-characters</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">((<span class='parameter'>object</span> code-area))</span></td>
+	<td class="lambda-list"><span class="lambda-list">((<span class="variable">object</span>&nbsp;<span class="method-specializer">code-area</span>))</span></td>
 	<td class="category"><span class="category">Method</span></td>
        </tr>
       </tbody>
