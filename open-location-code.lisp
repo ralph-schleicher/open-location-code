@@ -347,7 +347,8 @@ Values are latitude, longitude, and the actual precision."
 
 (defun normalize-location* (latitude longitude precision)
   "Like ‘normalize-location’ but return latitude and longitude
-as non-negative numbers."
+as non-negative numbers, i.e. add 90° to the latitude and 180°
+to the longitude."
   (multiple-value-bind (lat lon prec)
       (normalize-location latitude longitude precision)
     ;; Add 90° to the latitude.
