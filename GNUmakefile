@@ -61,7 +61,7 @@ check: all
 
 .PHONY: t
 t:
-	cd open-location-code.git && git pull
+	cd open-location-code.git && git pull --rebase
 	cp -p open-location-code.git/test_data/*.csv t
 	svn status --verbose t
 
