@@ -33,13 +33,13 @@
 
 ;;; Code:
 
-(in-package :common-lisp-user)
+(in-package :asdf-user)
 
-(asdf:defsystem :open-location-code
+(defsystem "open-location-code"
   :description "Open Location Code library."
   :author "Ralph Schleicher <rs@ralph-schleicher.de>"
   :license "Modified BSD License"
-  :version "2.2"
+  :version (:read-file-line "VERSION")
   :depends-on (:alexandria :iterate)
   :components ((:file "open-location-code")))
 
