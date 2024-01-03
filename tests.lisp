@@ -1,4 +1,4 @@
-;;; tests.lisp --- test procedure.
+;;; tests.lisp --- test procedure
 
 ;; Copyright (C) 2019 Ralph Schleicher
 
@@ -42,8 +42,8 @@
 
 (defpackage :open-location-code-tests
   (:use :common-lisp
-	:lisp-unit
-	:iterate))
+        :lisp-unit
+        :iterate))
 
 (in-package :open-location-code-tests)
 
@@ -57,15 +57,15 @@
 
 (defun boolean-from-string (string)
   (cond ((or (string-equal string "true")
-	     (string-equal string "yes")
-	     (string-equal string "on"))
-	 t)
-	((or (string-equal string "false")
-	     (string-equal string "no")
-	     (string-equal string "off"))
-	 nil)
-	(t
-	 (fixme))))
+             (string-equal string "yes")
+             (string-equal string "on"))
+         t)
+        ((or (string-equal string "false")
+             (string-equal string "no")
+             (string-equal string "off"))
+         nil)
+        (t
+         (fixme))))
 
 (defun number-from-string (string)
   (with-input-from-string (stream string)
@@ -102,25 +102,25 @@
   (assert-true
    (eq (olc:validp code)
        (cond (short
-	      :short)
-	     (full
-	      :full)))))
+              :short)
+             (full
+              :full)))))
 
 (define-test validity-tests
   (with-open-file (stream "t/validityTests.csv")
     (iter (for row :in (cl-csv:read-csv stream))
-	  (for columns = (length row))
-	  (cond ((zerop columns)
-		 (next-iteration))
-		((char= (aref (first row) 0) #\#)
-		 (next-iteration))
-		((= columns 4)
-		 (validity-test
-		  (first row)
-		  (boolean-from-string (second row))
-		  (boolean-from-string (third row))
-		  (boolean-from-string (fourth row))))
-		(t (fixme))))))
+          (for columns = (length row))
+          (cond ((zerop columns)
+                 (next-iteration))
+                ((char= (aref (first row) 0) #\#)
+                 (next-iteration))
+                ((= columns 4)
+                 (validity-test
+                  (first row)
+                  (boolean-from-string (second row))
+                  (boolean-from-string (third row))
+                  (boolean-from-string (fourth row))))
+                (t (fixme))))))
 
 ;; Test encoding and decoding codes.
 (defun encoding-test (code len lat lon)
@@ -132,79 +132,79 @@
   (let ((area (olc:decode code)))
     (assert-true
      (and (if len (= (olc:code-length (olc:precision area)) len) t)
-	  (multiple-value-bind (south west)
-	      (olc:south-west-corner area)
-	    (and (float-equal* lat-low south)
-		 (float-equal* lon-low west)))
-	  (multiple-value-bind (north east)
-	      (olc:north-east-corner area)
-	    (and (float-equal* lat-high north)
-		 (float-equal* lon-high east)))))))
+          (multiple-value-bind (south west)
+              (olc:south-west-corner area)
+            (and (float-equal* lat-low south)
+                 (float-equal* lon-low west)))
+          (multiple-value-bind (north east)
+              (olc:north-east-corner area)
+            (and (float-equal* lat-high north)
+                 (float-equal* lon-high east)))))))
 
 (define-test encoding-tests
   (with-open-file (stream "t/encoding.csv")
     (iter (for row :in (cl-csv:read-csv stream))
-	  (for columns = (length row))
-	  (cond ((zerop columns)
-		 (next-iteration))
-		((char= (aref (first row) 0) #\#)
-		 (next-iteration))
-		((= columns 4)
-		 (encoding-test
-		  (fourth row)
-		  (number-from-string (third row))
-		  (number-from-string (first row))
-		  (number-from-string (second row))))
-		(t (fixme))))))
+          (for columns = (length row))
+          (cond ((zerop columns)
+                 (next-iteration))
+                ((char= (aref (first row) 0) #\#)
+                 (next-iteration))
+                ((= columns 4)
+                 (encoding-test
+                  (fourth row)
+                  (number-from-string (third row))
+                  (number-from-string (first row))
+                  (number-from-string (second row))))
+                (t (fixme))))))
 
 (define-test decoding-tests
   (with-open-file (stream "t/decoding.csv")
     (iter (for row :in (cl-csv:read-csv stream))
-	  (for columns = (length row))
-	  (cond ((zerop columns)
-		 (next-iteration))
-		((char= (aref (first row) 0) #\#)
-		 (next-iteration))
-		((= columns 6)
-		 (decoding-test
-		  (first row)
-		  (number-from-string (second row))
-		  (number-from-string (third row))
-		  (number-from-string (fourth row))
-		  (number-from-string (fifth row))
-		  (number-from-string (sixth row))))
-		(t (fixme))))))
+          (for columns = (length row))
+          (cond ((zerop columns)
+                 (next-iteration))
+                ((char= (aref (first row) 0) #\#)
+                 (next-iteration))
+                ((= columns 6)
+                 (decoding-test
+                  (first row)
+                  (number-from-string (second row))
+                  (number-from-string (third row))
+                  (number-from-string (fourth row))
+                  (number-from-string (fifth row))
+                  (number-from-string (sixth row))))
+                (t (fixme))))))
 
 ;; Test shortening and extending codes.
 (defun short-code-test (full-code lat lon short-code test-type)
   (assert-true
    (and (if (member test-type '(:both :shorten))
-	    (string= (olc:shorten full-code lat lon) short-code)
-	  t)
-	(if (member test-type '(:both :recover))
-	    (string= (olc:recover short-code lat lon) full-code)
-	  t))))
+            (string= (olc:shorten full-code lat lon) short-code)
+          t)
+        (if (member test-type '(:both :recover))
+            (string= (olc:recover short-code lat lon) full-code)
+          t))))
 
 (define-test short-code-tests
   (with-open-file (stream "t/shortCodeTests.csv")
     (iter (for row :in (cl-csv:read-csv stream))
-	  (for columns = (length row))
-	  (cond ((zerop columns)
-		 (next-iteration))
-		((char= (aref (first row) 0) #\#)
-		 (next-iteration))
-		((= columns 5)
-		 (short-code-test
-		  (first row)
-		  (number-from-string (second row))
-		  (number-from-string (third row))
-		  (fourth row)
-		  (let ((test-type (fifth row)))
-		    (cond ((string= test-type "B") :both)
-			  ((string= test-type "S") :shorten)
-			  ((string= test-type "R") :recover)
-			  (t (fixme))))))
-		(t (fixme))))))
+          (for columns = (length row))
+          (cond ((zerop columns)
+                 (next-iteration))
+                ((char= (aref (first row) 0) #\#)
+                 (next-iteration))
+                ((= columns 5)
+                 (short-code-test
+                  (first row)
+                  (number-from-string (second row))
+                  (number-from-string (third row))
+                  (fourth row)
+                  (let ((test-type (fifth row)))
+                    (cond ((string= test-type "B") :both)
+                          ((string= test-type "S") :shorten)
+                          ((string= test-type "R") :recover)
+                          (t (fixme))))))
+                (t (fixme))))))
 
 (let ((lisp-unit:*print-errors* t)
       (lisp-unit:*print-failures* t)

@@ -1,4 +1,4 @@
-## GNUmakefile --- Open Location Code library.
+## GNUmakefile --- Open Location Code library
 
 # Copyright (C) 2019 Ralph Schleicher
 

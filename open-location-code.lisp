@@ -1,4 +1,4 @@
-;;; open-location-code.lisp --- Open Location Code library.
+;;; open-location-code.lisp --- Open Location Code library
 
 ;; Copyright (C) 2019 Ralph Schleicher
 
@@ -38,27 +38,27 @@
 (defpackage :open-location-code
   (:nicknames :olc)
   (:use :common-lisp
-	:iterate)
+        :iterate)
   (:export #:validp
-	   #:fullp
-	   #:shortp
-	   #:encode
-	   #:decode
-	   #:shorten
-	   #:recover
-	   #:code-error
-	   #:code-length-error
-	   #:invalid-code-error
-	   #:full-code-error
-	   #:short-code-error
-	   #:code-area
-	   #:south-west-corner
-	   #:north-east-corner
-	   #:center
-	   #:precision
-	   #:code-length
-	   #:separator-position
-	   #:pad-characters)
+           #:fullp
+           #:shortp
+           #:encode
+           #:decode
+           #:shorten
+           #:recover
+           #:code-error
+           #:code-length-error
+           #:invalid-code-error
+           #:full-code-error
+           #:short-code-error
+           #:code-area
+           #:south-west-corner
+           #:north-east-corner
+           #:center
+           #:precision
+           #:code-length
+           #:separator-position
+           #:pad-characters)
   (:documentation
    "Open Location Code is a location encoding system for addresses,
 independent of street names and building numbers.
@@ -97,8 +97,8 @@ for inline expansion by the compiler."
   (:report
    (lambda (condition stream)
      (format stream
-	     "The value ‘~S’ is not a valid Open Location Code length."
-	     (type-error-datum condition)))))
+             "The value ‘~S’ is not a valid Open Location Code length."
+             (type-error-datum condition)))))
 
 (define-condition invalid-code-error (code-error)
   ()
@@ -107,8 +107,8 @@ for inline expansion by the compiler."
   (:report
    (lambda (condition stream)
      (format stream
-	     "The value ‘~S’ is not a valid Open Location Code."
-	     (type-error-datum condition)))))
+             "The value ‘~S’ is not a valid Open Location Code."
+             (type-error-datum condition)))))
 
 (define-condition full-code-error (invalid-code-error)
   ()
@@ -117,8 +117,8 @@ for inline expansion by the compiler."
   (:report
    (lambda (condition stream)
      (format stream
-	     "The value ‘~S’ is not a full Open Location Code."
-	     (type-error-datum condition)))))
+             "The value ‘~S’ is not a full Open Location Code."
+             (type-error-datum condition)))))
 
 (define-condition short-code-error (invalid-code-error)
   ()
@@ -127,8 +127,8 @@ for inline expansion by the compiler."
   (:report
    (lambda (condition stream)
      (format stream
-	     "The value ‘~S’ is not a short Open Location Code."
-	     (type-error-datum condition)))))
+             "The value ‘~S’ is not a short Open Location Code."
+             (type-error-datum condition)))))
 
 (defconst +maximum-precision+ 10
   "Maximum number of discretization steps.")
@@ -147,11 +147,11 @@ for inline expansion by the compiler."
     "Return the precision as a function of the code length."
     (let ((len (min length +maximum-length+)))
       (cond ((member len '(2 4 6 8 10))
-	     (/ len 2))
-	    ((> len 10)
-	     (+ 5 (- len 10)))
-	    (t
-	     (error 'code-length-error :datum len))))))
+             (/ len 2))
+            ((> len 10)
+             (+ 5 (- len 10)))
+            (t
+             (error 'code-length-error :datum len))))))
 
 (defconst +alphabet+ "23456789CFGHJMPQRVWX"
   "Set of valid digits, i.e. encoding characters.
@@ -187,17 +187,17 @@ Value is the digit, i.e. encoding character."
 
 (defconst +area-height+
   (iter (with height = 400)
-	(for prec :from 0 :to +maximum-precision+)
-	(collect height :result-type 'vector)
-	(setf height (/ height (if (< prec 5) +block-divisor+ +grid-rows+))))
+        (for prec :from 0 :to +maximum-precision+)
+        (collect height :result-type 'vector)
+        (setf height (/ height (if (< prec 5) +block-divisor+ +grid-rows+))))
   "Vector of code area heights in descending order.
 Element position is the precision of the code area.")
 
 (defconst +area-width+
   (iter (with width = 400)
-	(for prec :from 0 :to +maximum-precision+)
-	(collect width :result-type 'vector)
-	(setf width (/ width (if (< prec 5) +block-divisor+ +grid-columns+))))
+        (for prec :from 0 :to +maximum-precision+)
+        (collect width :result-type 'vector)
+        (setf width (/ width (if (< prec 5) +block-divisor+ +grid-columns+))))
   "Vector of code area widths in descending order.
 Element position is the precision of the code area.")
 
@@ -206,7 +206,7 @@ Element position is the precision of the code area.")
 
 Argument PRECISION is the number of discretization steps."
   (values (svref +area-height+ precision)
-	  (svref +area-width+ precision)))
+          (svref +area-width+ precision)))
 
 (defclass code-area ()
   ((south
@@ -324,24 +324,24 @@ Third argument PRECISION is used to determine the height of
 
 Values are latitude, longitude, and the actual precision."
   (declare (type real latitude longitude)
-	   (type (integer 1) precision))
+           (type (integer 1) precision))
   (let ((lat (rationalize latitude))
-	(lon (rationalize longitude))
-	(prec (min precision +maximum-precision+)))
+        (lon (rationalize longitude))
+        (prec (min precision +maximum-precision+)))
     ;; Clip the latitude to the closed interval [-90, 90].
     (setf lat (alexandria:clamp lat -90 90))
     ;; Ensure that the represented area does not exceed 90° latitude.
     (when (= lat 90)
       (multiple-value-bind (height width)
-	  (area-size precision)
-	(declare (ignore width))
-	(decf lat (/ height 2))))
+          (area-size precision)
+        (declare (ignore width))
+        (decf lat (/ height 2))))
     ;; Normalise the longitude to the half-closed interval [-180, 180).
     (setf lon (rem lon 360))
     (cond ((< lon -180)
-	   (incf lon 360))
-	  ((>= lon 180)
-	   (decf lon 360)))
+           (incf lon 360))
+          ((>= lon 180)
+           (decf lon 360)))
     ;; Return values.
     (values lat lon prec)))
 
@@ -370,108 +370,108 @@ Open Location Code respectively.  Otherwise, all values are null."
   (let (valid object)
     (when (stringp code)
       (iter (with south = 0)
-	    (with west = 0)
-	    (with height = 0)
-	    (with width = 0)
-	    (with length = 0)
-	    (with plus)
-	    (with pad = 0)
-	    ;; Decimal value of a digit.
-	    (with value)
-	    ;; Discretization step of the next digit.
-	    (with prec = (case (position #\+ code :test #'char=)
-			   (8 1) (6 2) (4 3) (2 4) (0 5) (t 0)))
-	    (initially
-	     (when (= prec 0)
-	       (return)))
-	    (for pos :from 0 :below (length code))
-	    (for char = (aref code pos))
-	    (cond ((char= char #\0)
-		   ;; Pad characters can only occur before the
-		   ;; separator character.
-		   (when plus
-		     (leave))
-		   (incf pad))
-		  ((char= char #\+)
-		   ;; There can only be one separator character
-		   ;; and it has to be at the correct position.
-		   ;; The later already has been checked in the
-		   ;; prologue section.
-		   (when plus ;(or plus (oddp pos) (> pos 8))
-		     (leave))
-		   (setf plus pos))
-		  ((setf value (digitp char))
-		   ;; Valid characters can only occur before pad
-		   ;; characters.
-		   (when (plusp pad)
-		     (leave))
-		   ;; Update code area.
-		   (when (not (null area))
-		     (cond ((> prec +maximum-precision+)
-			    ;; No further refinement but continue
-			    ;; parsing CODE.
-			    t)
-			   ((> prec 5)
-			    (multiple-value-setq (height width)
-			      (area-size prec))
-			    ;; Map VALUE to row and column.
-			    (multiple-value-bind (row column)
-				(truncate value +grid-columns+)
-			      (incf south (* row height))
-			      (incf west (* column width)))
-			    (incf prec))
-			   ((evenp length)
-			    ;; Start a new pair.
-			    (multiple-value-setq (height width)
-			      (area-size prec))
-			    ;; First digit encodes the latitude.
-			    (incf south (* value height)))
-			   (t
-			    ;; Second digit encodes the longitude.
-			    (incf west (* value width))
-			    ;; Next discretization step.
-			    (incf prec))))
-		   ;; Update code length.
-		   (incf length))
-		  (t
-		   ;; Invalid character.
-		   (leave)))
-	    (finally
-	     (when (and plus
-			;; There must be an even number of pad characters.
-			(or (zerop pad)
-			    (and (evenp pad)
-				 (= plus 8)))
-			;; Code length has to be at least two.
-			(>= length 2)
-			;; Code length is either less than or equal
-			;; to the position of the separator character,
-			;; i.e. the separator character is the last
-			;; character, or there are two or more valid
-			;; characters after the separator character.
-			(or (<= length plus)
-			    (>= (- length plus) 2))
-			;; For a full code, the first two characters
-			;; have to be in the proper range.
-			(or (/= plus 8)
-			    (and (< (digitp (aref code 0)) 9)
-				 (< (digitp (aref code 1)) 18)))
-			;; Code is valid.
-			(setf valid (if (= plus 8) :full :short)))
-	       (when (not (null area))
-		 (setf object (make-instance 'code-area))
-		 (if (= plus 8)
-		     (setf (slot-value object 'south) (- south 90)
-			   (slot-value object 'west) (- west 180))
-		   (setf (slot-value object 'south) south
-			 (slot-value object 'west) west))
-		 (setf (slot-value object 'height) height
-		       (slot-value object 'width) width
-		       (slot-value object 'precision) (1- prec)
-		       (slot-value object 'length) length
-		       (slot-value object 'plus) plus
-		       (slot-value object 'pad) pad))
-	       ))))
+            (with west = 0)
+            (with height = 0)
+            (with width = 0)
+            (with length = 0)
+            (with plus)
+            (with pad = 0)
+            ;; Decimal value of a digit.
+            (with value)
+            ;; Discretization step of the next digit.
+            (with prec = (case (position #\+ code :test #'char=)
+                           (8 1) (6 2) (4 3) (2 4) (0 5) (t 0)))
+            (initially
+             (when (= prec 0)
+               (return)))
+            (for pos :from 0 :below (length code))
+            (for char = (aref code pos))
+            (cond ((char= char #\0)
+                   ;; Pad characters can only occur before the
+                   ;; separator character.
+                   (when plus
+                     (leave))
+                   (incf pad))
+                  ((char= char #\+)
+                   ;; There can only be one separator character
+                   ;; and it has to be at the correct position.
+                   ;; The later already has been checked in the
+                   ;; prologue section.
+                   (when plus ;(or plus (oddp pos) (> pos 8))
+                     (leave))
+                   (setf plus pos))
+                  ((setf value (digitp char))
+                   ;; Valid characters can only occur before pad
+                   ;; characters.
+                   (when (plusp pad)
+                     (leave))
+                   ;; Update code area.
+                   (when (not (null area))
+                     (cond ((> prec +maximum-precision+)
+                            ;; No further refinement but continue
+                            ;; parsing CODE.
+                            t)
+                           ((> prec 5)
+                            (multiple-value-setq (height width)
+                              (area-size prec))
+                            ;; Map VALUE to row and column.
+                            (multiple-value-bind (row column)
+                                (truncate value +grid-columns+)
+                              (incf south (* row height))
+                              (incf west (* column width)))
+                            (incf prec))
+                           ((evenp length)
+                            ;; Start a new pair.
+                            (multiple-value-setq (height width)
+                              (area-size prec))
+                            ;; First digit encodes the latitude.
+                            (incf south (* value height)))
+                           (t
+                            ;; Second digit encodes the longitude.
+                            (incf west (* value width))
+                            ;; Next discretization step.
+                            (incf prec))))
+                   ;; Update code length.
+                   (incf length))
+                  (t
+                   ;; Invalid character.
+                   (leave)))
+            (finally
+             (when (and plus
+                        ;; There must be an even number of pad characters.
+                        (or (zerop pad)
+                            (and (evenp pad)
+                                 (= plus 8)))
+                        ;; Code length has to be at least two.
+                        (>= length 2)
+                        ;; Code length is either less than or equal
+                        ;; to the position of the separator character,
+                        ;; i.e. the separator character is the last
+                        ;; character, or there are two or more valid
+                        ;; characters after the separator character.
+                        (or (<= length plus)
+                            (>= (- length plus) 2))
+                        ;; For a full code, the first two characters
+                        ;; have to be in the proper range.
+                        (or (/= plus 8)
+                            (and (< (digitp (aref code 0)) 9)
+                                 (< (digitp (aref code 1)) 18)))
+                        ;; Code is valid.
+                        (setf valid (if (= plus 8) :full :short)))
+               (when (not (null area))
+                 (setf object (make-instance 'code-area))
+                 (if (= plus 8)
+                     (setf (slot-value object 'south) (- south 90)
+                           (slot-value object 'west) (- west 180))
+                   (setf (slot-value object 'south) south
+                         (slot-value object 'west) west))
+                 (setf (slot-value object 'height) height
+                       (slot-value object 'width) width
+                       (slot-value object 'precision) (1- prec)
+                       (slot-value object 'length) length
+                       (slot-value object 'plus) plus
+                       (slot-value object 'pad) pad))
+               ))))
     (values valid object)))
 
 (defun validp (code)
@@ -542,47 +542,47 @@ earth radius of 6356766 m for a code area at the equator."
     (let ((code (make-string (+ 9 (if (> prec 4) 2 0) (max 0 (- prec 5))) :initial-element #\0)))
       (setf (aref code 8) #\+)
       (let ((height 0)
-	    (width 0)
-	    (index 1)
-	    (pos 0))
-	(labels ((pair ()
-		   ;; Query area size.
-		   (multiple-value-setq (height width)
-		     (area-size index))
-		   (incf index)
-		   (let (value)
-		     (multiple-value-setq (value lat)
-		       (truncate lat height))
-		     (setf (aref code pos) (digit value))
-		     (incf pos)
-		     (multiple-value-setq (value lon)
-		       (truncate lon width))
-		     (setf (aref code pos) (digit value))
-		     (incf pos))))
-	  (case prec
-	    (1
-	     (pair))
-	    (2
-	     (pair) (pair))
-	    (3
-	     (pair) (pair) (pair))
-	    (4
-	     (pair) (pair) (pair) (pair))
-	    (t
-	     (pair) (pair) (pair) (pair) (incf pos) (pair)
-	     ;; Refinement steps.
-	     (let (row column)
-	       (iter (repeat (- prec 5))
-		     (multiple-value-setq (height width)
-		       (area-size index))
-		     (incf index)
-		     (multiple-value-setq (row lat)
-		       (truncate lat height))
-		     (multiple-value-setq (column lon)
-		       (truncate lon width))
-		     (let ((value (+ (* row +grid-columns+) column)))
-		       (setf (aref code pos) (digit value))
-		       (incf pos))))))))
+            (width 0)
+            (index 1)
+            (pos 0))
+        (labels ((pair ()
+                   ;; Query area size.
+                   (multiple-value-setq (height width)
+                     (area-size index))
+                   (incf index)
+                   (let (value)
+                     (multiple-value-setq (value lat)
+                       (truncate lat height))
+                     (setf (aref code pos) (digit value))
+                     (incf pos)
+                     (multiple-value-setq (value lon)
+                       (truncate lon width))
+                     (setf (aref code pos) (digit value))
+                     (incf pos))))
+          (case prec
+            (1
+             (pair))
+            (2
+             (pair) (pair))
+            (3
+             (pair) (pair) (pair))
+            (4
+             (pair) (pair) (pair) (pair))
+            (t
+             (pair) (pair) (pair) (pair) (incf pos) (pair)
+             ;; Refinement steps.
+             (let (row column)
+               (iter (repeat (- prec 5))
+                     (multiple-value-setq (height width)
+                       (area-size index))
+                     (incf index)
+                     (multiple-value-setq (row lat)
+                       (truncate lat height))
+                     (multiple-value-setq (column lon)
+                       (truncate lon width))
+                     (let ((value (+ (* row +grid-columns+) column)))
+                       (setf (aref code pos) (digit value))
+                       (incf pos))))))))
       code)))
 
 (defun decode (code)
@@ -628,21 +628,21 @@ Signal a ‘full-code-error’ if CODE is not a full Open Location Code."
       (error 'full-code-error :datum code))
     (let (lat lon ref-lat ref-lon distance)
       (multiple-value-setq (lat lon)
-	(center area))
+        (center area))
       (multiple-value-setq (ref-lat ref-lon)
-	(normalize-location latitude longitude (precision area)))
+        (normalize-location latitude longitude (precision area)))
       (setf distance (max (abs (- lat ref-lat))
-			  (abs (- lon ref-lon))))
+                          (abs (- lon ref-lon))))
       (iter (for pos :from (min (code-length area) 8) :downto 4 :by 2)
-	    ;; Check for pad characters.
-	    (when (char= (aref code pos) #\0)
-	      (next-iteration))
-	    ;; Code area is square.
-	    (for block-size = (area-size (/ pos 2)))
-	    ;; Factor 0.3 adds just an extra margin of safety;
-	    ;; theoretically half the block size is sufficient.
-	    (when (< distance (* block-size 3/10))
-	      (return-from shorten (subseq code pos)))))
+            ;; Check for pad characters.
+            (when (char= (aref code pos) #\0)
+              (next-iteration))
+            ;; Code area is square.
+            (for block-size = (area-size (/ pos 2)))
+            ;; Factor 0.3 adds just an extra margin of safety;
+            ;; theoretically half the block size is sufficient.
+            (when (< distance (* block-size 3/10))
+              (return-from shorten (subseq code pos)))))
     ;; Return original full Open Location Code.
     code))
 
@@ -669,44 +669,44 @@ Code."
     (unless valid
       (error 'invalid-code-error :datum code))
     (if (eq valid :full)
-	;; A recovered code contains only uppercase letters.
-	(if (some #'lower-case-p code)
-	    (string-upcase code)
-	  code)
+        ;; A recovered code contains only uppercase letters.
+        (if (some #'lower-case-p code)
+            (string-upcase code)
+          code)
       (let (pad prec lat lon ref-lat ref-lon height width)
-	;; Number of digits to recover and the corresponding precision.
-	(setf pad (- 8 (separator-position area))
-	      prec (/ pad 2))
-	;; Relative location of the code area.
-	(multiple-value-setq (lat lon)
-	  (center area))
-	;; Generate the prefix from the reference location and combine
-	;; it with the short code.
-	(multiple-value-setq (ref-lat ref-lon)
-	  (normalize-location* latitude longitude prec))
-	(multiple-value-setq (height width)
-	  (area-size prec))
-	(incf lat (* (floor ref-lat height) height))
-	(incf lon (* (floor ref-lon width) width))
-	;; Check if the recovered code area is too far from the
-	;; reference location.  If so, move it.
-	(let ((distance (- lat ref-lat))
-	      (half-height (/ height 2)))
-	  (cond ((and (> distance half-height)
-		      (> (- lat height) 0))
-		 (decf lat height))
-		((and (< distance (- half-height))
-		      (< (+ lat height) 180))
-		 (incf lat height))))
-	(let ((distance (- lon ref-lon))
-	      (half-width (/ width 2)))
-	  (cond ((and (> distance half-width)
-		      (> (- lon width) 0))
-		 (decf lon width))
-		((and (< distance (- half-width))
-		      (< (+ lon width) 360))
-		 (incf lon width))))
-	;; Encode the recovered location.
-	(encode (- lat 90) (- lon 180) (precision area))))))
+        ;; Number of digits to recover and the corresponding precision.
+        (setf pad (- 8 (separator-position area))
+              prec (/ pad 2))
+        ;; Relative location of the code area.
+        (multiple-value-setq (lat lon)
+          (center area))
+        ;; Generate the prefix from the reference location and combine
+        ;; it with the short code.
+        (multiple-value-setq (ref-lat ref-lon)
+          (normalize-location* latitude longitude prec))
+        (multiple-value-setq (height width)
+          (area-size prec))
+        (incf lat (* (floor ref-lat height) height))
+        (incf lon (* (floor ref-lon width) width))
+        ;; Check if the recovered code area is too far from the
+        ;; reference location.  If so, move it.
+        (let ((distance (- lat ref-lat))
+              (half-height (/ height 2)))
+          (cond ((and (> distance half-height)
+                      (> (- lat height) 0))
+                 (decf lat height))
+                ((and (< distance (- half-height))
+                      (< (+ lat height) 180))
+                 (incf lat height))))
+        (let ((distance (- lon ref-lon))
+              (half-width (/ width 2)))
+          (cond ((and (> distance half-width)
+                      (> (- lon width) 0))
+                 (decf lon width))
+                ((and (< distance (- half-width))
+                      (< (+ lon width) 360))
+                 (incf lon width))))
+        ;; Encode the recovered location.
+        (encode (- lat 90) (- lon 180) (precision area))))))
 
 ;;; open-location-code.lisp ends here

@@ -1,4 +1,4 @@
-;;; open-location-code.asd --- Open Location Code library.
+;;; open-location-code.asd --- Open Location Code library
 
 ;; Copyright (C) 2019 Ralph Schleicher
 
