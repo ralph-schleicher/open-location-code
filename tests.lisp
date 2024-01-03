@@ -35,17 +35,19 @@
 
 (in-package :common-lisp-user)
 
-(ql:quickload :open-location-code)
-(ql:quickload :lisp-unit)
-(ql:quickload :cl-csv)
-(ql:quickload :read-number)
-
 (defpackage :open-location-code-tests
   (:use :common-lisp
         :lisp-unit
-        :iterate))
+        :iterate)
+  (:export
+   #:main))
 
 (in-package :open-location-code-tests)
+
+(defparameter *source-directory* (asdf:system-source-directory "open-location-code"))
+
+(defun source-file (file-name)
+  (uiop:merge-pathnames* file-name *source-directory*))
 
 (defun float-equal* (a b)
   (if (or (floatp a) (floatp b))
@@ -107,7 +109,7 @@
               :full)))))
 
 (define-test validity-tests
-  (with-open-file (stream "t/validityTests.csv")
+  (with-open-file (stream (source-file "t/validityTests.csv"))
     (iter (for row :in (cl-csv:read-csv stream))
           (for columns = (length row))
           (cond ((zerop columns)
@@ -128,21 +130,24 @@
     (assert-true
      (string= (olc:encode lat lon prec) code))))
 
-(defun decoding-test (code len lat-low lon-low lat-high lon-high)
+(defun %decoding-test (code len lat-low lon-low lat-high lon-high)
   (let ((area (olc:decode code)))
-    (assert-true
-     (and (if len (= (olc:code-length (olc:precision area)) len) t)
-          (multiple-value-bind (south west)
-              (olc:south-west-corner area)
-            (and (float-equal* lat-low south)
-                 (float-equal* lon-low west)))
-          (multiple-value-bind (north east)
-              (olc:north-east-corner area)
-            (and (float-equal* lat-high north)
-                 (float-equal* lon-high east)))))))
+    (and (if len (= (olc:code-length (olc:precision area)) len) t)
+         (multiple-value-bind (south west)
+             (olc:south-west-corner area)
+           (and (float-equal* lat-low south)
+                (float-equal* lon-low west)))
+         (multiple-value-bind (north east)
+             (olc:north-east-corner area)
+           (and (float-equal* lat-high north)
+                (float-equal* lon-high east))))))
+
+(defun decoding-test (code len lat-low lon-low lat-high lon-high)
+  (assert-true
+   (%decoding-test code len lat-low lon-low lat-high lon-high)))
 
 (define-test encoding-tests
-  (with-open-file (stream "t/encoding.csv")
+  (with-open-file (stream (source-file "t/encoding.csv"))
     (iter (for row :in (cl-csv:read-csv stream))
           (for columns = (length row))
           (cond ((zerop columns)
@@ -158,7 +163,7 @@
                 (t (fixme))))))
 
 (define-test decoding-tests
-  (with-open-file (stream "t/decoding.csv")
+  (with-open-file (stream (source-file "t/decoding.csv"))
     (iter (for row :in (cl-csv:read-csv stream))
           (for columns = (length row))
           (cond ((zerop columns)
@@ -176,17 +181,20 @@
                 (t (fixme))))))
 
 ;; Test shortening and extending codes.
+(defun %short-code-test (full-code lat lon short-code test-type)
+  (and (if (member test-type '(:both :shorten))
+           (string= (olc:shorten full-code lat lon) short-code)
+         t)
+       (if (member test-type '(:both :recover))
+           (string= (olc:recover short-code lat lon) full-code)
+         t)))
+
 (defun short-code-test (full-code lat lon short-code test-type)
   (assert-true
-   (and (if (member test-type '(:both :shorten))
-            (string= (olc:shorten full-code lat lon) short-code)
-          t)
-        (if (member test-type '(:both :recover))
-            (string= (olc:recover short-code lat lon) full-code)
-          t))))
+   (%short-code-test full-code lat lon short-code test-type)))
 
 (define-test short-code-tests
-  (with-open-file (stream "t/shortCodeTests.csv")
+  (with-open-file (stream (source-file "t/shortCodeTests.csv"))
     (iter (for row :in (cl-csv:read-csv stream))
           (for columns = (length row))
           (cond ((zerop columns)
@@ -206,10 +214,12 @@
                           (t (fixme))))))
                 (t (fixme))))))
 
-(let ((lisp-unit:*print-errors* t)
-      (lisp-unit:*print-failures* t)
-      (lisp-unit:*print-summary* t)
-      (lisp-unit:*epsilon* 1D-10))
-  (run-tests))
+;; Entry point.
+(defun main (&optional (tests :all))
+  (let ((lisp-unit:*print-errors* t)
+        (lisp-unit:*print-failures* t)
+        (lisp-unit:*print-summary* t)
+        (lisp-unit:*epsilon* 1D-10))
+    (run-tests tests :open-location-code-tests)))
 
 ;;; tests.lisp ends here
