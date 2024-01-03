@@ -45,7 +45,7 @@ all:
 .PHONY: check
 check: all
 	quicklisp-check-build -sbcl -ccl $(PACKAGE)
-	sbcl --non-interactive --load tests.lisp
+	sbcl --non-interactive --eval '(asdf:test-system "$(PACKAGE)")'
 
 .PHONY: clean
 clean:
