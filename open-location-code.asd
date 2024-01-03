@@ -40,7 +40,16 @@
   :author "Ralph Schleicher <rs@ralph-schleicher.de>"
   :license "Modified BSD License"
   :version (:read-file-line "VERSION")
-  :depends-on (:alexandria :iterate)
-  :components ((:file "open-location-code")))
+  :depends-on ("alexandria" "iterate")
+  :components ((:file "open-location-code"))
+  :in-order-to ((test-op (test-op "open-location-code/tests"))))
+
+(defsystem "open-location-code/tests"
+  :description "Open Location Code library test suite."
+  :author "Ralph Schleicher <rs@ralph-schleicher.de>"
+  :license "Modified BSD License"
+  :depends-on ("open-location-code" "lisp-unit" "cl-csv" "read-number")
+  :components ((:file "tests"))
+  :perform (test-op (o c) (symbol-call :open-location-code-tests :main)))
 
 ;;; open-location-code.asd ends here
