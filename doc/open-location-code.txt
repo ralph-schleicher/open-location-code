@@ -33,7 +33,7 @@ shortp (code)
    Otherwise, value is null.
 
                                                                       [Function]
-encode (latitude longitude &optional (precision 5))
+encode (latitude longitude &optional precision)
    Encode a location into an Open Location Code.
 
    First argument LATITUDE and second argument LONGITUDE denote the
