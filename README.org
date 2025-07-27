@@ -1,46 +1,96 @@
+* Open Location Code
+
 An Open Location Code library for Common Lisp.
+
+
+** Description
 
 Open Location Code is a location encoding system for addresses,
 independent of street names and building numbers.
 
 See <https://plus.codes>.
 
-
 The methods requested by the Open Location Code specification
 are implemented as follows:
 
-encode (LATITUDE LONGITUDE)  ==>  FULL-CODE
-     Convert a latitude and longitude into a 10 digit Open
-     Location Code.
-
-encode (LATITUDE LONGITUDE PRECISION)  ==>  FULL-CODE
-     Convert a latitude and longitude into an arbitrary
-     length Open Location Code.
-
-decode (CODE)  ==>  CODE-AREA
-     Decode an Open Location Code into, at a minimum, the
-     latitude and longitude of the south-west corner and
-     the area's height and width.
-
-validp (CODE)  ==>  boolean
-     Determine if a string is a valid sequence of Open
-     Location Code characters.
-
-fullp (CODE)  ==>  boolean
-     Determine if a string is a valid full Open Location
-     Code.
-
-shortp (CODE)  ==>  boolean
-     Determine if a string is a valid short Open Location
-     Code.
-
-shorten (FULL-CODE LATITUDE LONGITUDE)  ==>  SHORT-CODE
-     Remove four or six digits from the front of an Open
-     Location Code given a reference location.
-
-recover (SHORT-CODE LATITUDE LONGITUDE)  ==>  FULL-CODE
-     Recover a full Open Location Code from a short code
-     and a reference location.
+- =encode= (/latitude/ /longitude/) ⇒ /full-code/ \\
+  Convert a latitude and longitude into a 10 digit Open Location Code.
+- =encode= (/latitude/ /longitude/ /precision/) ⇒ /full-code/ \\
+  Convert a latitude and longitude into an arbitrary length Open
+  Location Code.
+- =decode= (/code/) ⇒ /code-area/ \\
+  Decode an Open Location Code into, at a minimum, the latitude and
+  longitude of the south-west corner and the area's height and width.
+- =validp= (/code/) ⇒ /boolean/ \\
+  Determine if a string is a valid sequence of Open Location Code
+  characters.
+- =fullp= (/code/) ⇒ /boolean/ \\
+  Determine if a string is a valid full Open Location Code.
+- =shortp= (/code/) ⇒ /boolean/ \\
+  Determine if a string is a valid short Open Location Code.
+- =shorten= (/full-code/ /latitude/ /longitude/) ⇒ /short-code/ \\
+  Remove four or six digits from the front of an Open Location Code
+  given a reference location.
+- =recover= (/short-code/ /latitude/ /longitude/) ⇒ /full-code/ \\
+  Recover a full Open Location Code from a short code and a reference
+  location.
 
 See <https://github.com/google/open-location-code/> for more
 documentation and sample implementations.
+
+
+** Installation
+
+The Open Location Code library is available in Quicklisp.
+#+BEGIN_SRC lisp
+(ql:quickload "open-location-code")
+#+END_SRC
+
+The test suite can be run by evaluating the following form.
+#+BEGIN_SRC lisp
+(asdf:test-system "open-location-code")
+#+END_SRC
+The expected output is displayed below.
+#+BEGIN_EXAMPLE
+LENGTH-FROM-PRECISION: 11 assertions passed, 0 failed.
+
+PRECISION-FROM-LENGTH: 11 assertions passed, 0 failed.
+
+VALIDITY-TESTS: 25 assertions passed, 0 failed.
+
+ | Failed Form: (OPEN-LOCATION-CODE:ENCODE OPEN-LOCATION-CODE-TESTS::LAT
+                                           OPEN-LOCATION-CODE-TESTS::LON
+                                           OPEN-LOCATION-CODE-TESTS::PREC)
+ | Expected "CHGW2H5C+X2RRRRR" but saw "CHGW2H5C+X2RRRRJ"
+ | OPEN-LOCATION-CODE-TESTS::LAT => 80.00999996d0
+ | OPEN-LOCATION-CODE-TESTS::LON => 58.57d0
+ | OPEN-LOCATION-CODE-TESTS::PREC => 10
+ |
+ENCODING-TESTS: 603 assertions passed, 1 failed.
+
+DECODING-TESTS: 420 assertions passed, 0 failed.
+
+SHORT-CODE-TESTS: 19 assertions passed, 0 failed.
+
+Unit Test Summary
+ | 1090 assertions total
+ | 1089 passed
+ | 1 failed
+ | 0 execution errors
+ | 0 missing tests
+#+END_EXAMPLE
+The failed test is an off-by-one error due to a floating-point
+inaccuracy.  See the notes below for more details.
+
+
+** Notes
+
+The Open Location Code library uses integer arithmetic for converting
+locations to Open Location Codes and vice versa.  The Common Lisp
+=rationalize= function is used to convert locations given in
+floating-point numbers into rational numbers.
+
+The Google developers finally realized that floating-point arithmetic
+is inaccurate by definition.  They are now in the transition phase to
+integer arithmetic.  However, there is IMHO still some inconsistency
+between the integer algorithms and the numbers in the test data.
