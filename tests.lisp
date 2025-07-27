@@ -74,39 +74,39 @@
     (read-number:read-float stream t nil nil :float-format 'double-float)))
 
 (define-test length-from-precision
-  (assert-true (olc:code-length  1)  2)
-  (assert-true (olc:code-length  2)  4)
-  (assert-true (olc:code-length  3)  6)
-  (assert-true (olc:code-length  4)  8)
-  (assert-true (olc:code-length  5) 10)
-  (assert-true (olc:code-length  6) 11)
-  (assert-true (olc:code-length  7) 12)
-  (assert-true (olc:code-length  8) 13)
-  (assert-true (olc:code-length  9) 14)
-  (assert-true (olc:code-length 10) 15)
-  (assert-true (olc:code-length 11) 15))
+  (assert-eql  2 (olc:code-length  1))
+  (assert-eql  4 (olc:code-length  2))
+  (assert-eql  6 (olc:code-length  3))
+  (assert-eql  8 (olc:code-length  4))
+  (assert-eql 10 (olc:code-length  5))
+  (assert-eql 11 (olc:code-length  6))
+  (assert-eql 12 (olc:code-length  7))
+  (assert-eql 13 (olc:code-length  8))
+  (assert-eql 14 (olc:code-length  9))
+  (assert-eql 15 (olc:code-length 10))
+  (assert-eql 15 (olc:code-length 11)))
 
 (define-test precision-from-length
-  (assert-true (olc:precision  2)  1)
-  (assert-true (olc:precision  4)  2)
-  (assert-true (olc:precision  6)  3)
-  (assert-true (olc:precision  8)  4)
-  (assert-true (olc:precision 10)  5)
-  (assert-true (olc:precision 11)  6)
-  (assert-true (olc:precision 12)  7)
-  (assert-true (olc:precision 13)  8)
-  (assert-true (olc:precision 14)  9)
-  (assert-true (olc:precision 15) 10)
-  (assert-true (olc:precision 16) 10))
+  (assert-eql  1 (olc:precision  2))
+  (assert-eql  2 (olc:precision  4))
+  (assert-eql  3 (olc:precision  6))
+  (assert-eql  4 (olc:precision  8))
+  (assert-eql  5 (olc:precision 10))
+  (assert-eql  6 (olc:precision 11))
+  (assert-eql  7 (olc:precision 12))
+  (assert-eql  8 (olc:precision 13))
+  (assert-eql  9 (olc:precision 14))
+  (assert-eql 10 (olc:precision 15))
+  (assert-eql 10 (olc:precision 16)))
 
 (defun validity-test (code valid short full)
   (declare (ignore valid))
-  (assert-true
-   (eq (olc:validp code)
-       (cond (short
-              :short)
-             (full
-              :full)))))
+  (assert-eq (cond (short
+                    :short)
+                   (full
+                    :full))
+             (olc:validp code)
+             code))
 
 (define-test validity-tests
   (with-open-file (stream (source-file "t/validityTests.csv"))
@@ -124,11 +124,14 @@
                   (boolean-from-string (fourth row))))
                 (t (fixme))))))
 
-;; Test encoding and decoding codes.
-(defun encoding-test (code len lat lon)
+;; Test encoding and decoding of plus codes.
+(defun encoding-test (code len lat lon lat-int lon-int)
   (let ((prec (olc:precision (or len (olc:decode code)))))
-    (assert-true
-     (string= (olc:encode lat lon prec) code))))
+    (assert-equal code (olc:encode lat lon prec) lat lon prec)
+    ;; Likewise for integer location.
+    (let ((lat (- (/ lat-int 25000000) 90))
+          (lon (- (/ lon-int 8192000) 180)))
+      (assert-equal code (olc:encode lat lon prec) lat-int lon-int prec))))
 
 (defun %decoding-test (code len lat-low lon-low lat-high lon-high)
   (let ((area (olc:decode code)))
@@ -154,12 +157,14 @@
                  (next-iteration))
                 ((char= (aref (first row) 0) #\#)
                  (next-iteration))
-                ((= columns 4)
+                ((= columns 6)
                  (encoding-test
-                  (fourth row)
-                  (number-from-string (third row))
+                  (sixth row)
+                  (number-from-string (fifth row))
                   (number-from-string (first row))
-                  (number-from-string (second row))))
+                  (number-from-string (second row))
+                  (number-from-string (third row))
+                  (number-from-string (fourth row))))
                 (t (fixme))))))
 
 (define-test decoding-tests
