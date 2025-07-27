@@ -316,9 +316,24 @@ the north pole."))
   "Return the number of pad characters in the original code."
   (slot-value object 'pad))
 
+(defun integer-from-degree (latitude longitude)
+  "Convert a location into non-negative integers."
+  (let* ((lat-scale (/ (svref +area-height+ +maximum-precision+)))
+         (lat-limit (* 180 lat-scale))
+         (lat (+ (floor (* latitude lat-scale)) (/ lat-limit 2)))
+         (lon-scale (/ (svref +area-width+ +maximum-precision+)))
+         (lon-limit (* 360 lon-scale))
+         (lon (+ (floor (* longitude lon-scale)) (/ lon-limit 2))))
+    ;; Clip the latitude to the half-closed interval [0°, 180°).
+    (setf lat (alexandria:clamp lat 0 (1- lat-limit)))
+    ;; Normalise the longitude to the half-closed interval [0°, 360°).
+    (setf lon (mod lon lon-limit))
+    ;; Return values.
+    (values lat lon)))
+
 (defun normalize-location (latitude longitude precision)
-  "Clip LATITUDE to the half-closed interval [-90, 90) and
-normalize LONGITUDE to the half-closed interval [-180, 180).
+  "Clip LATITUDE to the half-closed interval [-90°, 90°) and
+normalize LONGITUDE to the half-closed interval [-180°, 180°).
 Third argument PRECISION is used to determine the height of
  the code area if LATITUDE denotes the north pole.
 
@@ -328,15 +343,12 @@ Values are latitude, longitude, and the actual precision."
   (let ((lat (rationalize latitude))
         (lon (rationalize longitude))
         (prec (min precision +maximum-precision+)))
-    ;; Clip the latitude to the closed interval [-90, 90].
+    ;; Clip the latitude to the closed interval [-90°, 90°].
     (setf lat (alexandria:clamp lat -90 90))
     ;; Ensure that the represented area does not exceed 90° latitude.
     (when (= lat 90)
-      (multiple-value-bind (height width)
-          (area-size precision)
-        (declare (ignore width))
-        (decf lat (/ height 2))))
-    ;; Normalise the longitude to the half-closed interval [-180, 180).
+      (decf lat (/ (svref +area-height+ prec) 2)))
+    ;; Normalise the longitude to the half-closed interval [-180°, 180°).
     (setf lon (rem lon 360))
     (cond ((< lon -180)
            (incf lon 360))
