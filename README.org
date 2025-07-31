@@ -6,34 +6,34 @@ An Open Location Code library for Common Lisp.
 ** Description
 
 Open Location Code is a location encoding system for addresses,
-independent of street names and building numbers.
+independent of street names and building numbers.  The encoded
+location identifier is called Plus Code since it always contains
+a plus sign character.  For example, 8FX8QJ2G+QH is the Plus Code
+of the Roman bridge in Trier, Germany.
 
 See <https://plus.codes>.
 
-The methods requested by the Open Location Code specification
-are implemented as follows:
+The methods requested by the Open Location Code specification are
+implemented as follows:
 
 - =encode= (/latitude/ /longitude/) ⇒ /full-code/ \\
-  Convert a latitude and longitude into a 10 digit Open Location Code.
+  Convert a latitude and longitude into a 10 digit Plus Code.
 - =encode= (/latitude/ /longitude/ /precision/) ⇒ /full-code/ \\
-  Convert a latitude and longitude into an arbitrary length Open
-  Location Code.
+  Convert a latitude and longitude into an arbitrary length Plus Code.
 - =decode= (/code/) ⇒ /code-area/ \\
-  Decode an Open Location Code into, at a minimum, the latitude and
-  longitude of the south-west corner and the area's height and width.
+  Decode a Plus Code into, at a minimum, the latitude and longitude of
+  the south-west corner and the area's height and width.
 - =validp= (/code/) ⇒ /boolean/ \\
-  Determine if a string is a valid sequence of Open Location Code
-  characters.
+  Determine if a string is a valid sequence of Plus Code characters.
 - =fullp= (/code/) ⇒ /boolean/ \\
-  Determine if a string is a valid full Open Location Code.
+  Determine if a string is a valid full Plus Code.
 - =shortp= (/code/) ⇒ /boolean/ \\
-  Determine if a string is a valid short Open Location Code.
+  Determine if a string is a valid short Plus Code.
 - =shorten= (/full-code/ /latitude/ /longitude/) ⇒ /short-code/ \\
-  Remove four or six digits from the front of an Open Location Code
-  given a reference location.
+  Remove four or six digits from the front of a Plus Code given a
+  reference location.
 - =recover= (/short-code/ /latitude/ /longitude/) ⇒ /full-code/ \\
-  Recover a full Open Location Code from a short code and a reference
-  location.
+  Recover a full Plus Code from a short code and a reference location.
 
 See <https://github.com/google/open-location-code/> for more
 documentation and sample implementations.
@@ -86,9 +86,9 @@ inaccuracy.  See the notes below for more details.
 ** Notes
 
 The Open Location Code library uses integer arithmetic for converting
-locations to Open Location Codes and vice versa.  The Common Lisp
-=rationalize= function is used to convert locations given in
-floating-point numbers into rational numbers.
+locations to Plus Codes and vice versa.  The Common Lisp =rationalize=
+function is used to convert locations given in floating-point numbers
+into rational numbers.
 
 The Google developers finally realized that floating-point arithmetic
 is inaccurate by definition.  They are now in the transition phase to

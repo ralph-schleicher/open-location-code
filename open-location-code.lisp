@@ -61,7 +61,10 @@
            #:pad-characters)
   (:documentation
    "Open Location Code is a location encoding system for addresses,
-independent of street names and building numbers.
+independent of street names and building numbers.  The encoded
+location identifier is called Plus Code since it always contains
+a plus sign character.  For example, 8FX8QJ2G+QH is the Plus Code
+of the Roman bridge in Trier, Germany.
 
 See <https://plus.codes>."))
 
@@ -93,41 +96,41 @@ for inline expansion by the compiler."
 (define-condition code-length-error (code-error)
   ()
   (:documentation
-   "Condition for an invalid Open Location Code length.")
+   "Condition for an invalid Plus Code length.")
   (:report
    (lambda (condition stream)
      (format stream
-             "The value ‘~S’ is not a valid Open Location Code length."
+             "The value ‘~S’ is not a valid Plus Code length."
              (type-error-datum condition)))))
 
 (define-condition invalid-code-error (code-error)
   ()
   (:documentation
-   "Condition for an invalid Open Location Code.")
+   "Condition for an invalid Plus Code.")
   (:report
    (lambda (condition stream)
      (format stream
-             "The value ‘~S’ is not a valid Open Location Code."
+             "The value ‘~S’ is not a valid Plus Code."
              (type-error-datum condition)))))
 
 (define-condition full-code-error (invalid-code-error)
   ()
   (:documentation
-   "Condition for an invalid full Open Location Code.")
+   "Condition for an invalid full Plus Code.")
   (:report
    (lambda (condition stream)
      (format stream
-             "The value ‘~S’ is not a full Open Location Code."
+             "The value ‘~S’ is not a full Plus Code."
              (type-error-datum condition)))))
 
 (define-condition short-code-error (invalid-code-error)
   ()
   (:documentation
-   "Condition for an invalid short Open Location Code.")
+   "Condition for an invalid short Plus Code.")
   (:report
    (lambda (condition stream)
      (format stream
-             "The value ‘~S’ is not a short Open Location Code."
+             "The value ‘~S’ is not a short Plus Code."
              (type-error-datum condition)))))
 
 (defconst +maximum-precision+ 10
@@ -237,16 +240,16 @@ Argument PRECISION is the number of discretization steps."
     :initform 0
     :type fixnum
     :documentation "Position of the separator character in the original code.")
-   ;; If slot value PLUS is equal to eight, the original code was a full
-   ;; Open Location Code and slot values SOUTH and WEST denote an absolute
-   ;; location.  Otherwise, the original code was a short Open Location Code
-   ;; and slot values SOUTH and WEST denote a relative location, i.e. the
-   ;; offset to the reference location.
+   ;; If slot value PLUS is equal to eight, the original code was a
+   ;; full Plus Code and slot values SOUTH and WEST denote an absolute
+   ;; location.  Otherwise, the original code was a short Plus Code
+   ;; and slot values SOUTH and WEST denote a relative location,
+   ;; i.e. the offset to the reference location.
    (pad
     :initform 0
     :type fixnum
     :documentation "Number of pad characters in the original code."))
-  (:documentation "Area covered by an Open Location Code."))
+  (:documentation "Area covered by a Plus Code."))
 
 (defgeneric south-west-corner (object)
   (:documentation
@@ -276,7 +279,7 @@ the north pole."))
 
 (defgeneric precision (object)
   (:documentation
-   "Return the Open Location Code precision."))
+   "Return the Plus Code precision."))
 
 (defmethod precision ((object code-area))
   "Return the precision of the original code."
@@ -289,7 +292,7 @@ the north pole."))
 
 (defgeneric code-length (object)
   (:documentation
-   "Return the Open Location Code length."))
+   "Return the Plus Code length."))
 
 (defmethod code-length ((object code-area))
   "Return the code length of the original code."
@@ -371,14 +374,14 @@ to the longitude."
     (values lat lon prec)))
 
 (defun analyse (code &optional area)
-  "Analyse an Open Location Code.
+  "Analyse a Plus Code.
 
-First argument CODE is the Open Location Code (an object).
+First argument CODE is the Plus Code (an object).
 If optional second argument AREA is non-null, secondary value
  is a code area object.
 
 Primary value is ‘:full’ or ‘:short’ if CODE is a valid full or short
-Open Location Code respectively.  Otherwise, all values are null."
+Plus Code respectively.  Otherwise, all values are null."
   (let (valid object)
     (when (stringp code)
       (iter (with south = 0)
@@ -487,34 +490,34 @@ Open Location Code respectively.  Otherwise, all values are null."
     (values valid object)))
 
 (defun validp (code)
-  "True if an object is a valid sequence of Open Location Code characters.
+  "True if an object is a valid sequence of Plus Code characters.
 
 Argument CODE is an object of any type.
 
-Value is ‘:full’ or ‘:short’ if CODE is a valid full or short Open
-Location Code respectively.  Otherwise, value is null."
+Value is ‘:full’ or ‘:short’ if CODE is a valid full or short Plus
+Code respectively.  Otherwise, value is null."
   (nth-value 0 (analyse code)))
 
 (defun fullp (code)
-  "True if an object is a valid full Open Location Code.
+  "True if an object is a valid full Plus Code.
 
 Argument CODE is an object of any type.
 
-Value is true if CODE is a valid full Open Location Code.
+Value is true if CODE is a valid full Plus Code.
 Otherwise, value is null."
   (eq (analyse code) :full))
 
 (defun shortp (code)
-  "True if an object is a valid short Open Location Code.
+  "True if an object is a valid short Plus Code.
 
 Argument CODE is an object of any type.
 
-Value is true if CODE is a valid full Open Location Code.
+Value is true if CODE is a valid full Plus Code.
 Otherwise, value is null."
   (eq (analyse code) :short))
 
 (defun encode (latitude longitude &optional (precision 5))
-  "Encode a location into an Open Location Code.
+  "Encode a location into a Plus Code.
 
 First argument LATITUDE and second argument LONGITUDE denote the
  location in degree angle.  The latitude is clipped to the closed
@@ -523,7 +526,7 @@ First argument LATITUDE and second argument LONGITUDE denote the
 Optional third argument PRECISION is the precision of the code.
  Default is five, i.e. a code length of ten digits.
 
-Value is a full Open Location Code (a string).
+Value is a full Plus Code (a string).
 
 The relation between precision, code length, and code area size
 is depicted in the following table.
@@ -541,10 +544,10 @@ is depicted in the following table.
        9      |     14      |       0.0542  |       0.0222
       10      |     15      |       0.0135  |       0.00444
 
-The code length is equal to the number of Open Location Code digits.
-Pad characters and the separator character ‘+’ are not part of the
-code length.  The code area dimensions are calculated with a mean
-earth radius of 6356766 m for a code area at the equator."
+The code length is equal to the number of Plus Code digits.  Pad
+characters and the separator character ‘+’ are not part of the code
+length.  The code area dimensions are calculated with a mean earth
+radius of 6356766 m for a code area at the equator."
   (check-type latitude real)
   (check-type longitude real)
   (check-type precision (integer 1))
@@ -598,18 +601,17 @@ earth radius of 6356766 m for a code area at the equator."
       code)))
 
 (defun decode (code)
-  "Decode an Open Location Code.
+  "Decode a Plus Code.
 
-Argument CODE is an Open Location Code (a string).
+Argument CODE is a Plus Code (a string).
 
-Primary value is a ‘code-area’ object.  Secondary value is ‘:full’ or
-‘:short’ if CODE is a full or short Open Location Code respectively.
-If CODE is a full Open Location Code the code area denotes absolute
-coordinates.  Otherwise, the code area denotes relative coordinates,
-i.e. offset values in the enclosing block.
+Primary value is a ‘code-area’ object.  Secondary value is ‘:full’
+or ‘:short’ if CODE is a full or short Plus Code respectively.  If
+CODE is a full Plus Code the code area denotes absolute coordinates.
+Otherwise, the code area denotes relative coordinates, i.e. offset
+values in the enclosing block.
 
-Signal an ‘invalid-code-error’ if CODE is not a valid Open Location
-Code."
+Signal an ‘invalid-code-error’ if CODE is not a valid Plus Code."
   (check-type code string)
   (multiple-value-bind (valid area)
       (analyse code t)
@@ -618,10 +620,10 @@ Code."
     (values area valid)))
 
 (defun shorten (code latitude longitude)
-  "Remove four, six, or eight digits from the front of a full Open
-Location Code given a reference location.
+  "Remove four, six, or eight digits from the front of a full Plus
+Code given a reference location.
 
-First argument CODE is a full Open Location Code (a string).
+First argument CODE is a full Plus Code (a string).
 Second argument LATITUDE and third argument LONGITUDE denote the
  reference location in degree angle.  The latitude is clipped to
  the closed interval [-90, 90] and the longitude is normalized to
@@ -630,7 +632,7 @@ Second argument LATITUDE and third argument LONGITUDE denote the
 Value is the short code, or the original full code if the reference
 location is too far.
 
-Signal a ‘full-code-error’ if CODE is not a full Open Location Code."
+Signal a ‘full-code-error’ if CODE is not a full Plus Code."
   (check-type code string)
   (check-type latitude real)
   (check-type longitude real)
@@ -655,14 +657,13 @@ Signal a ‘full-code-error’ if CODE is not a full Open Location Code."
             ;; theoretically half the block size is sufficient.
             (when (< distance (* block-size 3/10))
               (return-from shorten (subseq code pos)))))
-    ;; Return original full Open Location Code.
+    ;; Return original full Plus Code.
     code))
 
 (defun recover (code latitude longitude)
-  "Recover a full Open Location Code from a short code
-and a reference location.
+  "Recover a full Plus Code from a short code and a reference location.
 
-First argument CODE is an Open Location Code (a string).
+First argument CODE is a Plus Code (a string).
 Second argument LATITUDE and third argument LONGITUDE denote the
  reference location in degree angle.  The latitude is clipped to
  the closed interval [-90, 90] and the longitude is normalized to
@@ -671,8 +672,7 @@ Second argument LATITUDE and third argument LONGITUDE denote the
 Value is the recovered full code.  If CODE is already a full code,
 return CODE as is.
 
-Signal an ‘invalid-code-error’ if CODE is not an Open Location
-Code."
+Signal an ‘invalid-code-error’ if CODE is not a Plus Code."
   (check-type code string)
   (check-type latitude real)
   (check-type longitude real)
