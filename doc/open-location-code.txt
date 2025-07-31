@@ -1,40 +1,43 @@
 OPEN-LOCATION-CODE
 
 Open Location Code is a location encoding system for addresses,
-independent of street names and building numbers.
+independent of street names and building numbers.  The encoded
+location identifier is called Plus Code since it always contains
+a plus sign character.  For example, 8FX8QJ2G+QH is the Plus Code
+of the Roman bridge in Trier, Germany.
 
 See <https://plus.codes>.
 
                                                                       [Function]
 validp (code)
-   True if an object is a valid sequence of Open Location Code characters.
+   True if an object is a valid sequence of Plus Code characters.
 
    Argument CODE is an object of any type.
 
-   Value is ‘:full’ or ‘:short’ if CODE is a valid full or short Open
-   Location Code respectively.  Otherwise, value is null.
+   Value is ‘:full’ or ‘:short’ if CODE is a valid full or short Plus
+   Code respectively.  Otherwise, value is null.
 
                                                                       [Function]
 fullp (code)
-   True if an object is a valid full Open Location Code.
+   True if an object is a valid full Plus Code.
 
    Argument CODE is an object of any type.
 
-   Value is true if CODE is a valid full Open Location Code.
+   Value is true if CODE is a valid full Plus Code.
    Otherwise, value is null.
 
                                                                       [Function]
 shortp (code)
-   True if an object is a valid short Open Location Code.
+   True if an object is a valid short Plus Code.
 
    Argument CODE is an object of any type.
 
-   Value is true if CODE is a valid full Open Location Code.
+   Value is true if CODE is a valid full Plus Code.
    Otherwise, value is null.
 
                                                                       [Function]
 encode (latitude longitude &optional precision)
-   Encode a location into an Open Location Code.
+   Encode a location into a Plus Code.
 
    First argument LATITUDE and second argument LONGITUDE denote the
     location in degree angle.  The latitude is clipped to the closed
@@ -43,7 +46,7 @@ encode (latitude longitude &optional precision)
    Optional third argument PRECISION is the precision of the code.
     Default is five, i.e. a code length of ten digits.
 
-   Value is a full Open Location Code (a string).
+   Value is a full Plus Code (a string).
 
    The relation between precision, code length, and code area size
    is depicted in the following table.
@@ -61,32 +64,31 @@ encode (latitude longitude &optional precision)
           9      |     14      |       0.0542  |       0.0222
          10      |     15      |       0.0135  |       0.00444
 
-   The code length is equal to the number of Open Location Code digits.
-   Pad characters and the separator character ‘+’ are not part of the
-   code length.  The code area dimensions are calculated with a mean
-   earth radius of 6356766 m for a code area at the equator.
+   The code length is equal to the number of Plus Code digits.  Pad
+   characters and the separator character ‘+’ are not part of the code
+   length.  The code area dimensions are calculated with a mean earth
+   radius of 6356766 m for a code area at the equator.
 
                                                                       [Function]
 decode (code)
-   Decode an Open Location Code.
+   Decode a Plus Code.
 
-   Argument CODE is an Open Location Code (a string).
+   Argument CODE is a Plus Code (a string).
 
-   Primary value is a ‘code-area’ object.  Secondary value is ‘:full’ or
-   ‘:short’ if CODE is a full or short Open Location Code respectively.
-   If CODE is a full Open Location Code the code area denotes absolute
-   coordinates.  Otherwise, the code area denotes relative coordinates,
-   i.e. offset values in the enclosing block.
+   Primary value is a ‘code-area’ object.  Secondary value is ‘:full’
+   or ‘:short’ if CODE is a full or short Plus Code respectively.  If
+   CODE is a full Plus Code the code area denotes absolute coordinates.
+   Otherwise, the code area denotes relative coordinates, i.e. offset
+   values in the enclosing block.
 
-   Signal an ‘invalid-code-error’ if CODE is not a valid Open Location
-   Code.
+   Signal an ‘invalid-code-error’ if CODE is not a valid Plus Code.
 
                                                                       [Function]
 shorten (code latitude longitude)
-   Remove four, six, or eight digits from the front of a full Open
-   Location Code given a reference location.
+   Remove four, six, or eight digits from the front of a full Plus
+   Code given a reference location.
 
-   First argument CODE is a full Open Location Code (a string).
+   First argument CODE is a full Plus Code (a string).
    Second argument LATITUDE and third argument LONGITUDE denote the
     reference location in degree angle.  The latitude is clipped to
     the closed interval [-90, 90] and the longitude is normalized to
@@ -95,14 +97,13 @@ shorten (code latitude longitude)
    Value is the short code, or the original full code if the reference
    location is too far.
 
-   Signal a ‘full-code-error’ if CODE is not a full Open Location Code.
+   Signal a ‘full-code-error’ if CODE is not a full Plus Code.
 
                                                                       [Function]
 recover (code latitude longitude)
-   Recover a full Open Location Code from a short code
-   and a reference location.
+   Recover a full Plus Code from a short code and a reference location.
 
-   First argument CODE is an Open Location Code (a string).
+   First argument CODE is a Plus Code (a string).
    Second argument LATITUDE and third argument LONGITUDE denote the
     reference location in degree angle.  The latitude is clipped to
     the closed interval [-90, 90] and the longitude is normalized to
@@ -111,8 +112,7 @@ recover (code latitude longitude)
    Value is the recovered full code.  If CODE is already a full code,
    return CODE as is.
 
-   Signal an ‘invalid-code-error’ if CODE is not an Open Location
-   Code.
+   Signal an ‘invalid-code-error’ if CODE is not a Plus Code.
 
                                                                      [Condition]
 code-error
@@ -120,23 +120,23 @@ code-error
 
                                                                      [Condition]
 code-length-error
-   Condition for an invalid Open Location Code length.
+   Condition for an invalid Plus Code length.
 
                                                                      [Condition]
 invalid-code-error
-   Condition for an invalid Open Location Code.
+   Condition for an invalid Plus Code.
 
                                                                      [Condition]
 full-code-error
-   Condition for an invalid full Open Location Code.
+   Condition for an invalid full Plus Code.
 
                                                                      [Condition]
 short-code-error
-   Condition for an invalid short Open Location Code.
+   Condition for an invalid short Plus Code.
 
                                                                          [Class]
 code-area
-   Area covered by an Open Location Code.
+   Area covered by a Plus Code.
 
                                                                         [Method]
 south-west-corner ((object code-area))
