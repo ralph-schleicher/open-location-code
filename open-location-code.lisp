@@ -373,17 +373,21 @@ to the longitude."
     ;; Return values.
     (values lat lon prec)))
 
-(defun analyse (code &optional area)
+(defun analyse (code start end &optional area)
   "Analyse a Plus Code.
 
 First argument CODE is the Plus Code (an object).
-If optional second argument AREA is not ‘nil’, secondary value
+Second argument START is the lower bounding index of CODE.
+Third argument END is the upper bounding index of CODE.
+If optional fourth argument AREA is not ‘nil’, secondary value
  is a code area object.
 
 Primary value is ‘:full’ or ‘:short’ if CODE is a valid full or short
 Plus Code respectively.  Otherwise, all values are ‘nil’."
   (let (valid object)
     (when (stringp code)
+      (when (null end)
+        (setf end (length code)))
       (iter (with south = 0)
             (with west = 0)
             (with height = 0)
@@ -394,12 +398,15 @@ Plus Code respectively.  Otherwise, all values are ‘nil’."
             ;; Decimal value of a digit.
             (with value)
             ;; Discretization step of the next digit.
-            (with prec = (case (position #\+ code :test #'char=)
+            ;; Also check for the correct position of
+            ;; the separator character.
+            (with prec = (case (alexandria:when-let ((pos (position #\+ code :start start :end end :test #'char=)))
+                                 (- pos start))
                            (8 1) (6 2) (4 3) (2 4) (0 5) (t 0)))
             (initially
              (when (= prec 0)
                (return)))
-            (for pos :from 0 :below (length code))
+            (for pos :from start :below end)
             (for char = (aref code pos))
             (cond ((char= char #\0)
                    ;; Pad characters can only occur before the
@@ -414,7 +421,7 @@ Plus Code respectively.  Otherwise, all values are ‘nil’."
                    ;; prologue section.
                    (when plus ;(or plus (oddp pos) (> pos 8))
                      (leave))
-                   (setf plus pos))
+                   (setf plus (- pos start)))
                   ((setf value (digitp char))
                    ;; Valid characters can only occur before pad
                    ;; characters.
@@ -469,8 +476,8 @@ Plus Code respectively.  Otherwise, all values are ‘nil’."
                         ;; For a full code, the first two characters
                         ;; have to be in the proper range.
                         (or (/= plus 8)
-                            (and (< (digitp (aref code 0)) 9)
-                                 (< (digitp (aref code 1)) 18)))
+                            (and (< (digitp (aref code (+ start 0))) 9)
+                                 (< (digitp (aref code (+ start 1))) 18)))
                         ;; Code is valid.
                         (setf valid (if (= plus 8) :full :short)))
                (when (not (null area))
@@ -489,32 +496,44 @@ Plus Code respectively.  Otherwise, all values are ‘nil’."
                ))))
     (values valid object)))
 
-(defun validp (code)
+(defun validp (code &key (start 0) end)
   "True if an object is a valid sequence of Plus Code characters.
 
 Argument CODE is an object of any type.
+Keyword arguments START and END are the bounding indices of CODE.
+ Default is zero and the length of CODE respectively.
 
 Value is ‘:full’ or ‘:short’ if CODE is a valid full or short Plus
 Code respectively.  Otherwise, value is ‘nil’."
-  (nth-value 0 (analyse code)))
+  (check-type start alexandria:array-index)
+  (check-type end (or null alexandria:array-index))
+  (nth-value 0 (analyse code start end)))
 
-(defun fullp (code)
+(defun fullp (code &key (start 0) end)
   "True if an object is a valid full Plus Code.
 
 Argument CODE is an object of any type.
+Keyword arguments START and END are the bounding indices of CODE.
+ Default is zero and the length of CODE respectively.
 
 Value is true if CODE is a valid full Plus Code.
 Otherwise, value is ‘nil’."
-  (eq (analyse code) :full))
+  (check-type start alexandria:array-index)
+  (check-type end (or null alexandria:array-index))
+  (eq (analyse code start end) :full))
 
-(defun shortp (code)
+(defun shortp (code &key (start 0) end)
   "True if an object is a valid short Plus Code.
 
 Argument CODE is an object of any type.
+Keyword arguments START and END are the bounding indices of CODE.
+ Default is zero and the length of CODE respectively.
 
 Value is true if CODE is a valid full Plus Code.
 Otherwise, value is ‘nil’."
-  (eq (analyse code) :short))
+  (check-type start alexandria:array-index)
+  (check-type end (or null alexandria:array-index))
+  (eq (analyse code start end) :short))
 
 (defun encode (latitude longitude &optional (precision 5))
   "Encode a location into a Plus Code.
@@ -600,10 +619,12 @@ radius of 6356766 m for a code area at the equator."
                        (incf pos))))))))
       code)))
 
-(defun decode (code)
+(defun decode (code &key (start 0) end)
   "Decode a Plus Code.
 
 Argument CODE is a Plus Code (a string).
+Keyword arguments START and END are the bounding indices of CODE.
+ Default is zero and the length of CODE respectively.
 
 Primary value is a ‘code-area’ object.  Secondary value is ‘:full’
 or ‘:short’ if CODE is a full or short Plus Code respectively.  If
@@ -613,13 +634,15 @@ values in the enclosing block.
 
 Signal an ‘invalid-code-error’ if CODE is not a valid Plus Code."
   (check-type code string)
+  (check-type start alexandria:array-index)
+  (check-type end (or null alexandria:array-index))
   (multiple-value-bind (valid area)
-      (analyse code t)
+      (analyse code start end t)
     (when (not valid)
       (error 'invalid-code-error :datum code))
     (values area valid)))
 
-(defun shorten (code latitude longitude)
+(defun shorten (code latitude longitude &key (start 0) end)
   "Remove four, six, or eight digits from the front of a full Plus
 Code given a reference location.
 
@@ -628,6 +651,8 @@ Second argument LATITUDE and third argument LONGITUDE denote the
  reference location in degree angle.  The latitude is clipped to
  the closed interval [-90, 90] and the longitude is normalized to
  the half-closed interval [-180, 180).
+Keyword arguments START and END are the bounding indices of CODE.
+ Default is zero and the length of CODE respectively.
 
 Value is the short code, or the original full code if the reference
 location is too far.
@@ -636,8 +661,10 @@ Signal a ‘full-code-error’ if CODE is not a full Plus Code."
   (check-type code string)
   (check-type latitude real)
   (check-type longitude real)
+  (check-type start alexandria:array-index)
+  (check-type end (or null alexandria:array-index))
   (multiple-value-bind (valid area)
-      (analyse code t)
+      (analyse code start end t)
     (unless (eq valid :full)
       (error 'full-code-error :datum code))
     (let (lat lon ref-lat ref-lon distance)
@@ -660,7 +687,7 @@ Signal a ‘full-code-error’ if CODE is not a full Plus Code."
     ;; Return original full Plus Code.
     code))
 
-(defun recover (code latitude longitude)
+(defun recover (code latitude longitude &key (start 0) end)
   "Recover a full Plus Code from a short code and a reference location.
 
 First argument CODE is a Plus Code (a string).
@@ -668,6 +695,8 @@ Second argument LATITUDE and third argument LONGITUDE denote the
  reference location in degree angle.  The latitude is clipped to
  the closed interval [-90, 90] and the longitude is normalized to
  the half-closed interval [-180, 180).
+Keyword arguments START and END are the bounding indices of CODE.
+ Default is zero and the length of CODE respectively.
 
 Value is the recovered full code.  If CODE is already a full code,
 return CODE as is.
@@ -676,8 +705,10 @@ Signal an ‘invalid-code-error’ if CODE is not a Plus Code."
   (check-type code string)
   (check-type latitude real)
   (check-type longitude real)
+  (check-type start alexandria:array-index)
+  (check-type end (or null alexandria:array-index))
   (multiple-value-bind (valid area)
-      (analyse code t)
+      (analyse code start end t)
     (unless valid
       (error 'invalid-code-error :datum code))
     (if (eq valid :full)
