@@ -167,7 +167,7 @@ value, i.e. weight, of the digit.")
 Argument CHAR has to be a character.
 
 Value is the decimal value, i.e. weight, of the digit,
-or null if CHAR is an invalid digit."
+or ‘nil’ if CHAR is an invalid digit."
   ;; Decoding must be case insensitive.
   (position char +alphabet+ :test #'char-equal))
 
@@ -377,11 +377,11 @@ to the longitude."
   "Analyse a Plus Code.
 
 First argument CODE is the Plus Code (an object).
-If optional second argument AREA is non-null, secondary value
+If optional second argument AREA is not ‘nil’, secondary value
  is a code area object.
 
 Primary value is ‘:full’ or ‘:short’ if CODE is a valid full or short
-Plus Code respectively.  Otherwise, all values are null."
+Plus Code respectively.  Otherwise, all values are ‘nil’."
   (let (valid object)
     (when (stringp code)
       (iter (with south = 0)
@@ -495,7 +495,7 @@ Plus Code respectively.  Otherwise, all values are null."
 Argument CODE is an object of any type.
 
 Value is ‘:full’ or ‘:short’ if CODE is a valid full or short Plus
-Code respectively.  Otherwise, value is null."
+Code respectively.  Otherwise, value is ‘nil’."
   (nth-value 0 (analyse code)))
 
 (defun fullp (code)
@@ -504,7 +504,7 @@ Code respectively.  Otherwise, value is null."
 Argument CODE is an object of any type.
 
 Value is true if CODE is a valid full Plus Code.
-Otherwise, value is null."
+Otherwise, value is ‘nil’."
   (eq (analyse code) :full))
 
 (defun shortp (code)
@@ -513,7 +513,7 @@ Otherwise, value is null."
 Argument CODE is an object of any type.
 
 Value is true if CODE is a valid full Plus Code.
-Otherwise, value is null."
+Otherwise, value is ‘nil’."
   (eq (analyse code) :short))
 
 (defun encode (latitude longitude &optional (precision 5))
