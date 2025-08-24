@@ -460,7 +460,9 @@ Plus Code respectively.  Otherwise, all values are ‘nil’."
                    (leave)))
             (finally
              (when (and plus
-                        ;; There must be an even number of pad characters.
+                        ;; There must be an even number of pad
+                        ;; characters.  Pad characters can only
+                        ;; occur in full Plus Codes.
                         (or (zerop pad)
                             (and (evenp pad)
                                  (= plus 8)))
