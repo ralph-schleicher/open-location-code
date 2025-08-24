@@ -392,9 +392,9 @@ Plus Code respectively.  Otherwise, all values are ‘nil’."
             (with west = 0)
             (with height = 0)
             (with width = 0)
-            (with length = 0)
             (with plus)
             (with pad = 0)
+            (with length = 0)
             ;; Decimal value of a digit.
             (with value)
             ;; Discretization step of the next digit.
@@ -408,21 +408,7 @@ Plus Code respectively.  Otherwise, all values are ‘nil’."
                (return)))
             (for pos :from start :below end)
             (for char = (aref code pos))
-            (cond ((char= char #\0)
-                   ;; Pad characters can only occur before the
-                   ;; separator character.
-                   (when plus
-                     (leave))
-                   (incf pad))
-                  ((char= char #\+)
-                   ;; There can only be one separator character
-                   ;; and it has to be at the correct position.
-                   ;; The later already has been checked in the
-                   ;; prologue section.
-                   (when plus ;(or plus (oddp pos) (> pos 8))
-                     (leave))
-                   (setf plus (- pos start)))
-                  ((setf value (digitp char))
+            (cond ((setf value (digitp char))
                    ;; Valid characters can only occur before pad
                    ;; characters.
                    (when (plusp pad)
@@ -455,47 +441,61 @@ Plus Code respectively.  Otherwise, all values are ‘nil’."
                             (incf prec))))
                    ;; Update code length.
                    (incf length))
+                  ((char= char #\0)
+                   ;; Pad characters can only occur before the
+                   ;; separator character.
+                   (when plus
+                     (leave))
+                   (incf pad))
+                  ((char= char #\+)
+                   ;; There can only be one separator character
+                   ;; and it has to be at the correct position.
+                   ;; The later already has been checked in the
+                   ;; prologue section.
+                   (when plus ;(or plus (oddp pos) (> pos 8))
+                     (leave))
+                   (setf plus (- pos start)))
                   (t
                    ;; Invalid character.
                    (leave)))
             (finally
-             (when (and plus
-                        ;; There must be an even number of pad
-                        ;; characters.  Pad characters can only
-                        ;; occur in full Plus Codes.
-                        (or (zerop pad)
-                            (and (evenp pad)
-                                 (= plus 8)))
-                        ;; Code length has to be at least two.
-                        (>= length 2)
-                        ;; Code length is either less than or equal
-                        ;; to the position of the separator character,
-                        ;; i.e. the separator character is the last
-                        ;; character, or there are two or more valid
-                        ;; characters after the separator character.
-                        (or (<= length plus)
-                            (>= (- length plus) 2))
-                        ;; For a full code, the first two characters
-                        ;; have to be in the proper range.
-                        (or (/= plus 8)
-                            (and (< (digitp (aref code (+ start 0))) 9)
-                                 (< (digitp (aref code (+ start 1))) 18)))
-                        ;; Code is valid.
-                        (setf valid (if (= plus 8) :full :short)))
-               (when (not (null area))
-                 (setf object (make-instance 'code-area))
-                 (if (= plus 8)
-                     (setf (slot-value object 'south) (- south 90)
-                           (slot-value object 'west) (- west 180))
-                   (setf (slot-value object 'south) south
-                         (slot-value object 'west) west))
-                 (setf (slot-value object 'height) height
-                       (slot-value object 'width) width
-                       (slot-value object 'precision) (1- prec)
-                       (slot-value object 'length) length
-                       (slot-value object 'plus) plus
-                       (slot-value object 'pad) pad))
-               ))))
+             (setf valid (and plus
+                              ;; There must be an even number of pad
+                              ;; characters.  Pad characters can only
+                              ;; occur in full Plus Codes.
+                              (or (zerop pad)
+                                  (and (evenp pad)
+                                       (= plus 8)))
+                              ;; Code length has to be at least two.
+                              (>= length 2)
+                              ;; Code length is either less than or equal
+                              ;; to the position of the separator character,
+                              ;; i.e. the separator character is the last
+                              ;; character, or there are two or more valid
+                              ;; characters after the separator character.
+                              (or (<= length plus)
+                                  (>= (- length plus) 2))
+                              ;; For a full code, the first two characters
+                              ;; have to be in the proper range.
+                              (or (/= plus 8)
+                                  (and (< (digitp (aref code (+ start 0))) 9)
+                                       (< (digitp (aref code (+ start 1))) 18)))
+                              ;; Code is valid.
+                              (if (= plus 8) :full :short)))
+             (when (and valid area)
+               (setf object (make-instance 'code-area))
+               (if (= plus 8)
+                   (setf (slot-value object 'south) (- south 90)
+                         (slot-value object 'west) (- west 180))
+                 (setf (slot-value object 'south) south
+                       (slot-value object 'west) west))
+               (setf (slot-value object 'height) height
+                     (slot-value object 'width) width
+                     (slot-value object 'precision) (1- prec)
+                     (slot-value object 'length) length
+                     (slot-value object 'plus) plus
+                     (slot-value object 'pad) pad)))
+            ()))
     (values valid object)))
 
 (defun validp (code &key (start 0) end)
