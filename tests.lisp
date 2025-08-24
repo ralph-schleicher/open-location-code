@@ -185,6 +185,24 @@
                   (number-from-string (sixth row))))
                 (t (fixme))))))
 
+(define-test bounding-indices
+  (assert-true (olc:validp "8FWC2345+G6" :start 0 :end nil))
+  (assert-true (olc:validp "..8FWC2345+G6" :start 2))
+  (assert-true (olc:validp "..8FWC2345+G6.." :start 2 :end 13))
+  (assert-false (olc:validp "..8FWC2345+G6.." :start 2 :end 14))
+  (assert-true (olc:fullp "8FWC2345+G6" :start 0 :end nil))
+  (assert-true (olc:fullp ".8FWC2345+G6" :start 1))
+  (assert-true (olc:fullp ".8FWC2345+G6.." :start 1 :end 12))
+  (assert-false (olc:fullp ".8FWC2345+G6.." :start 1 :end 13))
+  (assert-true (olc:shortp "2345+G6" :start 0 :end nil))
+  (assert-true (olc:shortp "...2345+G6" :start 3))
+  (assert-true (olc:shortp "...2345+G6.." :start 3 :end 10))
+  (assert-false (olc:shortp "...2345+G6.." :start 3 :end 11))
+  (assert-true (olc:decode "7FG49QCJ+2V" :start 0 :end nil))
+  (assert-true (olc:decode "..7FG49QCJ+2V" :start 2))
+  (assert-true (olc:decode "..7FG49QCJ+2V.." :start 2 :end 13))
+  (assert-error 'olc:invalid-code-error (olc:decode "..7FG49QCJ+2V.." :start 2 :end 14)))
+
 ;; Test shortening and extending codes.
 (defun %short-code-test (full-code lat lon short-code test-type)
   (and (if (member test-type '(:both :shorten))
