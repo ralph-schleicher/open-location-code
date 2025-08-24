@@ -33,41 +33,6 @@
 
 ;;; Code:
 
-(in-package :common-lisp-user)
-
-(defpackage :open-location-code
-  (:nicknames :olc)
-  (:use :common-lisp
-        :iterate)
-  (:export #:validp
-           #:fullp
-           #:shortp
-           #:encode
-           #:decode
-           #:shorten
-           #:recover
-           #:code-error
-           #:code-length-error
-           #:invalid-code-error
-           #:full-code-error
-           #:short-code-error
-           #:code-area
-           #:south-west-corner
-           #:north-east-corner
-           #:center
-           #:precision
-           #:code-length
-           #:separator-position
-           #:pad-characters)
-  (:documentation
-   "Open Location Code is a location encoding system for addresses,
-independent of street names and building numbers.  The encoded
-location identifier is called Plus Code since it always contains
-a plus sign character.  For example, 8FX8QJ2G+QH is the Plus Code
-of the Roman bridge in Trier, Germany.
-
-See <https://plus.codes>."))
-
 (in-package :open-location-code)
 
 (defmacro defconst (name value &optional doc)

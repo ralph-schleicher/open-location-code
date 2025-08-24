@@ -41,7 +41,8 @@
   :license "Modified BSD License"
   :version (:read-file-line "VERSION")
   :depends-on ("alexandria" "iterate")
-  :components ((:file "open-location-code"))
+  :components ((:file "packages")
+               (:file "open-location-code"))
   :in-order-to ((test-op (test-op "open-location-code/tests"))))
 
 (defsystem "open-location-code/tests"
