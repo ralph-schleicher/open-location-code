@@ -49,6 +49,7 @@
                      olc:decode
                      olc:shorten
                      olc:recover
+                     olc:read-code
                      olc:code-error
                      olc:code-length-error
                      olc:invalid-code-error
