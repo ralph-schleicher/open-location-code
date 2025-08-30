@@ -50,37 +50,6 @@ The test suite can be run by evaluating the following form.
 #+BEGIN_SRC lisp
 (asdf:test-system "open-location-code")
 #+END_SRC
-The expected output is displayed below.
-#+BEGIN_EXAMPLE
-LENGTH-FROM-PRECISION: 11 assertions passed, 0 failed.
-
-PRECISION-FROM-LENGTH: 11 assertions passed, 0 failed.
-
-VALIDITY-TESTS: 25 assertions passed, 0 failed.
-
- | Failed Form: (OPEN-LOCATION-CODE:ENCODE OPEN-LOCATION-CODE-TESTS::LAT
-                                           OPEN-LOCATION-CODE-TESTS::LON
-                                           OPEN-LOCATION-CODE-TESTS::PREC)
- | Expected "CHGW2H5C+X2RRRRR" but saw "CHGW2H5C+X2RRRRJ"
- | OPEN-LOCATION-CODE-TESTS::LAT => 80.00999996d0
- | OPEN-LOCATION-CODE-TESTS::LON => 58.57d0
- | OPEN-LOCATION-CODE-TESTS::PREC => 10
- |
-ENCODING-TESTS: 603 assertions passed, 1 failed.
-
-DECODING-TESTS: 420 assertions passed, 0 failed.
-
-SHORT-CODE-TESTS: 19 assertions passed, 0 failed.
-
-Unit Test Summary
- | 1090 assertions total
- | 1089 passed
- | 1 failed
- | 0 execution errors
- | 0 missing tests
-#+END_EXAMPLE
-The failed test is an off-by-one error due to a floating-point
-inaccuracy.  See the notes below for more details.
 
 
 ** Notes
@@ -93,4 +62,20 @@ into rational numbers.
 The Google developers finally realized that floating-point arithmetic
 is inaccurate by definition.  They are now in the transition phase to
 integer arithmetic.  However, there is IMHO still some inconsistency
-between the integer algorithms and the numbers in the test data.
+between the integer algorithms and the numbers in the test data.  Due
+to that, one encoding test fails with an off-by-one error for the time
+being:
+#+BEGIN_EXAMPLE
+ | Failed Form: (OPEN-LOCATION-CODE:ENCODE OPEN-LOCATION-CODE-TESTS::LAT
+                                           OPEN-LOCATION-CODE-TESTS::LON
+                                           OPEN-LOCATION-CODE-TESTS::PREC)
+ | Expected "CHGW2H5C+X2RRRRR" but saw "CHGW2H5C+X2RRRRJ"
+ | OPEN-LOCATION-CODE-TESTS::LAT => 80.00999996d0
+ | OPEN-LOCATION-CODE-TESTS::LON => 58.57d0
+ | OPEN-LOCATION-CODE-TESTS::PREC => 10
+#+END_EXAMPLE
+The test succeeds if you write 80.00999996 as 8000999996/100000000.
+Changing 80.00999996 to 80.009999960000009 fixes the floating-point
+inaccuracy issue since the rational number approximation for this
+number is always closer to the next larger floating-point number
+and thus greater than 80.00999996.
