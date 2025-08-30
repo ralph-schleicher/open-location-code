@@ -42,7 +42,8 @@
   :version (:read-file-line "VERSION")
   :depends-on ("alexandria" "iterate")
   :components ((:file "packages")
-               (:file "open-location-code"))
+               (:file "open-location-code")
+               (:file "read-code"))
   :in-order-to ((test-op (test-op "open-location-code/tests"))))
 
 (defsystem "open-location-code/tests"
