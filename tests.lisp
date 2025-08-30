@@ -100,13 +100,24 @@
   (assert-eql 10 (olc:precision 16)))
 
 (defun validity-test (code valid short full)
-  (declare (ignore valid))
   (assert-eq (cond (short
                     :short)
                    (full
                     :full))
              (olc:validp code)
-             code))
+             code)
+  ;; Read from stream.
+  (multiple-value-bind (string length)
+      (with-input-from-string (stream code)
+        (handler-case
+            (olc::read-code stream nil nil nil :short-code (if valid short :allowed))
+          (end-of-file ()
+            (values nil 0))))
+    (let ((true (if valid
+                    (and (equal code string) (= (length code) length))
+                  (or (null string) (/= (length code) length)))))
+      (assert-true true code string)))
+  ())
 
 (define-test validity-tests
   (with-open-file (stream (source-file "t/validityTests.csv"))
