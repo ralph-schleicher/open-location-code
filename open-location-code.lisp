@@ -414,10 +414,10 @@ Plus Code respectively.  Otherwise, all values are ‘nil’."
                    (incf pad))
                   ((char= char #\+)
                    ;; There can only be one separator character
-                   ;; and it has to be at the correct position.
+                   ;; and it must occur at the correct position.
                    ;; The later already has been checked in the
                    ;; prologue section.
-                   (when plus ;(or plus (oddp pos) (> pos 8))
+                   (when plus
                      (leave))
                    (setf plus (- pos start)))
                   (t
@@ -427,11 +427,11 @@ Plus Code respectively.  Otherwise, all values are ‘nil’."
              (setf valid (and plus
                               ;; There must be an even number of pad
                               ;; characters.  Pad characters can only
-                              ;; occur in full Plus Codes.
+                              ;; occur in full codes.
                               (or (zerop pad)
                                   (and (evenp pad)
                                        (= plus 8)))
-                              ;; Code length has to be at least two.
+                              ;; Code length must be at least two.
                               (>= length 2)
                               ;; Code length is either less than or equal
                               ;; to the position of the separator character,
@@ -441,7 +441,7 @@ Plus Code respectively.  Otherwise, all values are ‘nil’."
                               (or (<= length plus)
                                   (>= (- length plus) 2))
                               ;; For a full code, the first two characters
-                              ;; have to be in the proper range.
+                              ;; must be in the proper range.
                               (or (/= plus 8)
                                   (and (< (digitp (aref code (+ start 0))) 9)
                                        (< (digitp (aref code (+ start 1))) 18)))
