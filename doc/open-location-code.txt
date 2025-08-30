@@ -9,31 +9,37 @@ of the Roman bridge in Trier, Germany.
 See <https://plus.codes>.
 
                                                                       [Function]
-validp (code)
+validp (code &key start end)
    True if an object is a valid sequence of Plus Code characters.
 
    Argument CODE is an object of any type.
+   Keyword arguments START and END are the bounding indices of CODE.
+    Default is zero and the length of CODE respectively.
 
    Value is ‘:full’ or ‘:short’ if CODE is a valid full or short Plus
-   Code respectively.  Otherwise, value is null.
+   Code respectively.  Otherwise, value is ‘nil’.
 
                                                                       [Function]
-fullp (code)
+fullp (code &key start end)
    True if an object is a valid full Plus Code.
 
    Argument CODE is an object of any type.
+   Keyword arguments START and END are the bounding indices of CODE.
+    Default is zero and the length of CODE respectively.
 
    Value is true if CODE is a valid full Plus Code.
-   Otherwise, value is null.
+   Otherwise, value is ‘nil’.
 
                                                                       [Function]
-shortp (code)
+shortp (code &key start end)
    True if an object is a valid short Plus Code.
 
    Argument CODE is an object of any type.
+   Keyword arguments START and END are the bounding indices of CODE.
+    Default is zero and the length of CODE respectively.
 
    Value is true if CODE is a valid full Plus Code.
-   Otherwise, value is null.
+   Otherwise, value is ‘nil’.
 
                                                                       [Function]
 encode (latitude longitude &optional precision)
@@ -70,10 +76,12 @@ encode (latitude longitude &optional precision)
    radius of 6356766 m for a code area at the equator.
 
                                                                       [Function]
-decode (code)
+decode (code &key start end)
    Decode a Plus Code.
 
    Argument CODE is a Plus Code (a string).
+   Keyword arguments START and END are the bounding indices of CODE.
+    Default is zero and the length of CODE respectively.
 
    Primary value is a ‘code-area’ object.  Secondary value is ‘:full’
    or ‘:short’ if CODE is a full or short Plus Code respectively.  If
@@ -84,7 +92,7 @@ decode (code)
    Signal an ‘invalid-code-error’ if CODE is not a valid Plus Code.
 
                                                                       [Function]
-shorten (code latitude longitude)
+shorten (code latitude longitude &key start end)
    Remove four, six, or eight digits from the front of a full Plus
    Code given a reference location.
 
@@ -93,6 +101,8 @@ shorten (code latitude longitude)
     reference location in degree angle.  The latitude is clipped to
     the closed interval [-90, 90] and the longitude is normalized to
     the half-closed interval [-180, 180).
+   Keyword arguments START and END are the bounding indices of CODE.
+    Default is zero and the length of CODE respectively.
 
    Value is the short code, or the original full code if the reference
    location is too far.
@@ -100,7 +110,7 @@ shorten (code latitude longitude)
    Signal a ‘full-code-error’ if CODE is not a full Plus Code.
 
                                                                       [Function]
-recover (code latitude longitude)
+recover (code latitude longitude &key start end)
    Recover a full Plus Code from a short code and a reference location.
 
    First argument CODE is a Plus Code (a string).
@@ -108,11 +118,47 @@ recover (code latitude longitude)
     reference location in degree angle.  The latitude is clipped to
     the closed interval [-90, 90] and the longitude is normalized to
     the half-closed interval [-180, 180).
+   Keyword arguments START and END are the bounding indices of CODE.
+    Default is zero and the length of CODE respectively.
 
    Value is the recovered full code.  If CODE is already a full code,
    return CODE as is.
 
    Signal an ‘invalid-code-error’ if CODE is not a Plus Code.
+
+                                                                      [Function]
+read-code (&optional stream eof-error-p eof-value recursivep &key short-code)
+   Read a Plus Code from an input stream.
+
+   Optional first argument STREAM is an input stream designator.
+    The default is standard input.
+   Optional second argument EOF-ERROR-P is a generalized boolean.
+    If an end of file error occurs and EOF-ERROR-P is false, EOF-VALUE
+    is returned.  Otherwise, signal an ‘end-of-file’ error.  The default
+    is true.
+   Optional third argument EOF-VALUE is an object.  See above for more
+    details.  The default is ‘nil’.
+   Optional fourth argument RECURSIVEP is a generalized boolean.  True
+    means that this call is expected to be embedded in a higher-level
+    call to ‘read’ or a similar function used by the Lisp reader.  The
+    default is false.
+   Keyword argument SHORT-CODE specifies the Plus Code format.  A value
+    of ‘nil’ means to read a full Plus Code, ‘t’ means to read a short
+    Plus Code, and any other value means to read any valid Plus Code.
+    The default is ‘nil’.
+
+   Return value is the Plus Code (a string), or ‘nil’ if no valid Plus
+   Code in the specified format can be read.  Secondary value is the
+   number of characters read from STREAM.
+
+   The ‘read-code’ function expects a Plus Code in the specified format.
+   Leading or trailing whitespace is not ignored.  Reading stops at the
+   end of the file or if an invalid character occurs.  That means, the
+   next character read from STREAM is the invalid character.
+
+   If the file ends in the middle of a Plus Code, ‘read-code’ signals
+   an ‘end-of-file’ error regardless of the value of the EOF-ERROR-P
+   argument.
 
                                                                      [Condition]
 code-error
