@@ -58,7 +58,8 @@
            #:precision
            #:code-length
            #:separator-position
-           #:pad-characters)
+           #:pad-characters
+           #:read-code)
   (:documentation
    "Open Location Code is a location encoding system for addresses,
 independent of street names and building numbers.  The encoded
