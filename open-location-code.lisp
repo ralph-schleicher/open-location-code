@@ -196,11 +196,7 @@ Argument PRECISION is the number of discretization steps."
    (precision
     :initform 0
     :type fixnum
-    :documentation "Precision of the original code.")
-   (length
-    :initform 0
-    :type fixnum
-    :documentation "Code length of the original code.")
+    :documentation "Precision of the code area.")
    (plus
     :initform 0
     :type fixnum
@@ -260,8 +256,8 @@ the north pole."))
    "Return the Plus Code length."))
 
 (defmethod code-length ((object code-area))
-  "Return the code length of the original code."
-  (slot-value object 'length))
+  "Return the code length for the code area."
+  (code-length (precision object)))
 
 (defmethod code-length ((precision integer))
   "Return the code length as a function of the precision."
@@ -457,7 +453,6 @@ Plus Code respectively.  Otherwise, all values are ‘nil’."
                (setf (slot-value object 'height) height
                      (slot-value object 'width) width
                      (slot-value object 'precision) (1- prec)
-                     (slot-value object 'length) length
                      (slot-value object 'plus) plus
                      (slot-value object 'pad) pad)))
             ()))
