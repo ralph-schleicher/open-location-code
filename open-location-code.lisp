@@ -346,116 +346,117 @@ If optional fourth argument AREA is not ‘nil’, secondary value
 Primary value is ‘:full’ or ‘:short’ if CODE is a valid full or short
 Plus Code respectively.  Otherwise, all values are ‘nil’."
   (let (valid object)
-    (when (stringp code)
-      (when (null end)
-        (setf end (length code)))
-      (iter (with south = 0)
-            (with west = 0)
-            (with height = 0)
-            (with width = 0)
-            (with plus)
-            (with pad = 0)
-            (with length = 0)
-            ;; Decimal value of a digit.
-            (with value)
-            ;; Discretization step of the next digit.
-            ;; Also check for the correct position of
-            ;; the separator character.
-            (with prec = (case (alexandria:when-let ((pos (position #\+ code :start start :end end :test #'char=)))
-                                 (- pos start))
-                           (8 1) (6 2) (4 3) (2 4) (0 5) (t 0)))
-            (initially
-             (when (= prec 0)
-               (return)))
-            (for pos :from start :below end)
-            (for char = (aref code pos))
-            (cond ((setf value (digitp char))
-                   ;; Valid characters can only occur before pad
-                   ;; characters.
-                   (when (plusp pad)
-                     (leave))
-                   ;; Update code area.
-                   (when (not (null area))
-                     (cond ((> prec +maximum-precision+)
-                            ;; No further refinement but continue
-                            ;; parsing CODE.
-                            t)
-                           ((> prec 5)
-                            (multiple-value-setq (height width)
-                              (area-size prec))
-                            ;; Map VALUE to row and column.
-                            (multiple-value-bind (row column)
-                                (truncate value +grid-columns+)
-                              (incf south (* row height))
-                              (incf west (* column width)))
-                            (incf prec))
-                           ((evenp length)
-                            ;; Start a new pair.
-                            (multiple-value-setq (height width)
-                              (area-size prec))
-                            ;; First digit encodes the latitude.
-                            (incf south (* value height)))
-                           (t
-                            ;; Second digit encodes the longitude.
-                            (incf west (* value width))
-                            ;; Next discretization step.
-                            (incf prec))))
-                   ;; Update code length.
-                   (incf length))
-                  ((char= char #\0)
-                   ;; Pad characters can only occur before the
-                   ;; separator character.
-                   (when plus
-                     (leave))
-                   (incf pad))
-                  ((char= char #\+)
-                   ;; There can only be one separator character
-                   ;; and it must occur at the correct position.
-                   ;; The later already has been checked in the
-                   ;; prologue section.
-                   (when plus
-                     (leave))
-                   (setf plus (- pos start)))
-                  (t
-                   ;; Invalid character.
-                   (leave)))
-            (finally
-             (setf valid (and plus
-                              ;; There must be an even number of pad
-                              ;; characters.  Pad characters can only
-                              ;; occur in full codes.
-                              (or (zerop pad)
-                                  (and (evenp pad)
-                                       (= plus 8)))
-                              ;; Code length must be at least two.
-                              (>= length 2)
-                              ;; Code length is either less than or equal
-                              ;; to the position of the separator character,
-                              ;; i.e. the separator character is the last
-                              ;; character, or there are two or more valid
-                              ;; characters after the separator character.
-                              (or (<= length plus)
-                                  (>= (- length plus) 2))
-                              ;; For a full code, the first two characters
-                              ;; must be in the proper range.
-                              (or (/= plus 8)
-                                  (and (< (digitp (aref code (+ start 0))) 9)
-                                       (< (digitp (aref code (+ start 1))) 18)))
-                              ;; Code is valid.
-                              (if (= plus 8) :full :short)))
-             (when (and valid area)
-               (setf object (make-instance 'code-area))
-               (if (= plus 8)
-                   (setf (slot-value object 'south) (- south 90)
-                         (slot-value object 'west) (- west 180))
-                 (setf (slot-value object 'south) south
-                       (slot-value object 'west) west))
-               (setf (slot-value object 'height) height
-                     (slot-value object 'width) width
-                     (slot-value object 'precision) (1- prec)
-                     (slot-value object 'plus) plus
-                     (slot-value object 'pad) pad)))
-            ()))
+    (typecase code
+      (string
+       (when (null end)
+         (setf end (length code)))
+       (iter (with south = 0)
+             (with west = 0)
+             (with height = 0)
+             (with width = 0)
+             (with plus)
+             (with pad = 0)
+             (with length = 0)
+             ;; Decimal value of a digit.
+             (with value)
+             ;; Discretization step of the next digit.
+             ;; Also check for the correct position of
+             ;; the separator character.
+             (with prec = (case (alexandria:when-let ((pos (position #\+ code :start start :end end :test #'char=)))
+                                  (- pos start))
+                            (8 1) (6 2) (4 3) (2 4) (0 5) (t 0)))
+             (initially
+              (when (= prec 0)
+                (return)))
+             (for pos :from start :below end)
+             (for char = (aref code pos))
+             (cond ((setf value (digitp char))
+                    ;; Valid characters can only occur before pad
+                    ;; characters.
+                    (when (plusp pad)
+                      (leave))
+                    ;; Update code area.
+                    (when (not (null area))
+                      (cond ((> prec +maximum-precision+)
+                             ;; No further refinement but continue
+                             ;; parsing CODE.
+                             t)
+                            ((> prec 5)
+                             (multiple-value-setq (height width)
+                               (area-size prec))
+                             ;; Map VALUE to row and column.
+                             (multiple-value-bind (row column)
+                                 (truncate value +grid-columns+)
+                               (incf south (* row height))
+                               (incf west (* column width)))
+                             (incf prec))
+                            ((evenp length)
+                             ;; Start a new pair.
+                             (multiple-value-setq (height width)
+                               (area-size prec))
+                             ;; First digit encodes the latitude.
+                             (incf south (* value height)))
+                            (t
+                             ;; Second digit encodes the longitude.
+                             (incf west (* value width))
+                             ;; Next discretization step.
+                             (incf prec))))
+                    ;; Update code length.
+                    (incf length))
+                   ((char= char #\0)
+                    ;; Pad characters can only occur before the
+                    ;; separator character.
+                    (when plus
+                      (leave))
+                    (incf pad))
+                   ((char= char #\+)
+                    ;; There can only be one separator character
+                    ;; and it must occur at the correct position.
+                    ;; The later already has been checked in the
+                    ;; prologue section.
+                    (when plus
+                      (leave))
+                    (setf plus (- pos start)))
+                   (t
+                    ;; Invalid character.
+                    (leave)))
+             (finally
+              (setf valid (and plus
+                               ;; There must be an even number of pad
+                               ;; characters.  Pad characters can only
+                               ;; occur in full codes.
+                               (or (zerop pad)
+                                   (and (evenp pad)
+                                        (= plus 8)))
+                               ;; Code length must be at least two.
+                               (>= length 2)
+                               ;; Code length is either less than or equal
+                               ;; to the position of the separator character,
+                               ;; i.e. the separator character is the last
+                               ;; character, or there are two or more valid
+                               ;; characters after the separator character.
+                               (or (<= length plus)
+                                   (>= (- length plus) 2))
+                               ;; For a full code, the first two characters
+                               ;; must be in the proper range.
+                               (or (/= plus 8)
+                                   (and (< (digitp (aref code (+ start 0))) 9)
+                                        (< (digitp (aref code (+ start 1))) 18)))
+                               ;; Code is valid.
+                               (if (= plus 8) :full :short)))
+              (when (and valid area)
+                (setf object (make-instance 'code-area))
+                (if (= plus 8)
+                    (setf (slot-value object 'south) (- south 90)
+                          (slot-value object 'west) (- west 180))
+                  (setf (slot-value object 'south) south
+                        (slot-value object 'west) west))
+                (setf (slot-value object 'height) height
+                      (slot-value object 'width) width
+                      (slot-value object 'precision) (1- prec)
+                      (slot-value object 'plus) plus
+                      (slot-value object 'pad) pad)))
+             ())))
     (values valid object)))
 
 (defun validp (code &key (start 0) end)
