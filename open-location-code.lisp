@@ -176,75 +176,53 @@ Argument PRECISION is the number of discretization steps."
   (values (svref +area-height+ precision)
           (svref +area-width+ precision)))
 
-(defclass code-area ()
-  ((south
-    :initform 0
-    :type real
-    :documentation "Lower latitude of the code area in degree angle.")
-   (west
-    :initform 0
-    :type real
-    :documentation "Lower longitude of the code area in degree angle.")
-   (height
-    :initform 0
-    :type real
-    :documentation "Height of the code area in degree angle.")
-   (width
-    :initform 0
-    :type real
-    :documentation "Width of the code area in degree angle.")
-   (precision
-    :initform 0
-    :type fixnum
-    :documentation "Precision of the code area.")
-   (plus
-    :initform 0
-    :type fixnum
-    :documentation "Position of the separator character in the original code.")
-   ;; If slot value PLUS is equal to eight, the original code was a
-   ;; full Plus Code and slot values SOUTH and WEST denote an absolute
-   ;; location.  Otherwise, the original code was a short Plus Code
-   ;; and slot values SOUTH and WEST denote a relative location,
-   ;; i.e. the offset to the reference location.
-   (pad
-    :initform 0
-    :type fixnum
-    :documentation "Number of pad characters in the original code."))
-  (:documentation "Area covered by a Plus Code."))
+;; If slot value PLUS is equal to eight, the original code was a
+;; full Plus Code and slot values SOUTH and WEST denote an absolute
+;; location.  Otherwise, the original code was a short Plus Code and
+;; slot values SOUTH and WEST denote a relative location, i.e. the
+;; offset to the reference location.
+(defstruct code-area
+  "Area covered by a Plus Code."
+  ;; Lower latitude of the code area in degree angle.
+  (south 0 :type real :read-only t)
+  ;; Lower longitude of the code area in degree angle.
+  (west 0 :type real :read-only t)
+  ;; Height of the code area in degree angle.
+  (height 0 :type real :read-only t)
+  ;; Width of the code area in degree angle.
+  (width 0 :type real :read-only t)
+  ;; Precision of the code area.
+  (precision 0 :type fixnum :read-only t)
+  ;; Position of the separator character in the Plus Code.
+  (plus 0 :type fixnum :read-only t)
+  ;; Number of pad characters in the Plus Code.
+  (pad 0 :type fixnum :read-only t))
 
-(defgeneric south-west-corner (object)
-  (:documentation
-   "Return the lower latitude and longitude as multiple values."))
+(defun south-west-corner (object)
+  "Return the lower latitude and longitude as multiple values."
+  (check-type object code-area)
+  (values (code-area-south object)
+          (code-area-west object)))
 
-(defmethod south-west-corner ((object code-area))
-  (with-slots (south west) object
-    (values south west)))
+(defun north-east-corner (object)
+  "Return the center latitude and longitude as multiple values."
+  (check-type object code-area)
+  (values (+ (code-area-south object) (code-area-height object))
+          (+ (code-area-west object) (code-area-width object))))
 
-(defgeneric north-east-corner (object)
-  (:documentation
-   "Return the upper latitude and longitude as multiple values.
-The upper bounds are not included in the code area except for
-the north pole."))
-
-(defmethod north-east-corner ((object code-area))
-  (with-slots (south west height width) object
-    (values (+ south height) (+ west width))))
-
-(defgeneric center (object)
-  (:documentation
-   "Return the center latitude and longitude as multiple values."))
-
-(defmethod center ((object code-area))
-  (with-slots (south west height width) object
-    (values (+ south (/ height 2)) (+ west (/ width 2)))))
+(defun center (object)
+  "Return the center latitude and longitude as multiple values."
+  (check-type object code-area)
+  (values (+ (code-area-south object) (/ (code-area-height object) 2))
+          (+ (code-area-west object) (/ (code-area-width object) 2))))
 
 (defgeneric precision (object)
   (:documentation
    "Return the Plus Code precision."))
 
 (defmethod precision ((object code-area))
-  "Return the precision of the original code."
-  (slot-value object 'precision))
+  "Return the precision of the code area."
+  (code-area-precision object))
 
 (defmethod precision ((length integer))
   "Return the precision as a function of the code length."
@@ -269,16 +247,16 @@ the north pole."))
    "Return the position of the separator character."))
 
 (defmethod separator-position ((object code-area))
-  "Return the position of the separator character in the original code."
-  (slot-value object 'plus))
+  "Return the position of the separator character in the Plus Code."
+  (code-area-plus object))
 
 (defgeneric pad-characters (object)
   (:documentation
    "Return the number of pad characters."))
 
 (defmethod pad-characters ((object code-area))
-  "Return the number of pad characters in the original code."
-  (slot-value object 'pad))
+  "Return the number of pad characters in the Plus Code."
+  (code-area-pad object))
 
 (defun integer-from-degree (latitude longitude)
   "Convert a location into non-negative integers."
@@ -445,18 +423,23 @@ Plus Code respectively.  Otherwise, all values are ‘nil’."
                                ;; Code is valid.
                                (if (= plus 8) :full :short)))
               (when (and valid area)
-                (setf object (make-instance 'code-area))
-                (if (= plus 8)
-                    (setf (slot-value object 'south) (- south 90)
-                          (slot-value object 'west) (- west 180))
-                  (setf (slot-value object 'south) south
-                        (slot-value object 'west) west))
-                (setf (slot-value object 'height) height
-                      (slot-value object 'width) width
-                      (slot-value object 'precision) (1- prec)
-                      (slot-value object 'plus) plus
-                      (slot-value object 'pad) pad)))
-             ())))
+                (when (= plus 8)
+                  (decf south 90)
+                  (decf west 180))
+                (setf object (make-code-area :south south
+                                             :west west
+                                             :height height
+                                             :width width
+                                             :precision (1- prec)
+                                             :plus plus
+                                             :pad pad))))
+             ()))
+      (code-area
+       (when (plusp (code-area-precision code))
+         (setf valid (if (= (code-area-plus code) 8) :full :short)))
+       (when (and valid area)
+         (setf object code))
+       ()))
     (values valid object)))
 
 (defun validp (code &key (start 0) end)
