@@ -199,19 +199,42 @@ Argument PRECISION is the number of discretization steps."
   (pad 0 :type fixnum :read-only t))
 
 (defun south-west-corner (object)
-  "Return the lower latitude and longitude as multiple values."
+  "The lower latitude and longitude of the code area.
+
+Argument OBJECT is a ‘code-area’ object.
+
+Return the latitude and longitude of the area's south-west corner
+as multiple values.
+
+See also ‘decode’."
   (check-type object code-area)
   (values (code-area-south object)
           (code-area-west object)))
 
 (defun north-east-corner (object)
-  "Return the center latitude and longitude as multiple values."
+  "The upper latitude and longitude of the code area.
+The upper bounds are not included in the code area except for the
+north pole.
+
+Argument OBJECT is a ‘code-area’ object.
+
+Return the latitude and longitude of the area's north-east corner
+as multiple values.
+
+See also ‘decode’."
   (check-type object code-area)
   (values (+ (code-area-south object) (code-area-height object))
           (+ (code-area-west object) (code-area-width object))))
 
 (defun center (object)
-  "Return the center latitude and longitude as multiple values."
+  "The center latitude and longitude of the code area.
+
+Argument OBJECT is a ‘code-area’ object.
+
+Return the latitude and longitude of the area's center as multiple
+values.
+
+See also ‘decode’."
   (check-type object code-area)
   (values (+ (code-area-south object) (/ (code-area-height object) 2))
           (+ (code-area-west object) (/ (code-area-width object) 2))))
