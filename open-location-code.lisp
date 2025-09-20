@@ -58,6 +58,16 @@ for inline expansion by the compiler."
   (:documentation
    "Base class for all Open Location Code errors."))
 
+(define-condition precision-error (code-error)
+  ()
+  (:documentation
+   "Condition for an invalid Plus Code precision.")
+  (:report
+   (lambda (condition stream)
+     (format stream
+             "The value ‘~S’ is not a valid Plus Code precision."
+             (type-error-datum condition)))))
+
 (define-condition code-length-error (code-error)
   ()
   (:documentation
@@ -105,7 +115,12 @@ for inline expansion by the compiler."
   (defun length-from-precision (precision)
     "Return the code length as a function of the precision."
     (let ((prec (min precision +maximum-precision+)))
-      (+ (* (min prec 5) 2) (max 0 (- prec 5))))))
+      (cond ((> prec 5)
+             (+ 10 (- prec 5)))
+            ((plusp prec)
+             (* prec 2))
+            (t
+             (error 'precision-error :datum precision))))))
 
 (defconst +maximum-length+ (length-from-precision +maximum-precision+)
   "Maximum code length excluding the plus sign character.")
@@ -114,12 +129,12 @@ for inline expansion by the compiler."
   (defun precision-from-length (length)
     "Return the precision as a function of the code length."
     (let ((len (min length +maximum-length+)))
-      (cond ((member len '(2 4 6 8 10))
-             (/ len 2))
-            ((> len 10)
+      (cond ((> len 10)
              (+ 5 (- len 10)))
+            ((and (plusp len) (evenp len))
+             (/ len 2))
             (t
-             (error 'code-length-error :datum len))))))
+             (error 'code-length-error :datum length))))))
 
 (defconst +alphabet+ "23456789CFGHJMPQRVWX"
   "Set of valid digits, i.e. encoding characters.
@@ -198,6 +213,14 @@ Argument PRECISION is the number of discretization steps."
   ;; Number of pad characters in the Plus Code.
   (pad 0 :type fixnum :read-only t))
 
+(defsubst code-area-valid-p (object)
+  "Return true if the code area OBJECT is properly initialized."
+  (<= 1 (code-area-precision object) +maximum-precision+))
+
+(defsubst code-area-full-p (object)
+  "Return true if the code area OBJECT is a full Plus Code."
+  (= (code-area-plus object) 8))
+
 (defun south-west-corner (object)
   "The lower latitude and longitude of the code area.
 
@@ -244,12 +267,28 @@ See also ‘decode’."
    "Return the Plus Code precision."))
 
 (defmethod precision ((object code-area))
-  "Return the precision of the code area."
+  "The precision of the code area.
+
+Argument OBJECT is a ‘code-area’ object.
+
+Value is the Plus Code precision (a positive integer).  Signals
+an ‘invalid-code-error’ if OBJECT is not a valid code area.
+
+See also ‘encode’."
+  (unless (code-area-valid-p object)
+    (error 'invalid-code-error :datum object))
   (code-area-precision object))
 
 (defmethod precision ((length integer))
-  "Return the precision as a function of the code length."
-  (check-type length (integer 2))
+  "The precision as a function of the code length.
+
+Argument LENGTH is a Plus Code length.
+
+Value is the Plus Code precision (a positive integer).  Signals
+a ‘code-length-error’ if argument LENGTH is not a valid Plus Code
+length.
+
+See also ‘encode’."
   (precision-from-length length))
 
 (defgeneric code-length (object)
@@ -257,12 +296,32 @@ See also ‘decode’."
    "Return the Plus Code length."))
 
 (defmethod code-length ((object code-area))
-  "Return the code length for the code area."
-  (code-length (precision object)))
+  "The code length for the code area.
+
+Argument OBJECT is a ‘code-area’ object.
+
+Value is the Plus Code length (a positive integer).  Signals
+an ‘invalid-code-error’ if OBJECT is not a valid code area.
+Signals a ‘full-code-error’ if the code area does not denote
+a full Plus Code.
+
+See also ‘encode’."
+  (unless (code-area-valid-p object)
+    (error 'invalid-code-error :datum object))
+  (unless (code-area-full-p object)
+    (error 'full-code-error :datum object))
+  (length-from-precision (code-area-precision object)))
 
 (defmethod code-length ((precision integer))
-  "Return the code length as a function of the precision."
-  (check-type precision (integer 1))
+  "The code length as a function of the precision.
+
+Argument PRECISION is a Plus Code precision.
+
+Value is the Plus Code length (a positive integer).  Signals
+a ‘precision-error’ if argument PRECISION is not a valid Plus
+Code precision.
+
+See also ‘encode’."
   (length-from-precision precision))
 
 (defgeneric separator-position (object)
@@ -270,7 +329,7 @@ See also ‘decode’."
    "Return the position of the separator character."))
 
 (defmethod separator-position ((object code-area))
-  "Return the position of the separator character in the Plus Code."
+  "Return the position of the separator character in the original code."
   (code-area-plus object))
 
 (defgeneric pad-characters (object)
@@ -278,7 +337,7 @@ See also ‘decode’."
    "Return the number of pad characters."))
 
 (defmethod pad-characters ((object code-area))
-  "Return the number of pad characters in the Plus Code."
+  "Return the number of pad characters in the original code."
   (code-area-pad object))
 
 (defun integer-from-degree (latitude longitude)
