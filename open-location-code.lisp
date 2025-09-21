@@ -329,7 +329,19 @@ See also ‘encode’."
    "Return the position of the separator character."))
 
 (defmethod separator-position ((object code-area))
-  "Return the position of the separator character in the original code."
+  "The position of the separator character in the Plus Code.
+
+Argument OBJECT is a ‘code-area’ object.
+
+Value is either 8, 6, 4, 2, or 0.  Signals an ‘invalid-code-error’
+if OBJECT is not a valid code area.
+
+The separator character position is equal to the number of digits
+and pad characters before the plus sign character.  A value of eight
+indicates a full Plus Code, any other value indicates a short Plus
+Code."
+  (unless (code-area-valid-p object)
+    (error 'invalid-code-error :datum object))
   (code-area-plus object))
 
 (defgeneric pad-characters (object)
@@ -337,7 +349,16 @@ See also ‘encode’."
    "Return the number of pad characters."))
 
 (defmethod pad-characters ((object code-area))
-  "Return the number of pad characters in the original code."
+  "The number of pad characters in the Plus Code.
+
+Argument OBJECT is a ‘code-area’ object.
+
+Value is either 0, 2, 4, or 6.  Signals an ‘invalid-code-error’
+if OBJECT is not a valid code area.
+
+Pad characters can only occur in a full Plus Code."
+  (unless (code-area-valid-p object)
+    (error 'invalid-code-error :datum object))
   (code-area-pad object))
 
 (defun integer-from-degree (latitude longitude)
