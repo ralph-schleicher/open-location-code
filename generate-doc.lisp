@@ -51,6 +51,7 @@
                      olc:recover
                      olc:read-code
                      olc:code-error
+                     olc:precision-error
                      olc:code-length-error
                      olc:invalid-code-error
                      olc:full-code-error
