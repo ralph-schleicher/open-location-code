@@ -107,6 +107,12 @@ See &lt;https://plus.codes&gt;.</pre>
       </a>
      </li>
      <li>
+      <a href="#ftwadoxh">
+       <span class="category">Condition</span>
+       <span class="symbol">precision-error</span>
+      </a>
+     </li>
+     <li>
       <a href="#lcgtpovl">
        <span class="category">Condition</span>
        <span class="symbol">code-length-error</span>
@@ -131,30 +137,27 @@ See &lt;https://plus.codes&gt;.</pre>
       </a>
      </li>
      <li>
-      <a href="#v724cgay">
-       <span class="category">Class</span>
+      <a href="#irmrku78">
+       <span class="category">Structure</span>
        <span class="symbol">code-area</span>
       </a>
      </li>
      <li>
-      <a href="#a2p2jhx7">
-       <span class="category">Method</span>
+      <a href="#mdpb3krs">
+       <span class="category">Function</span>
        <span class="symbol">south-west-corner</span>
-       <span class="method-specializers">(<span class="method-specializer">code-area</span>)</span>
       </a>
      </li>
      <li>
-      <a href="#hlx7cl2z">
-       <span class="category">Method</span>
+      <a href="#g8nbf35d">
+       <span class="category">Function</span>
        <span class="symbol">north-east-corner</span>
-       <span class="method-specializers">(<span class="method-specializer">code-area</span>)</span>
       </a>
      </li>
      <li>
-      <a href="#sswtwhvs">
-       <span class="category">Method</span>
+      <a href="#fpfwov2p">
+       <span class="category">Function</span>
        <span class="symbol">center</span>
-       <span class="method-specializers">(<span class="method-specializer">code-area</span>)</span>
       </a>
      </li>
      <li>
@@ -362,7 +365,7 @@ Argument CODE is a Plus Code (a string).
 Keyword arguments START and END are the bounding indices of CODE.
  Default is zero and the length of CODE respectively.
 
-Primary value is a ‘<a href="#v724cgay"><span class="symbol">code-area</span></a>’ object.  Secondary value is ‘:full’
+Primary value is a ‘<a href="#irmrku78"><span class="symbol">code-area</span></a>’ object.  Secondary value is ‘:full’
 or ‘:short’ if CODE is a full or short Plus Code respectively.  If
 CODE is a full Plus Code the code area denotes absolute coordinates.
 Otherwise, the code area denotes relative coordinates, i.e. offset
@@ -512,6 +515,27 @@ argument.</pre>
      <pre>Base class for all Open Location Code errors.</pre>
     </div>
    </div>
+   <div class="definition" id="ftwadoxh">
+    <div class="signature">
+     <table class="signature">
+      <colgroup>
+       <col />
+       <col />
+       <col />
+      </colgroup>
+      <tbody>
+       <tr>
+	<td class="symbol"><a href="#contents"><span class="symbol">precision-error</span></a></td>
+	<td class="lambda-list"></td>
+	<td class="category"><span class="category">Condition</span></td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <div class="documentation">
+     <pre>Condition for an invalid Plus Code precision.</pre>
+    </div>
+   </div>
    <div class="definition" id="lcgtpovl">
     <div class="signature">
      <table class="signature">
@@ -596,7 +620,7 @@ argument.</pre>
      <pre>Condition for an invalid short Plus Code.</pre>
     </div>
    </div>
-   <div class="definition" id="v724cgay">
+   <div class="definition" id="irmrku78">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -608,7 +632,7 @@ argument.</pre>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">code-area</span></a></td>
 	<td class="lambda-list"></td>
-	<td class="category"><span class="category">Class</span></td>
+	<td class="category"><span class="category">Structure</span></td>
        </tr>
       </tbody>
      </table>
@@ -617,7 +641,7 @@ argument.</pre>
      <pre>Area covered by a Plus Code.</pre>
     </div>
    </div>
-   <div class="definition" id="a2p2jhx7">
+   <div class="definition" id="mdpb3krs">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -628,17 +652,24 @@ argument.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">south-west-corner</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">((<span class="variable">object</span>&nbsp;<span class="method-specializer">code-area</span>))</span></td>
-	<td class="category"><span class="category">Method</span></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class="variable">object</span>)</span></td>
+	<td class="category"><span class="category">Function</span></td>
        </tr>
       </tbody>
      </table>
     </div>
     <div class="documentation">
-     <pre>Return the lower latitude and longitude as multiple values.</pre>
+     <pre>The lower latitude and longitude of the code area.
+
+Argument OBJECT is a ‘<a href="#irmrku78"><span class="symbol">code-area</span></a>’ object.
+
+Return the latitude and longitude of the area's south-west corner
+as multiple values.
+
+See also ‘<a href="#q4pppx2v"><span class="symbol">decode</span></a>’.</pre>
     </div>
    </div>
-   <div class="definition" id="hlx7cl2z">
+   <div class="definition" id="g8nbf35d">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -649,19 +680,26 @@ argument.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">north-east-corner</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">((<span class="variable">object</span>&nbsp;<span class="method-specializer">code-area</span>))</span></td>
-	<td class="category"><span class="category">Method</span></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class="variable">object</span>)</span></td>
+	<td class="category"><span class="category">Function</span></td>
        </tr>
       </tbody>
      </table>
     </div>
     <div class="documentation">
-     <pre>Return the upper latitude and longitude as multiple values.
-The upper bounds are not included in the code area except for
-the north pole.</pre>
+     <pre>The upper latitude and longitude of the code area.
+The upper bounds are not included in the code area except for the
+north pole.
+
+Argument OBJECT is a ‘<a href="#irmrku78"><span class="symbol">code-area</span></a>’ object.
+
+Return the latitude and longitude of the area's north-east corner
+as multiple values.
+
+See also ‘<a href="#q4pppx2v"><span class="symbol">decode</span></a>’.</pre>
     </div>
    </div>
-   <div class="definition" id="sswtwhvs">
+   <div class="definition" id="fpfwov2p">
     <div class="signature">
      <table class="signature">
       <colgroup>
@@ -672,14 +710,21 @@ the north pole.</pre>
       <tbody>
        <tr>
 	<td class="symbol"><a href="#contents"><span class="symbol">center</span></a></td>
-	<td class="lambda-list"><span class="lambda-list">((<span class="variable">object</span>&nbsp;<span class="method-specializer">code-area</span>))</span></td>
-	<td class="category"><span class="category">Method</span></td>
+	<td class="lambda-list"><span class="lambda-list">(<span class="variable">object</span>)</span></td>
+	<td class="category"><span class="category">Function</span></td>
        </tr>
       </tbody>
      </table>
     </div>
     <div class="documentation">
-     <pre>Return the center latitude and longitude as multiple values.</pre>
+     <pre>The center latitude and longitude of the code area.
+
+Argument OBJECT is a ‘<a href="#irmrku78"><span class="symbol">code-area</span></a>’ object.
+
+Return the latitude and longitude of the area's center as multiple
+values.
+
+See also ‘<a href="#q4pppx2v"><span class="symbol">decode</span></a>’.</pre>
     </div>
    </div>
    <div class="definition" id="tgr4fgaz">
@@ -700,7 +745,15 @@ the north pole.</pre>
      </table>
     </div>
     <div class="documentation">
-     <pre>Return the precision as a function of the code length.</pre>
+     <pre>The precision as a function of the code length.
+
+Argument LENGTH is a Plus Code length.
+
+Value is the Plus Code precision (a positive integer).  Signals
+a ‘<a href="#lcgtpovl"><span class="symbol">code-length-error</span></a>’ if argument LENGTH is not a valid Plus Code
+length.
+
+See also ‘<a href="#kqbprhb7"><span class="symbol">encode</span></a>’.</pre>
     </div>
    </div>
    <div class="definition" id="lujr82j3">
@@ -721,7 +774,14 @@ the north pole.</pre>
      </table>
     </div>
     <div class="documentation">
-     <pre>Return the precision of the original code.</pre>
+     <pre>The precision of the code area.
+
+Argument OBJECT is a ‘<a href="#irmrku78"><span class="symbol">code-area</span></a>’ object.
+
+Value is the Plus Code precision (a positive integer).  Signals
+an ‘<a href="#h2fqeadf"><span class="symbol">invalid-code-error</span></a>’ if OBJECT is not a valid code area.
+
+See also ‘<a href="#kqbprhb7"><span class="symbol">encode</span></a>’.</pre>
     </div>
    </div>
    <div class="definition" id="kl5ojrwg">
@@ -742,7 +802,15 @@ the north pole.</pre>
      </table>
     </div>
     <div class="documentation">
-     <pre>Return the code length as a function of the precision.</pre>
+     <pre>The code length as a function of the precision.
+
+Argument PRECISION is a Plus Code precision.
+
+Value is the Plus Code length (a positive integer).  Signals
+a ‘<a href="#ftwadoxh"><span class="symbol">precision-error</span></a>’ if argument PRECISION is not a valid Plus
+Code precision.
+
+See also ‘<a href="#kqbprhb7"><span class="symbol">encode</span></a>’.</pre>
     </div>
    </div>
    <div class="definition" id="hukvcjtb">
@@ -763,7 +831,16 @@ the north pole.</pre>
      </table>
     </div>
     <div class="documentation">
-     <pre>Return the code length of the original code.</pre>
+     <pre>The code length for the code area.
+
+Argument OBJECT is a ‘<a href="#irmrku78"><span class="symbol">code-area</span></a>’ object.
+
+Value is the Plus Code length (a positive integer).  Signals
+an ‘<a href="#h2fqeadf"><span class="symbol">invalid-code-error</span></a>’ if OBJECT is not a valid code area.
+Signals a ‘<a href="#cjataaic"><span class="symbol">full-code-error</span></a>’ if the code area does not denote
+a full Plus Code.
+
+See also ‘<a href="#kqbprhb7"><span class="symbol">encode</span></a>’.</pre>
     </div>
    </div>
    <div class="definition" id="idxtqq8f">
@@ -784,7 +861,17 @@ the north pole.</pre>
      </table>
     </div>
     <div class="documentation">
-     <pre>Return the position of the separator character in the original code.</pre>
+     <pre>The position of the separator character in the Plus Code.
+
+Argument OBJECT is a ‘<a href="#irmrku78"><span class="symbol">code-area</span></a>’ object.
+
+Value is either 8, 6, 4, 2, or 0.  Signals an ‘<a href="#h2fqeadf"><span class="symbol">invalid-code-error</span></a>’
+if OBJECT is not a valid code area.
+
+The separator character position is equal to the number of digits
+and pad characters before the plus sign character.  A value of eight
+indicates a full Plus Code, any other value indicates a short Plus
+Code.</pre>
     </div>
    </div>
    <div class="definition" id="f2ugezdr">
@@ -805,7 +892,14 @@ the north pole.</pre>
      </table>
     </div>
     <div class="documentation">
-     <pre>Return the number of pad characters in the original code.</pre>
+     <pre>The number of pad characters in the Plus Code.
+
+Argument OBJECT is a ‘<a href="#irmrku78"><span class="symbol">code-area</span></a>’ object.
+
+Value is either 0, 2, 4, or 6.  Signals an ‘<a href="#h2fqeadf"><span class="symbol">invalid-code-error</span></a>’
+if OBJECT is not a valid code area.
+
+Pad characters can only occur in a full Plus Code.</pre>
     </div>
    </div>
   </div>

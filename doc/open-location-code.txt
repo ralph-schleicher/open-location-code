@@ -165,6 +165,10 @@ code-error
    Base class for all Open Location Code errors.
 
                                                                      [Condition]
+precision-error
+   Condition for an invalid Plus Code precision.
+
+                                                                     [Condition]
 code-length-error
    Condition for an invalid Plus Code length.
 
@@ -180,44 +184,114 @@ full-code-error
 short-code-error
    Condition for an invalid short Plus Code.
 
-                                                                         [Class]
+                                                                     [Structure]
 code-area
    Area covered by a Plus Code.
 
-                                                                        [Method]
-south-west-corner ((object code-area))
-   Return the lower latitude and longitude as multiple values.
+                                                                      [Function]
+south-west-corner (object)
+   The lower latitude and longitude of the code area.
 
-                                                                        [Method]
-north-east-corner ((object code-area))
-   Return the upper latitude and longitude as multiple values.
-   The upper bounds are not included in the code area except for
-   the north pole.
+   Argument OBJECT is a ‘code-area’ object.
 
-                                                                        [Method]
-center ((object code-area))
-   Return the center latitude and longitude as multiple values.
+   Return the latitude and longitude of the area's south-west corner
+   as multiple values.
+
+   See also ‘decode’.
+
+                                                                      [Function]
+north-east-corner (object)
+   The upper latitude and longitude of the code area.
+   The upper bounds are not included in the code area except for the
+   north pole.
+
+   Argument OBJECT is a ‘code-area’ object.
+
+   Return the latitude and longitude of the area's north-east corner
+   as multiple values.
+
+   See also ‘decode’.
+
+                                                                      [Function]
+center (object)
+   The center latitude and longitude of the code area.
+
+   Argument OBJECT is a ‘code-area’ object.
+
+   Return the latitude and longitude of the area's center as multiple
+   values.
+
+   See also ‘decode’.
 
                                                                         [Method]
 precision ((length integer))
-   Return the precision as a function of the code length.
+   The precision as a function of the code length.
+
+   Argument LENGTH is a Plus Code length.
+
+   Value is the Plus Code precision (a positive integer).  Signals
+   a ‘code-length-error’ if argument LENGTH is not a valid Plus Code
+   length.
+
+   See also ‘encode’.
 
                                                                         [Method]
 precision ((object code-area))
-   Return the precision of the original code.
+   The precision of the code area.
+
+   Argument OBJECT is a ‘code-area’ object.
+
+   Value is the Plus Code precision (a positive integer).  Signals
+   an ‘invalid-code-error’ if OBJECT is not a valid code area.
+
+   See also ‘encode’.
 
                                                                         [Method]
 code-length ((precision integer))
-   Return the code length as a function of the precision.
+   The code length as a function of the precision.
+
+   Argument PRECISION is a Plus Code precision.
+
+   Value is the Plus Code length (a positive integer).  Signals
+   a ‘precision-error’ if argument PRECISION is not a valid Plus
+   Code precision.
+
+   See also ‘encode’.
 
                                                                         [Method]
 code-length ((object code-area))
-   Return the code length of the original code.
+   The code length for the code area.
+
+   Argument OBJECT is a ‘code-area’ object.
+
+   Value is the Plus Code length (a positive integer).  Signals
+   an ‘invalid-code-error’ if OBJECT is not a valid code area.
+   Signals a ‘full-code-error’ if the code area does not denote
+   a full Plus Code.
+
+   See also ‘encode’.
 
                                                                         [Method]
 separator-position ((object code-area))
-   Return the position of the separator character in the original code.
+   The position of the separator character in the Plus Code.
+
+   Argument OBJECT is a ‘code-area’ object.
+
+   Value is either 8, 6, 4, 2, or 0.  Signals an ‘invalid-code-error’
+   if OBJECT is not a valid code area.
+
+   The separator character position is equal to the number of digits
+   and pad characters before the plus sign character.  A value of eight
+   indicates a full Plus Code, any other value indicates a short Plus
+   Code.
 
                                                                         [Method]
 pad-characters ((object code-area))
-   Return the number of pad characters in the original code.
+   The number of pad characters in the Plus Code.
+
+   Argument OBJECT is a ‘code-area’ object.
+
+   Value is either 0, 2, 4, or 6.  Signals an ‘invalid-code-error’
+   if OBJECT is not a valid code area.
+
+   Pad characters can only occur in a full Plus Code.
