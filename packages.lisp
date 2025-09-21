@@ -47,6 +47,7 @@
            #:shorten
            #:recover
            #:code-error
+           #:precision-error
            #:code-length-error
            #:invalid-code-error
            #:full-code-error
