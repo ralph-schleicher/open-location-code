@@ -84,7 +84,9 @@
   (assert-eql 13 (olc:code-length  8))
   (assert-eql 14 (olc:code-length  9))
   (assert-eql 15 (olc:code-length 10))
-  (assert-eql 15 (olc:code-length 11)))
+  (assert-eql 15 (olc:code-length 11))
+  (assert-error 'olc:precision-error (olc:code-length 0))
+  ())
 
 (define-test precision-from-length
   (assert-eql  1 (olc:precision  2))
@@ -97,7 +99,14 @@
   (assert-eql  8 (olc:precision 13))
   (assert-eql  9 (olc:precision 14))
   (assert-eql 10 (olc:precision 15))
-  (assert-eql 10 (olc:precision 16)))
+  (assert-eql 10 (olc:precision 16))
+  (assert-error 'olc:code-length-error (olc:precision 0))
+  (assert-error 'olc:code-length-error (olc:precision 1))
+  (assert-error 'olc:code-length-error (olc:precision 3))
+  (assert-error 'olc:code-length-error (olc:precision 5))
+  (assert-error 'olc:code-length-error (olc:precision 7))
+  (assert-error 'olc:code-length-error (olc:precision 9))
+  ())
 
 (defun validity-test (code valid short full)
   (assert-eq (cond (short
