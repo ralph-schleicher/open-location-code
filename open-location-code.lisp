@@ -221,6 +221,10 @@ Argument PRECISION is the number of discretization steps."
   "Return true if the code area OBJECT is a full Plus Code."
   (= (code-area-plus object) 8))
 
+(defsubst code-area-length (object)
+  "Return the Plus Code length for the code area OBJECT."
+  (length-from-precision (code-area-precision object)))
+
 (defun south-west-corner (object)
   "The lower latitude and longitude of the code area.
 
@@ -310,7 +314,7 @@ See also ‘encode’."
     (error 'invalid-code-error :datum object))
   (unless (code-area-full-p object)
     (error 'full-code-error :datum object))
-  (length-from-precision (code-area-precision object)))
+  (code-area-length object))
 
 (defmethod code-length ((precision integer))
   "The code length as a function of the precision.
@@ -720,10 +724,10 @@ Signal a ‘full-code-error’ if CODE is not a full Plus Code."
       (multiple-value-setq (lat lon)
         (center area))
       (multiple-value-setq (ref-lat ref-lon)
-        (normalize-location latitude longitude (precision area)))
+        (normalize-location latitude longitude (code-area-precision area)))
       (setf distance (max (abs (- lat ref-lat))
                           (abs (- lon ref-lon))))
-      (iter (for pos :from (min (code-length area) 8) :downto 4 :by 2)
+      (iter (for pos :from (min (code-area-length area) 8) :downto 4 :by 2)
             ;; Check for pad characters.
             (when (char= (aref code pos) #\0)
               (next-iteration))
@@ -767,7 +771,7 @@ Signal an ‘invalid-code-error’ if CODE is not a Plus Code."
           code)
       (let (pad prec lat lon ref-lat ref-lon height width)
         ;; Number of digits to recover and the corresponding precision.
-        (setf pad (- 8 (separator-position area))
+        (setf pad (- 8 (code-area-plus area))
               prec (/ pad 2))
         ;; Relative location of the code area.
         (multiple-value-setq (lat lon)
@@ -799,6 +803,6 @@ Signal an ‘invalid-code-error’ if CODE is not a Plus Code."
                       (< (+ lon width) 360))
                  (incf lon width))))
         ;; Encode the recovered location.
-        (encode (- lat 90) (- lon 180) (precision area))))))
+        (encode (- lat 90) (- lon 180) (code-area-precision area))))))
 
 ;;; open-location-code.lisp ends here
