@@ -173,6 +173,180 @@ Argument PRECISION is the number of discretization steps."
   (values (svref +area-height+ precision)
           (svref +area-width+ precision)))
 
+;; If slot value PLUS is equal to eight, the original code was a
+;; full Plus Code and slot values SOUTH and WEST denote an absolute
+;; location.  Otherwise, the original code was a short Plus Code and
+;; slot values SOUTH and WEST denote a relative location, i.e. the
+;; offset to the reference location.
+(defstruct code-area
+  "Area covered by a Plus Code."
+  ;; Lower latitude of the code area in degree angle.
+  (south 0 :type real :read-only t)
+  ;; Lower longitude of the code area in degree angle.
+  (west 0 :type real :read-only t)
+  ;; Height of the code area in degree angle.
+  (height 0 :type real :read-only t)
+  ;; Width of the code area in degree angle.
+  (width 0 :type real :read-only t)
+  ;; Precision of the code area.
+  (precision 0 :type fixnum :read-only t)
+  ;; Position of the separator character in the Plus Code.
+  (plus 0 :type fixnum :read-only t)
+  ;; Number of pad characters in the Plus Code.
+  (pad 0 :type fixnum :read-only t))
+
+(defsubst code-area-valid-p (object)
+  "Return true if the code area OBJECT is properly initialized."
+  (<= 1 (code-area-precision object) +maximum-precision+))
+
+(defsubst code-area-full-p (object)
+  "Return true if the code area OBJECT is a full Plus Code."
+  (= (code-area-plus object) 8))
+
+(defsubst code-area-length (object)
+  "Return the Plus Code length for the code area OBJECT."
+  (length-from-precision (code-area-precision object)))
+
+(defun south-west-corner (object)
+  "The lower latitude and longitude of the code area.
+
+Argument OBJECT is a ‘code-area’ object.
+
+Return the latitude and longitude of the area's south-west corner
+as multiple values.
+
+See also ‘decode’."
+  (check-type object code-area)
+  (values (code-area-south object)
+          (code-area-west object)))
+
+(defun north-east-corner (object)
+  "The upper latitude and longitude of the code area.
+The upper bounds are not included in the code area except for the
+north pole.
+
+Argument OBJECT is a ‘code-area’ object.
+
+Return the latitude and longitude of the area's north-east corner
+as multiple values.
+
+See also ‘decode’."
+  (check-type object code-area)
+  (values (+ (code-area-south object) (code-area-height object))
+          (+ (code-area-west object) (code-area-width object))))
+
+(defun center (object)
+  "The center latitude and longitude of the code area.
+
+Argument OBJECT is a ‘code-area’ object.
+
+Return the latitude and longitude of the area's center as multiple
+values.
+
+See also ‘decode’."
+  (check-type object code-area)
+  (values (+ (code-area-south object) (/ (code-area-height object) 2))
+          (+ (code-area-west object) (/ (code-area-width object) 2))))
+
+(defgeneric precision (object)
+  (:documentation
+   "Return the Plus Code precision."))
+
+(defmethod precision ((object code-area))
+  "The precision of the code area.
+
+Argument OBJECT is a ‘code-area’ object.
+
+Value is the Plus Code precision (a positive integer).  Signals
+an ‘invalid-code-error’ if OBJECT is not a valid code area.
+
+See also ‘encode’."
+  (unless (code-area-valid-p object)
+    (error 'invalid-code-error :datum object))
+  (code-area-precision object))
+
+(defmethod precision ((length integer))
+  "The precision as a function of the code length.
+
+Argument LENGTH is a Plus Code length.
+
+Value is the Plus Code precision (a positive integer).  Signals
+a ‘code-length-error’ if argument LENGTH is not a valid Plus Code
+length.
+
+See also ‘encode’."
+  (precision-from-length length))
+
+(defgeneric code-length (object)
+  (:documentation
+   "Return the Plus Code length."))
+
+(defmethod code-length ((object code-area))
+  "The code length for the code area.
+
+Argument OBJECT is a ‘code-area’ object.
+
+Value is the Plus Code length (a positive integer).  Signals
+an ‘invalid-code-error’ if OBJECT is not a valid code area.
+Signals a ‘full-code-error’ if the code area does not denote
+a full Plus Code.
+
+See also ‘encode’."
+  (unless (code-area-valid-p object)
+    (error 'invalid-code-error :datum object))
+  (unless (code-area-full-p object)
+    (error 'full-code-error :datum object))
+  (code-area-length object))
+
+(defmethod code-length ((precision integer))
+  "The code length as a function of the precision.
+
+Argument PRECISION is a Plus Code precision.
+
+Value is the Plus Code length (a positive integer).  Signals
+a ‘precision-error’ if argument PRECISION is not a valid Plus
+Code precision.
+
+See also ‘encode’."
+  (length-from-precision precision))
+
+(defgeneric separator-position (object)
+  (:documentation
+   "Return the position of the separator character."))
+
+(defmethod separator-position ((object code-area))
+  "The position of the separator character in the Plus Code.
+
+Argument OBJECT is a ‘code-area’ object.
+
+Value is either 8, 6, 4, 2, or 0.  Signals an ‘invalid-code-error’
+if OBJECT is not a valid code area.
+
+The separator character position is equal to the number of digits
+and pad characters before the plus sign character.  A value of eight
+indicates a full Plus Code, any other value indicates a short Plus
+Code."
+  (unless (code-area-valid-p object)
+    (error 'invalid-code-error :datum object))
+  (code-area-plus object))
+
+(defgeneric pad-characters (object)
+  (:documentation
+   "Return the number of pad characters."))
+
+(defmethod pad-characters ((object code-area))
+  "The number of pad characters in the Plus Code.
+
+Argument OBJECT is a ‘code-area’ object.
+
+Value is either 0, 2, 4, or 6.  Signals an ‘invalid-code-error’
+if OBJECT is not a valid code area.
+
+Pad characters can only occur in a full Plus Code."
+  (unless (code-area-valid-p object)
+    (error 'invalid-code-error :datum object))
+  (code-area-pad object))
+
 (defun integer-from-degree (latitude longitude)
   "Convert a location into non-negative integers."
   (let* ((lat-scale (/ (svref +area-height+ +maximum-precision+)))
@@ -356,5 +530,261 @@ Plus Code respectively.  Otherwise, all values are ‘nil’."
          (setf object code))
        ()))
     (values valid object)))
+
+(defun validp (code &key (start 0) end)
+  "True if an object is a valid sequence of Plus Code characters.
+
+Argument CODE is an object of any type.
+Keyword arguments START and END are the bounding indices of CODE.
+ Default is zero and the length of CODE respectively.
+
+Value is ‘:full’ or ‘:short’ if CODE is a valid full or short Plus
+Code respectively.  Otherwise, value is ‘nil’."
+  (check-type start alexandria:array-index)
+  (check-type end (or null alexandria:array-index))
+  (nth-value 0 (analyse code start end)))
+
+(defun fullp (code &key (start 0) end)
+  "True if an object is a valid full Plus Code.
+
+Argument CODE is an object of any type.
+Keyword arguments START and END are the bounding indices of CODE.
+ Default is zero and the length of CODE respectively.
+
+Value is true if CODE is a valid full Plus Code.
+Otherwise, value is ‘nil’."
+  (check-type start alexandria:array-index)
+  (check-type end (or null alexandria:array-index))
+  (eq (analyse code start end) :full))
+
+(defun shortp (code &key (start 0) end)
+  "True if an object is a valid short Plus Code.
+
+Argument CODE is an object of any type.
+Keyword arguments START and END are the bounding indices of CODE.
+ Default is zero and the length of CODE respectively.
+
+Value is true if CODE is a valid full Plus Code.
+Otherwise, value is ‘nil’."
+  (check-type start alexandria:array-index)
+  (check-type end (or null alexandria:array-index))
+  (eq (analyse code start end) :short))
+
+(defun encode (latitude longitude &optional (precision 5))
+  "Encode a location into a Plus Code.
+
+First argument LATITUDE and second argument LONGITUDE denote the
+ location in degree angle.  The latitude is clipped to the closed
+ interval [-90, 90] and the longitude is normalized to the
+ half-closed interval [-180, 180).
+Optional third argument PRECISION is the precision of the code.
+ Default is five, i.e. a code length of ten digits.
+
+Value is a full Plus Code (a string).
+
+The relation between precision, code length, and code area size
+is depicted in the following table.
+
+   Precision  | Code Length |   Width / m   |  Height / m
+ -------------+-------------+---------------+---------------
+       1      |      2      | 2218929.9     | 2218929.9
+       2      |      4      |  110946.5     |  110946.5
+       3      |      6      |    5547.3     |    5547.3
+       4      |      8      |     277.4     |     277.4
+       5      |     10      |      13.9     |      13.9
+       6      |     11      |       3.47    |       2.77
+       7      |     12      |       0.867   |       0.555
+       8      |     13      |       0.217   |       0.111
+       9      |     14      |       0.0542  |       0.0222
+      10      |     15      |       0.0135  |       0.00444
+
+The code length is equal to the number of Plus Code digits.  Pad
+characters and the separator character ‘+’ are not part of the code
+length.  The code area dimensions are calculated with a mean earth
+radius of 6356766 m for a code area at the equator."
+  (check-type latitude real)
+  (check-type longitude real)
+  (check-type precision (integer 1))
+  (multiple-value-bind (lat lon prec)
+      (normalize-location* latitude longitude precision)
+    ;; Do the encoding.
+    (let ((code (make-string (+ 9 (if (> prec 4) 2 0) (max 0 (- prec 5))) :initial-element #\0)))
+      (setf (aref code 8) #\+)
+      (let ((height 0)
+            (width 0)
+            (index 1)
+            (pos 0))
+        (labels ((pair ()
+                   ;; Query area size.
+                   (multiple-value-setq (height width)
+                     (area-size index))
+                   (incf index)
+                   (let (value)
+                     (multiple-value-setq (value lat)
+                       (truncate lat height))
+                     (setf (aref code pos) (digit value))
+                     (incf pos)
+                     (multiple-value-setq (value lon)
+                       (truncate lon width))
+                     (setf (aref code pos) (digit value))
+                     (incf pos))))
+          (case prec
+            (1
+             (pair))
+            (2
+             (pair) (pair))
+            (3
+             (pair) (pair) (pair))
+            (4
+             (pair) (pair) (pair) (pair))
+            (t
+             (pair) (pair) (pair) (pair) (incf pos) (pair)
+             ;; Refinement steps.
+             (let (row column)
+               (iter (repeat (- prec 5))
+                     (multiple-value-setq (height width)
+                       (area-size index))
+                     (incf index)
+                     (multiple-value-setq (row lat)
+                       (truncate lat height))
+                     (multiple-value-setq (column lon)
+                       (truncate lon width))
+                     (let ((value (+ (* row +grid-columns+) column)))
+                       (setf (aref code pos) (digit value))
+                       (incf pos))))))))
+      code)))
+
+(defun decode (code &key (start 0) end)
+  "Decode a Plus Code.
+
+Argument CODE is a Plus Code (a string).
+Keyword arguments START and END are the bounding indices of CODE.
+ Default is zero and the length of CODE respectively.
+
+Primary value is a ‘code-area’ object.  Secondary value is ‘:full’
+or ‘:short’ if CODE is a full or short Plus Code respectively.  If
+CODE is a full Plus Code the code area denotes absolute coordinates.
+Otherwise, the code area denotes relative coordinates, i.e. offset
+values in the enclosing block.
+
+Signal an ‘invalid-code-error’ if CODE is not a valid Plus Code."
+  (check-type code string)
+  (check-type start alexandria:array-index)
+  (check-type end (or null alexandria:array-index))
+  (multiple-value-bind (valid area)
+      (analyse code start end t)
+    (when (not valid)
+      (error 'invalid-code-error :datum code))
+    (values area valid)))
+
+(defun shorten (code latitude longitude &key (start 0) end)
+  "Remove four, six, or eight digits from the front of a full Plus
+Code given a reference location.
+
+First argument CODE is a full Plus Code (a string).
+Second argument LATITUDE and third argument LONGITUDE denote the
+ reference location in degree angle.  The latitude is clipped to
+ the closed interval [-90, 90] and the longitude is normalized to
+ the half-closed interval [-180, 180).
+Keyword arguments START and END are the bounding indices of CODE.
+ Default is zero and the length of CODE respectively.
+
+Value is the short code, or the original full code if the reference
+location is too far.
+
+Signal a ‘full-code-error’ if CODE is not a full Plus Code."
+  (check-type code string)
+  (check-type latitude real)
+  (check-type longitude real)
+  (check-type start alexandria:array-index)
+  (check-type end (or null alexandria:array-index))
+  (multiple-value-bind (valid area)
+      (analyse code start end t)
+    (unless (eq valid :full)
+      (error 'full-code-error :datum code))
+    (let (lat lon ref-lat ref-lon distance)
+      (multiple-value-setq (lat lon)
+        (center area))
+      (multiple-value-setq (ref-lat ref-lon)
+        (normalize-location latitude longitude (code-area-precision area)))
+      (setf distance (max (abs (- lat ref-lat))
+                          (abs (- lon ref-lon))))
+      (iter (for pos :from (min (code-area-length area) 8) :downto 4 :by 2)
+            ;; Check for pad characters.
+            (when (char= (aref code pos) #\0)
+              (next-iteration))
+            ;; Code area is square.
+            (for block-size = (area-size (/ pos 2)))
+            ;; Factor 0.3 adds just an extra margin of safety;
+            ;; theoretically half the block size is sufficient.
+            (when (< distance (* block-size 3/10))
+              (return-from shorten (subseq code pos)))))
+    ;; Return original full Plus Code.
+    code))
+
+(defun recover (code latitude longitude &key (start 0) end)
+  "Recover a full Plus Code from a short code and a reference location.
+
+First argument CODE is a Plus Code (a string).
+Second argument LATITUDE and third argument LONGITUDE denote the
+ reference location in degree angle.  The latitude is clipped to
+ the closed interval [-90, 90] and the longitude is normalized to
+ the half-closed interval [-180, 180).
+Keyword arguments START and END are the bounding indices of CODE.
+ Default is zero and the length of CODE respectively.
+
+Value is the recovered full code.  If CODE is already a full code,
+return CODE as is.
+
+Signal an ‘invalid-code-error’ if CODE is not a Plus Code."
+  (check-type code string)
+  (check-type latitude real)
+  (check-type longitude real)
+  (check-type start alexandria:array-index)
+  (check-type end (or null alexandria:array-index))
+  (multiple-value-bind (valid area)
+      (analyse code start end t)
+    (unless valid
+      (error 'invalid-code-error :datum code))
+    (if (eq valid :full)
+        ;; A recovered code contains only uppercase letters.
+        (if (some #'lower-case-p code)
+            (string-upcase code)
+          code)
+      (let (pad prec lat lon ref-lat ref-lon height width)
+        ;; Number of digits to recover and the corresponding precision.
+        (setf pad (- 8 (code-area-plus area))
+              prec (/ pad 2))
+        ;; Relative location of the code area.
+        (multiple-value-setq (lat lon)
+          (center area))
+        ;; Generate the prefix from the reference location and combine
+        ;; it with the short code.
+        (multiple-value-setq (ref-lat ref-lon)
+          (normalize-location* latitude longitude prec))
+        (multiple-value-setq (height width)
+          (area-size prec))
+        (incf lat (* (floor ref-lat height) height))
+        (incf lon (* (floor ref-lon width) width))
+        ;; Check if the recovered code area is too far from the
+        ;; reference location.  If so, move it.
+        (let ((distance (- lat ref-lat))
+              (half-height (/ height 2)))
+          (cond ((and (> distance half-height)
+                      (> (- lat height) 0))
+                 (decf lat height))
+                ((and (< distance (- half-height))
+                      (< (+ lat height) 180))
+                 (incf lat height))))
+        (let ((distance (- lon ref-lon))
+              (half-width (/ width 2)))
+          (cond ((and (> distance half-width)
+                      (> (- lon width) 0))
+                 (decf lon width))
+                ((and (< distance (- half-width))
+                      (< (+ lon width) 360))
+                 (incf lon width))))
+        ;; Encode the recovered location.
+        (encode (- lat 90) (- lon 180) (code-area-precision area))))))
 
 ;;; open-location-code.lisp ends here
