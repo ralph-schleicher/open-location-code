@@ -31,8 +31,6 @@
 ;; ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 ;; POSSIBILITY OF SUCH DAMAGE.
 
-;;; Commentary:
-
 ;;; Code:
 
 (in-package :open-location-code)
