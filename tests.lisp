@@ -119,7 +119,7 @@
   (multiple-value-bind (string length)
       (with-input-from-string (stream code)
         (handler-case
-            (olc::read-code stream nil nil nil :short-code (if valid short :allowed))
+            (olc:read-code stream nil nil nil :short-code (if valid short :allowed))
           (end-of-file ()
             (values nil 0))))
     (let ((true (if valid
